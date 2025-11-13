@@ -1,0 +1,1275 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "restaurants": "Restaurants",
+    "reservations": "Reservations",
+    "promotions": "Promotions",
+    "chatbots": "Chatbots",
+    "customers": "Customers",
+    "analytics": "Analytics",
+    "tables": "Tables"
+  },
+  "sidebar": {
+    "logo": {
+      "alt": "ChefBot Logo"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "back": "Back",
+    "profile": {
+      "title": "Profile Information",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "gender": "Gender",
+      "dateOfBirth": "Date of Birth",
+      "orgLanguage": "Language",
+      "updateProfile": "Update Profile",
+      "updateProfileDescription": "Update your profile information"
+    },
+    "password": {
+      "title": "Change Password",
+      "changePassword": "Change Password",
+      "changePasswordDescription": "Change your account password"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard Overview",
+    "selectOrg": "Select Restaurant",
+    "noData": {
+      "title": "No Dashboard Data",
+      "description": "Please select a restaurant to view the dashboard data"
+    },
+    "todayReservations": {
+      "title": "Today's Reservations",
+      "bookings": "bookings",
+      "noData": "No reservations data available"
+    },
+    "nextReservation": {
+      "title": "Next Reservation",
+      "menuSelected": "Menu Selected",
+      "menuPending": "Menu Pending",
+      "guests": "guests",
+      "noUpcoming": "No upcoming reservations"
+    },
+    "salesLevel": {
+      "title": "Sales Level",
+      "level": "Level",
+      "noData": "Sales level data not available"
+    },
+    "activePromotions": {
+      "title": "Active Promotions",
+      "active": "Active",
+      "noPromotions": "No active promotions at the moment"
+    },
+    "triggerTypeOptions": {
+      "YEARLY": "Yearly",
+      "MENU_SELECTED": "Menu Selected",
+      "INACTIVITY": "Inactivity",
+      "RESERVATION_COUNT": "Reservation Count"
+    }
+  },
+  "restaurants": {
+    "title": "Restaurants",
+    "addNew": "Add New Restaurant",
+    "addNewDescription": "Form to add a new restaurant to the system",
+    "noRestaurants": "No restaurants found",
+    "form": {
+      "title": "Restaurant Profile",
+      "description": "Maintain the basic details of your restaurant.",
+      "fields": {
+        "name": {
+          "label": "Restaurant Name",
+          "placeholder": "Enter restaurant name",
+          "required": "Restaurant name is required"
+        },
+        "whatsapp_number": {
+          "label": "WhatsApp Number",
+          "placeholder": "Enter WhatsApp number",
+          "required": "Valid WhatsApp number is required",
+          "exists": "Restaurant with this WhatsApp number already exists"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Enter email address",
+          "required": "Email address is required",
+          "invalid": "Invalid email address"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter restaurant description"
+        },
+        "website": {
+          "label": "Website",
+          "placeholder": "Enter website URL",
+          "invalid": "Invalid website URL"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Select a country",
+          "required": "Country is required",
+          "loading": "Loading...",
+          "search": "Search country...",
+          "noResults": "No country found."
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Enter city"
+        },
+        "street": {
+          "label": "Street",
+          "placeholder": "Enter street"
+        },
+        "zip_code": {
+          "label": "ZIP Code",
+          "placeholder": "Enter ZIP code"
+        },
+        "reservation_booking_reminder": {
+          "label": "Reservation Reminder",
+          "placeholder": "Select reservation reminder",
+          "options": {
+            "30": "30 minutes",
+            "45": "45 minutes",
+            "60": "1 hour"
+          }
+        },
+        "whatsapp_enabled": {
+          "label": "Enable WhatsApp"
+        }
+      },
+      "openingHours": {
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "title": "Opening Hours",
+        "day": "Day",
+        "openingTime": "Opening Time",
+        "closingTime": "Closing Time",
+        "breakStart": "Break Start",
+        "breakEnd": "Break End",
+        "closed": "Closed",
+        "errors": "Please fix the opening hours errors highlighted below",
+        "required": "At least one day is required"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "save": "Save",
+        "saving": "Saving..."
+      },
+      "success": "Restaurant added successfully",
+      "error": {
+        "generic": "Failed to add restaurant. Please try again.",
+        "validation": "Failed to add restaurant. Please check the form for errors."
+      }
+    },
+    "menu": {
+      "title": "Menu Items",
+      "addNewItem": "Add New Menu Item",
+      "addNewDescription": "Add a new menu item to your restaurant",
+      "menuPdf": "Menu PDF",
+      "cards": {
+        "popular": "Popular",
+        "viewDetails": "View Details",
+        "delete": "Delete",
+        "containsAllergens": "Contains allergens"
+      },
+      "form": {
+        "title": "Add New Menu Item",
+        "description": "Add a new menu item to your restaurant",
+        "name": {
+          "label": "Name *",
+          "placeholder": "Menu item name",
+          "required": "Name is required"
+        },
+        "menuDescription": {
+          "label": "Description",
+          "placeholder": "Menu item description"
+        },
+        "price": {
+          "label": "Price",
+          "placeholder": "Enter price"
+        },
+        "category": {
+          "label": "Category",
+          "placeholder": "Select a category...",
+          "search": "Search category...",
+          "noResults": "No category found.",
+          "options": {
+            "starters": "Starters",
+            "mainCourses": "Main Courses",
+            "desserts": "Desserts",
+            "drinksAlcoholic": "Drinks (Alcoholic)",
+            "drinksNonAlcoholic": "Drinks (Non-Alcoholic)",
+            "specials": "Specials"
+          }
+        },
+        "classification": {
+          "label": "Classification",
+          "placeholder": "Select a classification",
+          "options": {
+            "meat": "Meat",
+            "fish": "Fish",
+            "vegetarian": "Vegetarian",
+            "vegan": "Vegan"
+          }
+        },
+        "ingredients": {
+          "label": "Ingredients *",
+          "namePlaceholder": "Ingredient name",
+          "amountPlaceholder": "Amount (e.g., 500ml, 300g)",
+          "addButton": "Add",
+          "required": "At least one ingredient is required",
+          "invalidAmount": "Please include a unit (e.g., 10g, 200ml)"
+        },
+        "upselling": {
+          "enable": "Enable Upselling",
+          "priority": {
+            "label": "Upselling Priority (1-5)",
+            "placeholder": "Select priority"
+          }
+        },
+        "combinations": {
+          "label": "Recommended Combinations",
+          "maxLabel": "Recommended Combinations (Max {max})",
+          "placeholder": "Select items...",
+          "search": "Search menu items...",
+          "noResults": "No items found.",
+          "maxSelected": "Maximum {max} items selected",
+          "category": {
+            "prefix": "Category:",
+            "separator": " "
+          }
+        },
+        "submit": {
+          "label": "Add Menu Item",
+          "loading": "Loading...",
+          "success": "Menu item added successfully",
+          "error": "Failed to add menu item. Please try again."
+        },
+        "update": {
+          "label": "Update Menu Item",
+          "description": "Update the details of an existing menu item",
+          "loading": "Updating..."
+        }
+      },
+      "pdf": {
+        "upload": {
+          "title": "Upload Menu PDF",
+          "description": "Upload a PDF menu file to import menu items",
+          "button": "Upload Menu PDF",
+          "success": "Menu PDF uploaded successfully!",
+          "error": {
+            "fileType": "Please select a PDF file only.",
+            "fileSize": "File size must be less than 10MB.",
+            "noFile": "Please select a PDF file to upload.",
+            "generic": "Upload failed. Please try again."
+          }
+        },
+        "manage": {
+          "title": "Menu PDF Management",
+          "update": "Update Menu PDF",
+          "delete": "Delete Menu PDF",
+          "download": "Download Menu PDF",
+          "success": {
+            "delete": "Menu PDF deleted successfully",
+            "download": "PDF download started"
+          },
+          "error": {
+            "delete": "Failed to delete menu PDF",
+            "download": "Failed to download PDF"
+          },
+          "noFile": "No PDF file available to download"
+        },
+        "menuPdf": "Menu PDF",
+        "menuPdfDescription": "Manage your restaurant's menu PDF file",
+        "uploadPdf": "Upload PDF",
+        "updateMenuPdf": "Update Menu PDF",
+        "deletePdf": "Delete PDF",
+        "downloadPdf": "Download PDF",
+        "uploadSuccess": "Upload successful",
+        "uploadFailed": "Upload failed",
+        "downloadStarted": "Download started",
+        "downloadFailed": "Download failed",
+        "deleteSuccess": "Delete successful",
+        "deleteError": "Delete failed",
+        "noPdfAvailable": "No PDF available",
+        "menuPdfManagement": "Menu PDF Management"
+      },
+      "details": {
+        "editMenuItem": "Edit Menu Item",
+        "editMenuDescription": "Make changes to your menu item details below.",
+        "ingredients": "Ingredients",
+        "noIngredients": "No ingredients listed",
+        "allergens": "Allergens",
+        "noAllergens": "No allergens listed",
+        "nutrition": "Nutritional Information",
+        "badge":"AI Generated",
+        "noNutrition": "No nutritional information available",
+        "combinations": "Recommended Combinations",
+        "noCombinations": "No recommended combinations available",
+        "category": "No category",
+        "classification": "No classification",
+        "description": "No description available",
+        "image": {
+          "edit": "Edit",
+          "success": "Image updated successfully",
+          "error": "Failed to update image"
+        }
+      },
+      "noItems": "No menu items found"
+    },
+    "card": {
+      "tables": "Tables",
+      "viewMenu": "View Menu",
+      "details": "Details"
+    },
+    "details": {
+      "description": "Description",
+      "update": "Update",
+      "reservationReminder": "Reservation Booking Reminder In",
+      "back": "Back",
+      "edit": "Edit",
+      "editRestaurant": "Edit Restaurant Information",
+      "editDescription": "Make changes to your restaurant details below.",
+      "editMenuItem": "Edit Menu Item Information",
+      "editMenuDescription": "Make changes to your menu item details below.",
+      "minutes": "Minutes",
+      "contact": {
+        "email": "Email",
+        "website": "Website",
+        "whatsapp": "WhatsApp",
+        "chatHistory": "Chat History",
+        "notAvailable": "Not available"
+      },
+      "location": "Location",
+      "openingHours": {
+        "title": "Opening Hours",
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "status": {
+          "open": "Open",
+          "closed": "Closed"
+        },
+        "schedule": {
+          "opening": "Opening",
+          "break": "Break",
+          "closing": "Closing"
+        }
+      }
+    },
+    "reservations": {
+      "title": "Reservations",
+      "addNew": "New Reservation",
+      "addNewDescription": "Fill in the details to create a new reservation",
+      "noReservations": "No Reservation found",
+      "searchPlaceholder": "Search reservations...",
+      "filters": {
+        "status": {
+          "label": "Status",
+          "all": "All Status",
+          "placed": "Placed",
+          "inProgress": "In Progress",
+          "cancelled": "Cancelled",
+          "completed": "Completed",
+          "rescheduled": "Rescheduled",
+          "absent": "Absent"
+        },
+        "cancelledBy": {
+          "label": "Cancelled By",
+          "all": "All",
+          "system": "System",
+          "customer": "Customer"
+        },
+        "dateAfter": "Date After",
+        "dateBefore": "Date Before"
+      },
+      "loading": "Loading reservations...",
+      "card": {
+        "delete": "Delete",
+        "details": "Details"
+      },
+      "details": {
+        "promotion": "Promotion",
+        "reservationName": "Reservation Name",
+        "title": "Reservation Details",
+        "back": "Back",
+        "edit": "Edit",
+        "add": "Add",
+        "update": "Update Reservation",
+        "clientName": "Client Name",
+        "contactNumber": "Client Phone",
+        "clientEmail": "Client Email",
+        "whatsappNumber": "WhatsApp Number",
+        "date": "Date",
+        "time": "Time",
+        "partySize": "Party Size",
+        "tableAssignment": "Table Assignment",
+        "menuSelection": "Menu Selection",
+        "additionalInformation": "Additional Information",
+        "reasonForVisit": "Reason for Visit",
+        "notes": "Notes",
+        "bookingReminder": "Booking Reminder",
+        "cancelledBy": "Cancelled By",
+        "menuDetails": "Menu Details",
+        "clientDetails": "Client Details",
+        "organization": "Restaurant",
+        "messageHistory": "Message History",
+        "noReservationFound": "No reservation found",
+        "status": {
+          "placed": "Placed",
+          "inProgress": "In Progress",
+          "cancelled": "Cancelled",
+          "completed": "Completed",
+          "rescheduled": "Rescheduled",
+          "absent": "Absent",
+          "unknown": "Unknown"
+        },
+        "bookingReminderSent": "Sent on {date}",
+        "bookingReminderNotSent": "Not sent",
+        "noMenusSelected": "No menus selected",
+        "source": "Source",
+        "allergens": "Allergens",
+        "preferences": "Preferences",
+        "specialNotes": "Special Notes",
+        "lastVisit": "Last Visit",
+        "dateOfBirth": "Date of Birth",
+        "notProvided": "Not provided",
+        "notSpecified": "Not specified",
+        "none": "None",
+        "notRecorded": "Not recorded",
+        "notCancelled": "Not cancelled",
+        "unknownClient": "Unknown",
+        "menuItem": "Menu Item",
+        "category": "Category",
+        "classification": "Classification",
+        "price": "Price",
+        "description": "Description",
+        "ingredients": "Ingredients",
+        "guests": "guests",
+        "phoneNotProvided": "Not provided",
+        "timeRange": "{start} - {end}",
+        "unnamedReservation": "Unnamed Reservation"
+      },
+      "form": {
+        "title": "Create Reservation",
+        "reservationName": "Reservation Name",
+        "reservationNamePlaceholder": "Enter reservation name",
+        "guestName": "Guest Name",
+        "guestNamePlaceholder": "Enter guest name",
+        "phoneNumber": "Phone Number",
+        "phoneNumberPlaceholder": "Enter phone number",
+        "allergens": "Allergens",
+        "allergensPlaceholder": "Enter allergen (e.g., Dairy products)",
+        "addAllergen": "Add",
+        "restaurant": "Restaurant",
+        "selectRestaurant": "Select a restaurant",
+        "date": "Date",
+        "time": "Time",
+        "numberOfGuests": "Number of Guests",
+        "tableSelection": "Table Selection",
+        "chooseTable": "Choose a table",
+        "loadingTables": "Loading tables...",
+        "reservationStatus": "Reservation Status",
+        "selectStatus": "Select status",
+        "menuSelection": "Menu Selection",
+        "selectMenus": "Select menus...",
+        "loadingMenus": "Loading menus...",
+        "addPromotion": "Add Promotion",
+        "selectPromotion": "Select a promotion (optional)",
+        "loadingPromotions": "Loading promotions...",
+        "reservationReason": "Reservation Reason",
+        "reservationReasonPlaceholder": "e.g. Birthday celebration",
+        "additionalNotes": "Additional Notes",
+        "additionalNotesPlaceholder": "Any special requests or requirements?",
+        "cancel": "Cancel",
+        "createReservation": "Create Reservation",
+        "adding": "Loading...",
+        "errors": {
+          "reservationNameRequired": "Reservation name is required",
+          "guestNameRequired": "Guest name is required",
+          "phoneRequired": "Phone number is required",
+          "dateRequired": "Date is required",
+          "timeRequired": "Time is required",
+          "guestsRequired": "Number of guests is required",
+          "tableRequired": "Table selection is required",
+          "restaurantRequired": "Restaurant selection is required"
+        }
+      }
+    }
+  },
+  "tables": {
+    "title": "Tables",
+    "addNew": "Add New Table",
+    "addNewDescription": "Form to add a new table to the restaurant",
+    "noTables": "No tables found",
+    "loading": "Loading tables...",
+    "addNewSuccess": "Table added successfully",
+    "addNewError": "Failed to add table. Please try again.",
+    "adding": "Adding...",
+    "details": {
+      "title": "Table Details",
+      "information": "Table Information",
+      "name": {
+        "label": "Table Name",
+        "placeholder": "Enter table name"
+      },
+      "capacity": {
+        "label": "Capacity",
+        "placeholder": "Enter capacity",
+        "unit": "persons"
+      },
+      "category": {
+        "label": "Category",
+        "placeholder": "Select category",
+        "family": "Family",
+        "couple": "Couple",
+        "group": "Group",
+        "single": "Single",
+        "private": "Private",
+        "suffix": "Table"
+      },
+      "status": {
+        "label": "Status",
+        "placeholder": "Select status",
+        "available": "Available",
+        "unavailable": "Unavailable",
+        "reserved": "Reserved"
+      },
+      "position": {
+        "label": "Position",
+        "placeholder": "Enter position",
+        "notSpecified": "Not Specified"
+      },
+      "actions": {
+        "back": "Go back",
+        "edit": "Edit table",
+        "delete": "Delete",
+        "deleteConfirm": "Are you sure you want to delete this table?",
+        "viewDetails": "View Details",
+        "add": "Add",
+        "cancel": "Cancel"
+      },
+      "image": {
+        "alt": "Table image"
+      },
+      "notAvailable": "N/A"
+    }
+  },
+  "reservations": {
+    "title": "Reservations",
+    "addNew": "New Reservation",
+    "addNewDescription": "Fill in the details to create a new reservation",
+    "noReservations": "No Reservation found",
+    "searchPlaceholder": "Search reservations...",
+    "filters": {
+      "status": {
+        "label": "Status",
+        "all": "All Status",
+        "placed": "Placed",
+        "inProgress": "In Progress",
+        "cancelled": "Cancelled",
+        "completed": "Completed",
+        "rescheduled": "Rescheduled",
+        "absent": "Absent"
+      },
+      "cancelledBy": {
+        "label": "Cancelled By",
+        "all": "Cancelled By - All",
+        "system": "System",
+        "customer": "Customer"
+      },
+      "dateAfter": "Date After",
+      "dateBefore": "Date Before"
+    },
+    "loading": "Loading reservations...",
+    "card": {
+      "delete": "Delete",
+      "details": "Details"
+    },
+    "details": {
+      "promotion": "Promotion",
+      "reservationName": "Reservation Name",
+      "title": "Reservation Details",
+      "back": "Back",
+      "edit": "Edit",
+      "add": "Add",
+      "update": "Update Reservation",
+      "clientName": "Client Name",
+      "contactNumber": "Client Phone",
+      "clientEmail": "Client Email",
+      "whatsappNumber": "WhatsApp Number",
+      "date": "Date",
+      "time": "Time",
+      "partySize": "Party Size",
+      "tableAssignment": "Table Assignment",
+      "menuSelection": "Menu Selection",
+      "additionalInformation": "Additional Information",
+      "reasonForVisit": "Reason for Visit",
+      "notes": "Notes",
+      "bookingReminder": "Booking Reminder",
+      "cancelledBy": "Cancelled By",
+      "menuDetails": "Menu Details",
+      "clientDetails": "Client Details",
+      "organization": "Restaurant",
+      "messageHistory": "Message History",
+      "noReservationFound": "No reservation found",
+      "notApplicable": "Not applicable",
+      "status": {
+        "selectStatus": "Select Status",
+        "placed": "Placed",
+        "inProgress": "In Progress",
+        "cancelled": "Cancelled",
+        "completed": "Completed",
+        "rescheduled": "Rescheduled",
+        "absent": "Absent",
+        "unknown": "Unknown"
+      },
+      "bookingReminderSent": "Sent on {date}",
+      "bookingReminderNotSent": "Not sent",
+      "noMenusSelected": "No menus selected",
+      "source": "Source",
+      "allergens": "Allergens",
+      "preferences": "Preferences",
+      "specialNotes": "Special Notes",
+      "lastVisit": "Last Visit",
+      "dateOfBirth": "Date of Birth",
+      "notProvided": "Not provided",
+      "notSpecified": "Not specified",
+      "none": "None",
+      "notRecorded": "Not recorded",
+      "notCancelled": "Not cancelled",
+      "unknownClient": "Unknown",
+      "menuItem": "Menu Item",
+      "category": "Category",
+      "classification": "Classification",
+      "price": "Price",
+      "description": "Description",
+      "ingredients": "Ingredients",
+      "guests": "guests",
+      "phoneNotProvided": "Not provided",
+      "timeRange": "{start} - {end}",
+      "unnamedReservation": "Unnamed Reservation"
+    },
+    "form": {
+      "status": {
+        "placed": "Placed",
+        "inProgress": "In Progress",
+        "cancelled": "Cancelled",
+        "completed": "Completed",
+        "rescheduled": "Rescheduled",
+        "absent": "Absent",
+        "unknown": "Unknown"
+      },
+      "title": "Create Reservation",
+      "reservationName": "Reservation Name",
+      "reservationNamePlaceholder": "Enter reservation name",
+      "guestName": "Guest Name",
+      "guestNamePlaceholder": "Enter guest name",
+      "phoneNumber": "Phone Number",
+      "phoneNumberPlaceholder": "Enter phone number",
+      "allergens": "Allergens",
+      "allergensPlaceholder": "Enter allergen (e.g., Dairy products)",
+      "addAllergen": "Add",
+      "restaurant": "Restaurant",
+      "selectRestaurant": "Select a restaurant",
+      "date": "Date",
+      "time": "Time",
+      "numberOfGuests": "Number of Guests",
+      "tableSelection": "Table Selection",
+      "chooseTable": "Choose a table",
+      "loadingTables": "Loading tables...",
+      "reservationStatus": "Reservation Status",
+      "selectStatus": "Select status",
+      "menuSelection": "Menu Selection",
+      "selectMenus": "Select menus...",
+      "loadingMenus": "Loading menus...",
+      "addPromotion": "Add Promotion",
+      "selectPromotion": "Select a promotion (optional)",
+      "loadingPromotions": "Loading promotions...",
+      "reservationReason": "Reservation Reason",
+      "reservationReasonPlaceholder": "e.g. Birthday celebration",
+      "additionalNotes": "Additional Notes",
+      "additionalNotesPlaceholder": "Any special requests or requirements?",
+      "cancel": "Cancel",
+      "createReservation": "Create Reservation",
+      "adding": "Loading...",
+      "selectTime": "Select Time",
+      "search": "Search here ...",
+      "noResults": "Opps! there is none.",
+      "promotionCode": "Promotion Code",
+      "promotionCodePlaceholder": "Enter promotion code",
+      "errors": {
+        "reservationNameRequired": "Reservation name is required",
+        "guestNameRequired": "Guest name is required",
+        "phoneRequired": "Phone number is required",
+        "dateRequired": "Date is required",
+        "timeRequired": "Time is required",
+        "guestsRequired": "Number of guests is required",
+        "tableRequired": "Table selection is required",
+        "restaurantRequired": "Restaurant selection is required"
+      }
+    }
+  },
+  "promotions": {
+    "title": "Promotions",
+    "addNew": "Add New Promotion",
+    "addNewDescription": "Form to add a new promotion to the restaurant",
+    "noPromotions": "No promotions found",
+    "details": {
+      "title": "Promotion Details",
+      "back": "Back",
+      "edit": "Edit",
+      "editPromotion": "Edit Promotion Information",
+      "editDescription": "Make changes to your promotion details below.",
+      "organization": "Restaurant",
+      "reward": "Reward",
+      "rewardType": "Reward Type",
+      "promoCode": "Promo Code",
+      "validFrom": "Valid From",
+      "validTo": "Valid To",
+      "message": "Message",
+      "triggerDetails": "Trigger Details",
+      "type": "Type",
+      "selectedMenus": "Selected Menus",
+      "yearlyCategory": "Yearly Category",
+      "daysBefore": "Days Before",
+      "inactivityDays": "Inactivity Days",
+      "minimumCount": "Minimum Count",
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      }
+    },
+    "card": {
+      "copyCode": "Copy Code",
+      "copied": "Copied to clipboard!",
+      "copyFailed": "Failed to copy to clipboard",
+      "reports": "Reports",
+      "viewDetails": "View Details",
+      "delete": "Delete",
+      "rewardType": "Reward Type",
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "promoCode": "Promo Code",
+      "trigger": "Trigger",
+      "validFrom": "Valid From",
+      "validTo": "Valid To"
+    },
+    "reports": {
+      "title": "Promotion Reports",
+      "totalSent": "Total Sent",
+      "delivered": "Delivered",
+      "failed": "Failed",
+      "converted": "Converted",
+      "searchPlaceholder": "Search by name or phone number...",
+      "downloadExcel": "Download Excel",
+      "showing": "Showing",
+      "of": "of",
+      "results": "results",
+      "previous": "Previous",
+      "next": "Next",
+      "table": {
+        "clientName": "Client Name",
+        "whatsapp": "WhatsApp",
+        "status": "Status",
+        "sentAt": "Sent At"
+      }
+    },
+    "form": {
+      "selected": "Selected",
+      "search": "Search...",
+      "noOptionsFound": "No options found.",
+      "title": "Add New Promotion",
+      "description": "Create a new promotional campaign for your customers",
+      "editPromotion": "Edit Promotion Information",
+      "editDescription": "Make changes to your promotion details below.",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Enter promotion title",
+      "restaurantLabel": "Restaurant",
+      "restaurantPlaceholder": "Select restaurant",
+      "messageTemplateLabel": "Message Templates",
+      "messageTemplatePlaceholder": "Select Message Template",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Message content will appear here",
+      "availableVariables": "Available Variables",
+      "noVariables": "No variables found in the message template.",
+      "rewardDetails": "Reward Details",
+      "rewardTypeLabel": "Reward Type",
+      "rewardTypePlaceholder": "Select reward type",
+      "rewardLabelLabel": "Reward Label",
+      "rewardLabelPlaceholder": "Enter reward label (max 24 chars)",
+      "characterCount": "{count}/24 characters",
+      "validityPeriod": "Validity Period",
+      "validFromLabel": "Valid From",
+      "validToLabel": "Valid To",
+      "triggerSettings": "Trigger Settings",
+      "triggerTypeLabel": "Trigger Type",
+      "triggerTypePlaceholder": "Select trigger type",
+      "yearlyCategoryLabel": "Yearly Category",
+      "yearlyCategoryPlaceholder": "Select yearly category",
+      "daysBeforeLabel": "Days Before",
+      "daysBeforePlaceholder": "Enter days before",
+      "menuSelectionLabel": "Menu Selection",
+      "menuSelectionPlaceholder": "Select menus...",
+      "noMenusAvailable": "No menus available for this restaurant",
+      "inactivityDaysLabel": "Inactivity Days",
+      "inactivityDaysPlaceholder": "Enter inactivity days",
+      "minimumCountLabel": "Minimum Count",
+      "minimumCountPlaceholder": "Enter minimum count",
+      "enablePromotion": "Enable this promotion",
+      "cancelButton": "Cancel",
+      "createButton": "Create Promotion",
+      "addingButton": "Adding...",
+      "updateButton": "Update Promotion",
+      "updatingButton": "Updating...",
+      "errors": {
+        "daysBeforeInvalid": "Days before must be a positive value",
+        "inactivityDaysInvalid": "Inactivity days must be a positive value",
+        "minCountInvalid": "Minimum count must be a positive value",
+        "titleRequired": "Title is required",
+        "restaurantRequired": "Restaurant is required",
+        "messageTemplateRequired": "Message template is required",
+        "messageRequired": "Message is required",
+        "rewardTypeInvalid": "Invalid reward type",
+        "rewardLabelInvalid": "Invalid reward label",
+        "validFromRequired": "Start date is required",
+        "validToRequired": "End date is required",
+        "triggerTypeInvalid": "Invalid trigger type",
+        "yearlyCategoryRequired": "Yearly category is required",
+        "daysBeforeRequired": "Days before is required",
+        "menuSelectionRequired": "Menu selection is required",
+        "inactivityDaysRequired": "Inactivity days is required",
+        "minimumCountRequired": "Minimum count is required"
+      },
+      "loading": {
+        "user": "Loading...",
+        "messageTemplates": "Loading...",
+        "menus": "Loading menus..."
+      },
+      "noData": {
+        "messageTemplates": "No message templates available",
+        "menus": "No menus found"
+      },
+      "success": {
+        "promotionAdded": "New Promotion added successfully!",
+        "promotionUpdated": "Promotion updated successfully!"
+      },
+      "failure": {
+        "promotionAdd": "Failed to add promotion. Please try again.",
+        "promotionUpdate": "Failed to update promotion. Please try again.",
+        "rewardLabel": "Invalid reward label"
+      },
+      "dropdownValues": {
+        "rewardTypeOptions": {
+          "DRINK": "Drink",
+          "DESSERT": "Dessert",
+          "DISCOUNT": "Discount",
+          "CUSTOM": "Custom"
+        },
+        "yearlyCategoryOptions": {
+          "ANNIVERSARY": "Anniversary",
+          "BIRTHDAY": "Birthday"
+        },
+        "triggerTypeOptions": {
+          "YEARLY": "Yearly",
+          "MENU_SELECTED": "Menu Selected",
+          "INACTIVITY": "Inactivity",
+          "RESERVATION_COUNT": "Reservation Count"
+        }
+      }
+    }
+  },
+  "customers": {
+    "title": "Customers",
+    "searchPlaceholder": "Search customers...",
+    "noSearchResults": "No customers found",
+    "tryDifferentSearch": "Try a different search term.",
+    "noCustomers": "No customers",
+    "getStarted": "Get started by adding your first customer.",
+    "showing": "Showing",
+    "of": "of",
+    "customers": "customers",
+    "previous": "Previous",
+    "next": "Next",
+    "downloadExcel": "Download Excel",
+    "downloadError": "Failed to download Excel file. Please try again.",
+    "details": {
+      "at": "at",
+      "title": "Customer Details",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp",
+      "dateOfBirth": "Date of Birth",
+      "lastVisit": "Last Visit",
+      "preferences": "Preferences",
+      "allergens": "Allergens",
+      "specialNotes": "Special Notes",
+      "history": "Reservation History",
+      "reservationName": "Reservation Name",
+      "reservationDate": "Date",
+      "reservationTime": "Time",
+      "menu": "Menu",
+      "noHistory": "No reservation history",
+      "unnamedReservation": "Unnamed Reservation",
+      "notProvided": "Not provided",
+      "none": "None",
+      "messageHistory": "Message History",
+      "edit": "Edit",
+      "specialNotesPlaceholder": "Enter special notes",
+      "save": "Save",
+      "cancel": "Cancel",
+      "saving": "Saving..."
+    },
+  "chatbots": {
+    "chatHistory": {
+      "title": "Message History",
+      "back": "Back",
+      "loadingMessages": "Loading messages...",
+      "selectConversation": "Select a chat from the sidebar to view the conversation",
+      "viewFile": "View file",
+      "sentAt": "Sent at {time}",
+      "messageCount": "({count} messages)",
+      "noMessages": "No messages yet",
+      "justNow": "just now",
+      "minuteAgo": "1 minute ago",
+      "minutesAgo": "{count} minutes ago",
+      "hourAgo": "1 hour ago",
+      "hoursAgo": "{count} hours ago",
+      "yesterday": "yesterday",
+      "daysAgo": "{count} days ago",
+      "messagePreview": "{preview}...",
+      "clientCard": {
+        "alt": "Client avatar"
+      }
+    }
+  }
+  },
+  "analytics": {
+    "title": "Analytics",
+    "selectOrg": "Select Restaurant",
+    "noData": {
+      "title": "No Data Available",
+      "description": "No analytics data available for the selected organization."
+    },
+    "mostVisited": {
+      "title": "Most Visited Days",
+      "noData": "No visit data available",
+      "heatmap": {
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "title": "Booking Density Heatmap",
+        "description": "Peak booking times throughout the week",
+        "timeRange": "Time Range",
+        "allTime": "All Time",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "thisWeek": "This Week",
+        "lastWeek": "Last Week",
+        "thisMonth": "This Month",
+        "lastMonth": "Last Month",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "resetFilters": "Reset Filters",
+        "bookingCount": "Booking Count",
+        "low": "Low",
+        "high": "High",
+        "noBookingData": "No booking data available",
+        "tryDifferentRange": "Try selecting a different time range or check back later."
+      }
+    },
+    "topDishes": {
+      "title": "Top Dishes",
+      "noData": "No dish data available",
+      "filters": {
+        "timeRange": "Time Range",
+        "allTime": "All Time",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "thisWeek": "This Week",
+        "lastWeek": "Last Week",
+        "thisMonth": "This Month",
+        "lastMonth": "Last Month",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "category": "Category",
+        "allCategories": "All Categories",
+        "starters": "Starters",
+        "mainCourses": "Main Courses",
+        "desserts": "Desserts",
+        "drinksAlcoholic": "Drinks Alcoholic",
+        "drinksNonAlcoholic": "Drinks Non Alcoholic",
+        "specials": "Specials",
+        "resetFilters": "Reset Filters"
+      },
+      "chart": {
+        "title": "Dish Performance Overview",
+        "description": "Orders count and sales percentage share for top performing dishes",
+        "orders": "Orders",
+        "salesShare": "Sales Share (%)",
+        "loading": "Loading analytics...",
+        "noData": {
+          "title": "No dish data available",
+          "description": "Try selecting a different time range or category, or check back later."
+        }
+      }
+    }
+  },
+  "chatbots": {
+    "title": "Chatbots",
+    "addNew": "Add New Chatbot",
+    "addNewDescription": "Form to add a new chatbot to the system",
+    "noChatbots": "No chatbots found",
+    "loading": "Loading chatbots...",
+    "card": {
+      "copyWebhook": "Copy Webhook",
+      "copied": "Copied to clipboard!",
+      "copyFailed": "Failed to copy to clipboard",
+      "contacts": "Contacts",
+      "chatHistory": "Chat History",
+      "configure": "Configure",
+      "salesLevel": "Sales Level",
+      "webhookUrl": "Webhook URL"
+    },
+    "form": {
+      "title": "Add New Chatbot",
+      "description": "Create your new chatbot",
+      "chatbotName": "Chatbot Name *",
+      "chatbotNamePlaceholder": "Enter chatbot name",
+      "twilioSid": "Twilio SID *",
+      "twilioSidPlaceholder": "Enter Twilio SID",
+      "twilioAuthToken": "Twilio Auth Token *",
+      "twilioAuthTokenPlaceholder": "Enter Twilio Auth Token",
+      "whatsappSender": "WhatsApp Sender *",
+      "whatsappSenderPlaceholder": "Enter WhatsApp sender number",
+      "openaiApiKey": "OpenAI API Key *",
+      "openaiApiKeyPlaceholder": "Enter OpenAI API key",
+      "selectRestaurant": "Select Restaurant *",
+      "selectRestaurantPlaceholder": "Select a restaurant...",
+      "searchRestaurants": "Search restaurants...",
+      "noRestaurantsFound": "No restaurants found.",
+      "addButton": "Add Chatbot",
+      "addingButton": "Adding..."
+    },
+    "validation": {
+      "chatbotNameRequired": "Chatbot name is required",
+      "twilioSidRequired": "Twilio SID is required",
+      "twilioAuthTokenRequired": "Twilio Auth Token is required",
+      "whatsappSenderRequired": "WhatsApp sender is required",
+      "openaiApiKeyRequired": "OpenAI API key is required",
+      "restaurantRequired": "Restaurant selection is required"
+    },
+    "messages": {
+      "createSuccess": "Chatbot created successfully",
+      "alreadyExists": "A WhatsApp bot already exists for this restaurant",
+      "createFailed": "Failed to create chatbot",
+      "errorOccurred": "An error occurred while creating the chatbot"
+    },
+    "configure": {
+      "title": "Configure Chatbot",
+      "description": "View and update your chatbot settings",
+      "header": {
+        "back": "Back",
+        "salesLevel": "Sales Level",
+        "webhookUrl": "Webhook URL",
+        "copyWebhook": "Copy Webhook",
+        "copied": "Copied to clipboard!",
+        "copyFailed": "Failed to copy to clipboard"
+      },
+      "authDetails": {
+        "title": "Authentication Details (Read Only)",
+        "restaurant": "Restaurant",
+        "whatsappNumber": "WhatsApp Number",
+        "twilioSid": "Twilio SID",
+        "twilioAuthToken": "Twilio Auth Token",
+        "openaiApiKey": "OpenAI API Key",
+        "assistantId": "Assistant ID"
+      },
+      "chatbotSettings": {
+        "title": "Chatbot Settings",
+        "chatbotName": "Chatbot Name *",
+        "chatbotNamePlaceholder": "Enter chatbot name",
+        "salesLevel": {
+          "label": "Sales Level *",
+          "placeholder": "Select sales level",
+          "level1": "Level 1 - Reservations Only",
+          "level2": "Level 2 - Menu Rewards",
+          "level3": "Level 3 - Dish Prioritization",
+          "level4": "Level 4 - Personalized Recommendations",
+          "level5": "Level 5 - Promotions Module"
+        },
+        "enableRewards": {
+          "label": "Enable Rewards",
+          "description": "Allow customers to receive rewards"
+        },
+        "enablePriorityDishes": {
+          "label": "Enable Priority Dishes",
+          "description": "Highlight and recommend priority dishes"
+        },
+        "enablePersonalization": {
+          "label": "Enable Personalization",
+          "description": "Provide personalized recommendations based on customer preferences"
+        },
+        "rewardConfiguration": {
+          "title": "Reward Configuration",
+          "requiredForLevel2": "(Required for Level 2)",
+          "rewardType": {
+            "label": "Reward Type *",
+            "placeholder": "Select reward type",
+            "drink": "Drink",
+            "dessert": "Dessert",
+            "discount": "Discount",
+            "custom": "Custom"
+          },
+          "rewardLabel": {
+            "label": "Reward Label *",
+            "placeholder": "Enter reward label (e.g., Free Coffee, 10% Off)",
+            "characterCount": "{count}/100 characters"
+          }
+        }
+      },
+      "buttons": {
+        "saveChanges": "Save Changes",
+        "saving": "Saving..."
+      },
+      "errors": {
+        "twilioSidRequired": "Twilio SID is required",
+        "twilioAuthTokenRequired": "Twilio Auth Token is required",
+        "whatsappSenderRequired": "WhatsApp sender is required",
+        "openaiApiKeyRequired": "OpenAI API key is required",
+        "assistantIdRequired": "Assistant ID is required",
+        "chatbotNameRequired": "Chatbot name is required",
+        "salesLevelRequired": "Sales level is required",
+        "rewardTypeRequiredForLevel2": "Reward type is required for level 2",
+        "rewardLabelRequiredForLevel2": "Reward label is required for level 2",
+        "rewardTypeRequiredWhenEnabled": "Reward type is required when reward is enabled",
+        "rewardLabelRequiredWhenEnabled": "Reward label is required when reward is enabled",
+        "updateFailed": "Failed to update chatbot",
+        "updateError": "An error occurred while updating the chatbot",
+        "alreadyExists": "A WhatsApp bot already exists for this restaurant",
+        "loadError": "Error loading chatbot",
+        "loadErrorDescription": "Please try refreshing the page or contact support.",
+        "notFound": "Chatbot not found",
+        "notFoundDescription": "The chatbot you're looking for doesn't exist or has been deleted."
+      },
+      "success": {
+        "updateSuccess": "Chatbot updated successfully"
+      }
+    },
+    "chatHistory": {
+      "title": "Chat History",
+      "noClients": "No clients found",
+      "loadingClients": "Loading clients...",
+      "selectClient": "Select a client to view chat history",
+      "noMessages": "No messages yet",
+      "justNow": "just now",
+      "minuteAgo": "1 minute ago",
+      "minutesAgo": "{count} minutes ago",
+      "hourAgo": "1 hour ago",
+      "hoursAgo": "{count} hours ago",
+      "yesterday": "yesterday",
+      "daysAgo": "{count} days ago",
+      "messagePreview": "{preview}...",
+      "clientCard": {
+        "alt": "Client avatar"
+      },
+      "chatPage": {
+        "loadingMessages": "Loading messages...",
+        "selectConversation": "Select a chat from the sidebar to view the conversation",
+        "viewFile": "View file",
+        "sentAt": "Sent at {time}",
+        "messageCount": "({count} messages)"
+      }
+    },
+    "contacts": {
+      "title": "Contacts",
+      "back": "Back",
+      "loading": "Loading...",
+      "name": "Name",
+      "number": "Number",
+      "lastMessage": "Last Message",
+      "noContacts": "No contacts found",
+      "noContactsDescription": "Contacts will appear here once available",
+      "searchPlaceholder": "Search contacts...",
+      "downloadExcel": "Download Excel",
+      "showing": "Showing",
+      "of": "of",
+      "contacts": "contacts",
+      "previous": "Previous",
+      "next": "Next",
+      "downloadError": "Error downloading Excel file"
+    }
+  },
+  "profile": {
+    "title": "Profile Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "gender": "Gender",
+    "dateOfBirth": "Date of Birth",
+    "orgLanguage": "Language",
+    "updateProfile": "Update Profile",
+    "updateProfileDescription": "Update your profile information",
+    "avatar": "Profile Picture",
+    "avatarPlaceholder": "Choose profile picture",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "english": "English",
+    "german": "German",
+    "cancel": "Cancel",
+    "updating": "Updating...",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update profile",
+    "password": {
+      "title": "Change Password",
+      "changePassword": "Change Password",
+      "changePasswordDescription": "Change your account password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmNewPassword": "Confirm New Password",
+      "currentPasswordPlaceholder": "Enter current password",
+      "newPasswordPlaceholder": "Enter new password",
+      "confirmNewPasswordPlaceholder": "Confirm new password",
+      "updatePassword": "Update Password",
+      "updating": "Updating...",
+      "success": "Password changed successfully",
+      "error": {
+        "generic": "Password change failed",
+        "tooShort": "This password is too short. It must contain at least 8 characters.",
+        "entirelyNumeric": "This password is entirely numeric.",
+        "missingSpecialChar": "Password must contain at least one special character",
+        "tooCommon": "This password is too common. Please use a unique password.",
+        "mismatch": "New passwords don't match",
+        "currentPasswordRequired": "Current password is required",
+        "newPasswordRequired": "Please confirm your new password"
+      },
+      "afterSave": "After saving, you'll be logged out."
+    },
+    "navUser": {
+      "logout": "Logout",
+      "subscriptions": "Subscriptions",
+      "profile": "Profile"
+
+    }
+  }
+}
