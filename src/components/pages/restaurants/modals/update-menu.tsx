@@ -1,28 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
-import { useState, useMemo, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Command,
   CommandEmpty,
@@ -31,19 +11,39 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useParams } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import {
   useGetSingleRestaurantMenuQuery,
   useUpdateSingleMenuMutation,
 } from "@/redux/reducers/restaurants-reducer";
-import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+import { ClipboardPaste, Plus, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const MenuCategory = {
   STARTERS: "STARTERS",
@@ -66,7 +66,10 @@ const MAX_COMBINATIONS = 5;
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  price: z.number().min(0, { message: "Negative price is not allowed" }).optional(),
+  price: z
+    .number()
+    .min(0, { message: "Negative price is not allowed" })
+    .optional(),
   ingredients: z
     .record(z.string(), z.string())
     .refine((data) => Object.keys(data).length > 0, {
@@ -118,8 +121,7 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
   const [ingredients, setIngredients] = useState<Record<string, string>>(
     initialData.ingredients || {},
   );
-  const [ingredientName, setIngredientName] = useState("");
-  const [ingredientAmount, setIngredientAmount] = useState("");
+  const [ingredientPasteText, setIngredientPasteText] = useState("");
   const [selectedCombinations, setSelectedCombinations] = useState<
     SelectedCombination[]
   >([]);
@@ -152,8 +154,6 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
 
   // Initialize selectedCombinations from initialData
   useEffect(() => {
-
-
     const initialCombinations: SelectedCombination[] = [];
 
     if (initialData.recommended_combinations?.length) {
@@ -172,7 +172,6 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
         }),
       );
     }
-
 
     // Only update state if different to avoid infinite loops
     if (
@@ -199,17 +198,66 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
 
   const isSubmitDisabled = !name || Object.keys(ingredientsField).length === 0;
 
-  const handleAddIngredient = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (ingredientName && ingredientAmount) {
-      const updatedIngredients = {
-        ...ingredients,
-        [ingredientName]: ingredientAmount,
-      };
-      setIngredients(updatedIngredients);
-      form.setValue("ingredients", updatedIngredients);
-      setIngredientName("");
-      setIngredientAmount("");
+  const handlePasteIngredients = () => {
+    if (!ingredientPasteText.trim()) {
+      toast.error("Please enter ingredients to paste");
+      return;
+    }
+
+    try {
+      // Split by comma and process each ingredient
+      const ingredientPairs = ingredientPasteText
+        .split(",")
+        .map((pair) => pair.trim());
+      const newIngredients = { ...ingredients };
+      let addedCount = 0;
+      let errorCount = 0;
+
+      ingredientPairs.forEach((pair) => {
+        if (!pair) return;
+
+        // Split by colon to separate name and amount
+        const colonIndex = pair.indexOf(":");
+        if (colonIndex === -1) {
+          errorCount++;
+          return;
+        }
+
+        const name = pair.substring(0, colonIndex).trim();
+        const amount = pair.substring(colonIndex + 1).trim();
+
+        // Validate format (amount should contain number and unit)
+        if (!name || !amount || !/\d+[a-zA-Z]+$/.test(amount)) {
+          errorCount++;
+          return;
+        }
+
+        newIngredients[name] = amount;
+        addedCount++;
+      });
+
+      if (addedCount > 0) {
+        setIngredients(newIngredients);
+        form.setValue("ingredients", newIngredients);
+        setIngredientPasteText("");
+        toast.success(
+          `Added ${addedCount} ingredient${addedCount > 1 ? "s" : ""}`,
+        );
+
+        if (errorCount > 0) {
+          toast.warning(
+            `${errorCount} ingredient${errorCount > 1 ? "s" : ""} skipped due to invalid format`,
+          );
+        }
+      } else {
+        toast.error(
+          "No valid ingredients found. Use format: name:amount (e.g., rice:10g)",
+        );
+      }
+    } catch {
+      toast.error(
+        "Failed to parse ingredients. Use format: name:amount,name:amount",
+      );
     }
   };
 
@@ -304,7 +352,9 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
     <div>
       <CardContent className="space-y-4 pt-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">{t("update.label")}</h2>
+          <h2 className="text-2xl font-bold text-gray-800">
+            {t("update.label")}
+          </h2>
           <p className="text-sm text-gray-600">{t("update.description")}</p>
         </div>
         <div>
@@ -374,18 +424,24 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={t("category.placeholder")} />
+                          <SelectValue
+                            placeholder={t("category.placeholder")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {Object.entries(MenuCategory).map(([key, value]) => (
                           <SelectItem key={key} value={value}>
-                            {t(`category.options.${key
-                              .split("_")
-                              .map((w, i) =>
-                                i === 0 ? w.toLowerCase() : w.charAt(0) + w.slice(1).toLowerCase(),
-                              )
-                              .join("")}`)}
+                            {t(
+                              `category.options.${key
+                                .split("_")
+                                .map((w, i) =>
+                                  i === 0
+                                    ? w.toLowerCase()
+                                    : w.charAt(0) + w.slice(1).toLowerCase(),
+                                )
+                                .join("")}`,
+                            )}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -429,29 +485,21 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
                 <FormLabel>{t("ingredients.label")}</FormLabel>
                 <FormControl>
                   <div className="space-y-2">
-                    <div className="flex gap-2">
-                      <Input
-                        placeholder={t("ingredients.namePlaceholder")}
-                        value={ingredientName}
-                        onChange={(e) => setIngredientName(e.target.value)}
-                      />
-                      <Input
-                        placeholder={t("ingredients.amountPlaceholder")}
-                        value={ingredientAmount}
-                        onChange={(e) => setIngredientAmount(e.target.value)}
-                      />
-                      <Button
-                        type="button"
-                        onClick={(e) => {
-                          if (!/\d+[a-zA-Z]+$/.test(ingredientAmount.trim())) {
-                            toast.error(t("ingredients.invalidAmount"));
-                            return;
+                    <div>
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="rice:10g,polao:20g,chicken:200g"
+                          value={ingredientPasteText}
+                          onChange={(e) =>
+                            setIngredientPasteText(e.target.value)
                           }
-                          handleAddIngredient(e);
-                        }}
-                      >
-                        {t("ingredients.addButton")}
-                      </Button>
+                          className="flex-1"
+                        />
+                        <Button type="button" onClick={handlePasteIngredients}>
+                          <ClipboardPaste className="mr-1 h-4 w-4" />
+                          {t("ingredients.addButton")} <Plus />
+                        </Button>
+                      </div>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(ingredients).map(([name, amount]) => (
@@ -507,7 +555,9 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue
-                                placeholder={t("upselling.priority.placeholder")}
+                                placeholder={t(
+                                  "upselling.priority.placeholder",
+                                )}
                               />
                             </SelectTrigger>
                           </FormControl>
@@ -564,12 +614,17 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
                                 key={category}
                                 heading={
                                   <span className="font-bold text-black">
-                                    {t(`category.options.${category
-                                      .split("_")
-                                      .map((w, i) =>
-                                        i === 0 ? w.toLowerCase() : w.charAt(0) + w.slice(1).toLowerCase(),
-                                      )
-                                      .join("")}`)}
+                                    {t(
+                                      `category.options.${category
+                                        .split("_")
+                                        .map((w, i) =>
+                                          i === 0
+                                            ? w.toLowerCase()
+                                            : w.charAt(0) +
+                                              w.slice(1).toLowerCase(),
+                                        )
+                                        .join("")}`,
+                                    )}
                                   </span>
                                 }
                               >
@@ -591,12 +646,16 @@ export const UpdateMenu = ({ onClose, initialData }: UpdateMenuProps) => {
                       {selectedCombinations.map((item) => (
                         <Badge key={item.uid} variant="secondary">
                           {item.name} (
-                          {t(`category.options.${item.category
-                            .split("_")
-                            .map((w, i) =>
-                              i === 0 ? w.toLowerCase() : w.charAt(0) + w.slice(1).toLowerCase(),
-                            )
-                            .join("")}`)}
+                          {t(
+                            `category.options.${item.category
+                              .split("_")
+                              .map((w, i) =>
+                                i === 0
+                                  ? w.toLowerCase()
+                                  : w.charAt(0) + w.slice(1).toLowerCase(),
+                              )
+                              .join("")}`,
+                          )}
                           )
                           <button
                             type="button"
