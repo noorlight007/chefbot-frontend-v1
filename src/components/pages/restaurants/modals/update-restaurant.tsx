@@ -1,17 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FC, useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-import { useUpdateRestaurantInfoMutation } from "@/redux/reducers/restaurants-reducer";
-import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -19,8 +9,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { useUpdateRestaurantInfoMutation } from "@/redux/reducers/restaurants-reducer";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { FC, useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const getDayTranslationKey = (day: string): string => {
   const dayMap: Record<string, string> = {
