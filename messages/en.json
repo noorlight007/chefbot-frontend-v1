@@ -190,6 +190,10 @@
           "label": "Description",
           "placeholder": "Menu item description"
         },
+        "image": {
+          "label": "Image",
+          "remove": "Remove"
+        },
         "price": {
           "label": "Price",
           "placeholder": "Enter price"

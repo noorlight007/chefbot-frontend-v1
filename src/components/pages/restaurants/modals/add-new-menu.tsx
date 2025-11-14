@@ -1,15 +1,7 @@
-import { useForm } from "react-hook-form";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Form,
   FormControl,
@@ -18,19 +10,28 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Plus, X, ClipboardPaste } from "lucide-react";
-import { useState, useMemo, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import {
   useAddNewMenuMutation,
   useGetSingleRestaurantMenuQuery,
 } from "@/redux/reducers/restaurants-reducer";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ClipboardPaste, Plus, X } from "lucide-react";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
 
 const MAX_COMBINATIONS = 5;
 
@@ -38,6 +39,7 @@ const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
   price: z.number().min(0, { message: "Price must be positive" }).optional(),
+  image: z.any().optional(),
   ingredients: z
     .record(z.string(), z.string())
     .refine((data) => Object.keys(data).length > 0, {
@@ -93,6 +95,8 @@ interface CategoryOption {
 export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
   const t = useTranslations("restaurants.menu.form");
   const [ingredients, setIngredients] = useState<Record<string, string>>({});
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [ingredientPasteText, setIngredientPasteText] = useState("");
   const [selectedCombinations, setSelectedCombinations] = useState<
     SelectedCombination[]
@@ -129,7 +133,7 @@ export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
     } else {
       setFilteredCategories(categoryOptions);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categorySearchTerm]);
 
   const form = useForm<MenuFormData>({
@@ -216,6 +220,18 @@ export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
+  useEffect(() => {
+    if (!selectedImage) {
+      setImagePreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedImage);
+    setImagePreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedImage]);
+
   const removeIngredient = (ingredientName: string) => {
     const updatedIngredients = { ...ingredients };
     delete updatedIngredients[ingredientName];
@@ -225,11 +241,50 @@ export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
 
   const onSubmit = async (data: MenuFormData) => {
     try {
-      const formData = {
+      // attach selected combinations
+      const payload: MenuFormData & { recommended_combinations: string[] } = {
         ...data,
         recommended_combinations: selectedCombinations.map((item) => item.uid),
       };
-      const res = await addNewMenu({ id, data: formData });
+
+      // If an image file is selected, send as FormData so file can be uploaded
+      let res;
+      if (selectedImage) {
+        const fd = new FormData();
+        // Append simple fields
+        fd.append("name", payload.name);
+        if (payload.description) fd.append("description", payload.description);
+        if (typeof payload.price !== "undefined" && payload.price !== null)
+          fd.append("price", payload.price.toString());
+        if (payload.category) fd.append("category", payload.category);
+        if (payload.classification)
+          fd.append("classification", payload.classification);
+        if (typeof payload.enable_upselling !== "undefined")
+          fd.append("enable_upselling", String(payload.enable_upselling));
+        if (typeof payload.upselling_priority !== "undefined")
+          fd.append("upselling_priority", String(payload.upselling_priority));
+
+        // Non-primitive fields: stringify
+        fd.append("ingredients", JSON.stringify(payload.ingredients || {}));
+
+        // Append recommended_combinations as repeated fields so backend parses as array
+        if (
+          payload.recommended_combinations &&
+          payload.recommended_combinations.length > 0
+        ) {
+          payload.recommended_combinations.forEach((uid) => {
+            fd.append("recommended_combinations", uid);
+          });
+        }
+
+        // Append image file
+        fd.append("image", selectedImage);
+
+        res = await addNewMenu({ id, data: fd });
+      } else {
+        // No image, send JSON
+        res = await addNewMenu({ id, data: payload });
+      }
 
       if (res.data) {
         toast.success("Menu item added successfully");
@@ -338,6 +393,50 @@ export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
                 )}
               />
 
+              {/* Image upload */}
+              <FormItem>
+                <FormLabel>{t("image.label") ?? "Image"}</FormLabel>
+                <FormControl>
+                  <div className="space-y-2">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] ?? null;
+                        setSelectedImage(file);
+                        form.setValue("image", file ?? undefined);
+                      }}
+                      className="w-full"
+                    />
+
+                    {imagePreview && (
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src={imagePreview as string}
+                          alt="preview"
+                          width={96}
+                          height={96}
+                          className="rounded object-cover"
+                          unoptimized
+                        />
+                        <div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={() => {
+                              setSelectedImage(null);
+                              form.setValue("image", undefined);
+                            }}
+                          >
+                            {t("image.remove") ?? "Remove"}
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
               <FormField
                 control={form.control}
                 name="description"

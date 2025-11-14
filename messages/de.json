@@ -190,6 +190,10 @@
           "label": "Beschreibung",
           "placeholder": "Beschreibung des Menüpunkts"
         },
+        "image": {
+          "label": "Bild",
+          "remove": "Entfernen"
+        },
         "price": {
           "label": "Preis",
           "placeholder": "Preis eingeben"
