@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card } from "@/components/ui/card";
-import { useGetWhatsappBotClientsQuery } from "@/redux/reducers/whatsapp-reducer";
-import { useParams, useRouter } from "next/navigation";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { ChatContext } from "./chat-context"; // Import from the separate file
-import { useLocale, useTranslations } from "next-intl";
 import MessageHistorySkeleton from "@/components/pages/chatbots/skeletons/message-history-skeleton";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { formatDeDate } from "@/lib/utils";
+import { useGetWhatsappBotClientsQuery } from "@/redux/reducers/whatsapp-reducer";
+import { ArrowLeft } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { ChatContext } from "./chat-context"; // Import from the separate file
 
 // Define client type based on your structure
 interface Client {
@@ -36,7 +36,7 @@ const Layout = ({ children }: LayoutProps) => {
   >(null);
   const isMobile = useIsMobile();
   const [showSidebar, setShowSidebar] = useState(true);
-  const { data, isLoading } = useGetWhatsappBotClientsQuery({uid}); 
+  const { data, isLoading } = useGetWhatsappBotClientsQuery({ uid });
 
   // Effect to handle sidebar visibility based on selection and device
   useEffect(() => {
@@ -48,7 +48,7 @@ const Layout = ({ children }: LayoutProps) => {
   }, [selectedClientId, isMobile]);
 
   if (isLoading) {
-    return <MessageHistorySkeleton/>;
+    return <MessageHistorySkeleton />;
   }
   // Demo client data
   const clients: Client[] = data?.results || [];
@@ -109,7 +109,14 @@ const Layout = ({ children }: LayoutProps) => {
                           const messageDate = new Date(
                             client.last_message_sent_at,
                           );
-                          if (locale === "de") return formatDeDate(client.last_message_sent_at);
+                          if (
+                            typeof locale === "string" &&
+                            locale.startsWith("de")
+                          )
+                            return formatDeDate(
+                              client.last_message_sent_at,
+                              locale,
+                            );
                           const now = new Date();
                           const diffInMinutes = Math.floor(
                             (now.getTime() - messageDate.getTime()) /

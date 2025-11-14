@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
-import { useUpdateSpecialNotesMutation } from "@/redux/reducers/reservation-reducer";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDeDate } from "@/lib/utils";
+import { useUpdateSpecialNotesMutation } from "@/redux/reducers/reservation-reducer";
+import { useLocale, useTranslations } from "next-intl";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface Customer {
   uid: string;
@@ -113,9 +112,10 @@ export function CustomerDetails({ customerInfo }: CustomerDetailsProps) {
             <p className="text-xs text-gray-500">{t("dateOfBirth")}</p>
             <p className="mt-1 text-sm font-medium text-gray-900">
               {customerInfo.date_of_birth
-                ? locale === "de"
-                  ? formatDeDate(customerInfo.date_of_birth)
-                  : customerInfo.date_of_birth
+                ? formatDeDate(
+                    customerInfo.date_of_birth,
+                    typeof locale === "string" ? locale : undefined,
+                  )
                 : t("notProvided")}
             </p>
           </div>
@@ -123,7 +123,10 @@ export function CustomerDetails({ customerInfo }: CustomerDetailsProps) {
             <p className="text-xs text-gray-500">{t("lastVisit")}</p>
             <p className="mt-1 text-sm font-medium text-gray-900">
               {customerInfo.last_visit
-                ? format(new Date(customerInfo.last_visit), "PPP")
+                ? formatDeDate(
+                    customerInfo.last_visit,
+                    typeof locale === "string" ? locale : undefined,
+                  )
                 : t("notProvided")}
             </p>
           </div>
@@ -282,9 +285,10 @@ export function CustomerDetails({ customerInfo }: CustomerDetailsProps) {
                       {t("reservationDate")} & {t("reservationTime")}
                     </p>
                     <p className="mt-1 text-sm font-medium text-gray-900">
-                      {locale === "de"
-                        ? formatDeDate(visit.reservation_date)
-                        : format(new Date(visit.reservation_date), "PPP")}{" "} 
+                      {formatDeDate(
+                        visit.reservation_date,
+                        typeof locale === "string" ? locale : undefined,
+                      )}{" "}
                       {t("at")} {visit.reservation_time}
                     </p>
                   </div>

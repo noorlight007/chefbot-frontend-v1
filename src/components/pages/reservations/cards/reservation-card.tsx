@@ -1,19 +1,19 @@
 "use client";
-import { FC } from "react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Calendar, Clock, User, MoreVertical, Trash2 } from "lucide-react";
 import { ReservationType } from "@/app/(main)/reservations/page";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDeleteSingleReservationMutation } from "@/redux/reducers/reservation-reducer";
-import { useLocale, useTranslations } from "next-intl";
 import { formatDeDate } from "@/lib/utils";
+import { useDeleteSingleReservationMutation } from "@/redux/reducers/reservation-reducer";
+import { Calendar, Clock, MoreVertical, Trash2, User } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import Link from "next/link";
+import { FC } from "react";
 
 const statusColorMap: Record<string, string> = {
   PLACED: "bg-blue-100 text-blue-800",
@@ -48,7 +48,6 @@ const ReservationCard: FC<{ reservation: ReservationType }> = ({
   };
   const statusKey = statusKeyMap[status] || "placed";
   const translatedStatus = t(`filters.status.${statusKey}`);
-  
 
   return (
     <Card className="flex flex-col justify-between transition-shadow duration-200 hover:shadow-lg">
@@ -95,9 +94,10 @@ const ReservationCard: FC<{ reservation: ReservationType }> = ({
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4 text-gray-500" />
                 <span className="font-medium text-gray-700">
-                  {locale === "de"
-                    ? formatDeDate(reservation.reservation_date)
-                    : reservation.reservation_date}
+                  {formatDeDate(
+                    reservation.reservation_date,
+                    typeof locale === "string" ? locale : undefined,
+                  )}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
