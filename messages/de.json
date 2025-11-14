@@ -151,6 +151,7 @@
         "closingTime": "Schließzeit",
         "breakStart": "Pause Beginn",
         "breakEnd": "Pause Ende",
+        "noBreak": "Keine Pause",
         "closed": "Geschlossen",
         "errors": "Bitte korrigieren Sie die markierten Fehler in den Öffnungszeiten",
         "required": "Mindestens ein Tag ist erforderlich"

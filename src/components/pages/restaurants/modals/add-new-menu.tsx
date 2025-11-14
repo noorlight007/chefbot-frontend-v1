@@ -129,6 +129,7 @@ export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
     } else {
       setFilteredCategories(categoryOptions);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categorySearchTerm]);
 
   const form = useForm<MenuFormData>({
