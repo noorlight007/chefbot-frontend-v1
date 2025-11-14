@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
-import "../globals.css";
-import { Montserrat } from "next/font/google";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { SiteHeader } from "@/components/site-header";
 import { AppSidebar } from "@/components/app-sidebar";
-import ClientProvider from "@/components/providers/ClientProvider";
-import { Toaster } from "@/components/ui/sonner";
 import ProtectedRoute from "@/components/protected-route";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getLocale } from "next-intl/server";
+import ClientProvider from "@/components/providers/ClientProvider";
 import LocaleProvider from "@/components/providers/LocalProviders";
+import { SiteHeader } from "@/components/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
+import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
+import { Montserrat } from "next/font/google";
+import "../globals.css";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -36,6 +36,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="google" content="notranslate" />
       </head>
       <body className={`${montserrat.className} antialiased`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
