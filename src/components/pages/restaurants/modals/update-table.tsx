@@ -1,15 +1,4 @@
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Form,
   FormControl,
@@ -18,11 +7,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useParams } from "next/navigation";
-import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useUpdateSingleTableMutation } from "@/redux/reducers/restaurants-reducer";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-
+import { useParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 // Define the form schema
 const formSchema = z.object({
@@ -32,7 +31,7 @@ const formSchema = z.object({
     .number()
     .min(1, { message: "Minimum capacity is 1" })
     .max(32767, { message: "Maximum capacity exceeded" }),
-  category: z.enum(["FAMILY", "COUPLE", "SINGLE", "GROUP", "PRIVATE"]),
+  category: z.enum(["PUBLIC", "PRIVATE"]),
   position: z.string().min(1, { message: "Position is required" }),
   status: z.enum(["AVAILABLE", "UNAVAILABLE", "RESERVED"]),
 });
@@ -100,7 +99,10 @@ const UpdateTable: React.FC<UpdateTableProps> = ({ onClose, table }) => {
                 <FormItem>
                   <FormLabel>{t("details.name.label")}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t("details.name.placeholder")} {...field} />
+                    <Input
+                      placeholder={t("details.name.placeholder")}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,15 +143,18 @@ const UpdateTable: React.FC<UpdateTableProps> = ({ onClose, table }) => {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("details.category.placeholder")} />
+                        <SelectValue
+                          placeholder={t("details.category.placeholder")}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="FAMILY">{t("details.category.family")}</SelectItem>
-                      <SelectItem value="COUPLE">{t("details.category.couple")}</SelectItem>
-                      <SelectItem value="SINGLE">{t("details.category.single")}</SelectItem>
-                      <SelectItem value="GROUP">{t("details.category.group")}</SelectItem>
-                      <SelectItem value="PRIVATE">{t("details.category.private")}</SelectItem>
+                      <SelectItem value="PUBLIC">
+                        {t("details.category.public")}
+                      </SelectItem>
+                      <SelectItem value="PRIVATE">
+                        {t("details.category.private")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -164,7 +169,10 @@ const UpdateTable: React.FC<UpdateTableProps> = ({ onClose, table }) => {
                 <FormItem>
                   <FormLabel>{t("details.position.label")}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t("details.position.placeholder")} {...field} />
+                    <Input
+                      placeholder={t("details.position.placeholder")}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -183,13 +191,21 @@ const UpdateTable: React.FC<UpdateTableProps> = ({ onClose, table }) => {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("details.status.placeholder")} />
+                        <SelectValue
+                          placeholder={t("details.status.placeholder")}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="AVAILABLE">{t("details.status.available")}</SelectItem>
-                      <SelectItem value="UNAVAILABLE">{t("details.status.unavailable")}</SelectItem>
-                      <SelectItem value="RESERVED">{t("details.status.reserved")}</SelectItem>
+                      <SelectItem value="AVAILABLE">
+                        {t("details.status.available")}
+                      </SelectItem>
+                      <SelectItem value="UNAVAILABLE">
+                        {t("details.status.unavailable")}
+                      </SelectItem>
+                      <SelectItem value="RESERVED">
+                        {t("details.status.reserved")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

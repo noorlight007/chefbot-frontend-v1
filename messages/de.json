@@ -535,10 +535,7 @@
       "category": {
         "label": "Kategorie",
         "placeholder": "Kategorie auswählen",
-        "family": "Familie",
-        "couple": "Paar",
-        "group": "Gruppe",
-        "single": "Einzel",
+        "public": "Öffentlich",
         "private": "Privat",
         "suffix": "Tisch"
       },

@@ -535,10 +535,7 @@
       "category": {
         "label": "Category",
         "placeholder": "Select category",
-        "family": "Family",
-        "couple": "Couple",
-        "group": "Group",
-        "single": "Single",
+        "public": "Public",
         "private": "Private",
         "suffix": "Table"
       },
