@@ -343,7 +343,7 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
             control={control}
             render={({ field: { onChange, value } }) => (
               <PhoneInput
-                country={"us"}
+                country={"de"}
                 value={value?.replace(/^\+/, "") || ""}
                 onChange={(phone) => onChange("+" + phone)}
                 enableSearch={true}
