@@ -266,9 +266,7 @@ export default function ReservationDetails() {
               <div className="flex items-center gap-3 rounded-lg border bg-white p-4 shadow-sm">
                 <TableIcon className="h-5 w-5 text-purple-500" />
                 <div>
-                  <p className="text-sm text-gray-500">
-                    {t("tableAssignment")}
-                  </p>
+                  <p className="text-sm text-gray-500">{t("tableSelection")}</p>
                   <p className="font-medium">{tableDisplay}</p>
                 </div>
               </div>
