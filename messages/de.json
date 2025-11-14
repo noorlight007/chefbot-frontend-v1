@@ -543,8 +543,7 @@
         "label": "Status",
         "placeholder": "Status auswählen",
         "available": "Verfügbar",
-        "unavailable": "Nicht verfügbar",
-        "reserved": "Reserviert"
+        "unavailable": "Nicht verfügbar"
       },
       "position": {
         "label": "Position",

@@ -31,7 +31,7 @@ const formSchema = z.object({
     .max(32767, { message: "Maximum capacity exceeded" }),
   category: z.enum(["PUBLIC", "PRIVATE"]),
   position: z.string().min(1, { message: "Position is required" }),
-  status: z.enum(["AVAILABLE", "UNAVAILABLE", "RESERVED"]),
+  status: z.enum(["AVAILABLE", "UNAVAILABLE"]),
 });
 
 type TableFormData = z.infer<typeof formSchema>;
@@ -197,9 +197,6 @@ const AddNewTable: React.FC<AddNewTableProps> = ({ onClose }) => {
                       </SelectItem>
                       <SelectItem value="UNAVAILABLE">
                         {t("details.status.unavailable")}
-                      </SelectItem>
-                      <SelectItem value="RESERVED">
-                        {t("details.status.reserved")}
                       </SelectItem>
                     </SelectContent>
                   </Select>

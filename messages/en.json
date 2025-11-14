@@ -543,8 +543,7 @@
         "label": "Status",
         "placeholder": "Select status",
         "available": "Available",
-        "unavailable": "Unavailable",
-        "reserved": "Reserved"
+        "unavailable": "Unavailable"
       },
       "position": {
         "label": "Position",
