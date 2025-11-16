@@ -56,6 +56,7 @@ const formSchema = z.object({
         break_start_time: z.string(),
         break_end_time: z.string(),
         is_closed: z.boolean(),
+        no_break: z.boolean(),
       }),
     )
     .min(1, "At least one day is required"),
@@ -77,6 +78,7 @@ interface OpeningHour {
   break_start_time: string;
   break_end_time: string;
   is_closed: boolean;
+  no_break?: boolean;
 }
 
 interface Restaurant {
@@ -127,6 +129,13 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
       break_start_time: existingHour?.break_start_time || "00:00:00.000Z",
       break_end_time: existingHour?.break_end_time || "00:00:00.000Z",
       is_closed: existingHour?.is_closed || false,
+      // If existingHour explicitly sets no_break use that, otherwise treat
+      // break times of "00:00:00.000Z" as meaning "no break" and enable
+      // the no_break toggle by default.
+      no_break:
+        existingHour?.no_break ??
+        ((existingHour?.break_start_time || "00:00:00") === "00:00:00" &&
+          (existingHour?.break_end_time || "00:00:00") === "00:00:00"),
     };
   });
 
@@ -220,7 +229,23 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
 
   const onSubmit = async (data: FormData) => {
     setApiErrors({});
-    const res = await updateRestaurantInfo({ id, data: data });
+    // Prepare opening_hours payload for API: remove frontend-only `no_break` and
+    // ensure break times are zeroed when no_break is true.
+    const opening_hours_payload = data.opening_hours.map(
+      (h: FormData["opening_hours"][number]) => {
+        const { no_break, ...rest } = (h as any) || {};
+        if (no_break) {
+          rest.break_start_time = "00:00:00.000Z";
+          rest.break_end_time = "00:00:00.000Z";
+        }
+        return rest;
+      },
+    );
+
+    const res = await updateRestaurantInfo({
+      id,
+      data: { ...data, opening_hours: opening_hours_payload },
+    });
 
     if (res.data) {
       onClose();
@@ -616,7 +641,7 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
             </div>
           )}
           <div className="space-y-4 overflow-x-auto rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="grid min-w-[800px] grid-cols-6 gap-6 border-b border-gray-100 pb-4">
+            <div className="grid min-w-[900px] grid-cols-7 gap-6 border-b border-gray-100 pb-4">
               <Label className="col-span-1 text-sm font-medium text-gray-700">
                 {t("form.openingHours.day")}
               </Label>
@@ -633,6 +658,9 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                 {t("form.openingHours.breakEnd")}
               </Label>
               <Label className="col-span-1 text-center text-sm font-medium text-gray-700">
+                {t("form.openingHours.noBreak")}
+              </Label>
+              <Label className="col-span-1 text-center text-sm font-medium text-gray-700">
                 {t("form.openingHours.closed")}
               </Label>
             </div>
@@ -643,7 +671,7 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
               return (
                 <div key={day} className="space-y-2">
                   <div
-                    className={`grid min-w-[800px] grid-cols-6 items-center gap-6 rounded-lg py-2 transition-colors ${
+                    className={`grid min-w-[900px] grid-cols-7 items-center gap-6 rounded-lg py-2 transition-colors ${
                       hasError ? "bg-red-50" : "hover:bg-gray-50"
                     }`}
                   >
@@ -818,9 +846,14 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                                 ":",
                               )[0]
                             }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
+                            disabled={
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              ) ||
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.no_break`,
+                              )
+                            }
                             className={`w-1/2 rounded-md ${
                               hasError
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
@@ -850,9 +883,14 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                                 ":",
                               )[1]
                             }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
+                            disabled={
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              ) ||
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.no_break`,
+                              )
+                            }
                             className={`w-1/2 rounded-md ${
                               hasError
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
@@ -891,9 +929,14 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                                 ":",
                               )[0]
                             }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
+                            disabled={
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              ) ||
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.no_break`,
+                              )
+                            }
                             className={`w-1/2 rounded-md ${
                               hasError
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
@@ -923,9 +966,14 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                                 ":",
                               )[1]
                             }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
+                            disabled={
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              ) ||
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.no_break`,
+                              )
+                            }
                             className={`w-1/2 rounded-md ${
                               hasError
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
@@ -944,6 +992,46 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                         </div>
                       )}
                     />
+                    <div className="col-span-1 flex justify-center">
+                      <Controller
+                        name={`opening_hours.${days.indexOf(day)}.no_break`}
+                        control={control}
+                        render={({ field }) => {
+                          const isClosed = watch(
+                            `opening_hours.${days.indexOf(day)}.is_closed`,
+                          );
+
+                          return (
+                            <Switch
+                              checked={field.value}
+                              disabled={isClosed}
+                              onCheckedChange={(checked) => {
+                                // prevent toggling when the day is marked closed
+                                if (isClosed) return;
+                                field.onChange(checked);
+                                if (checked) {
+                                  setValue(
+                                    `opening_hours.${days.indexOf(day)}.break_start_time`,
+                                    "00:00:00.000Z",
+                                  );
+                                  setValue(
+                                    `opening_hours.${days.indexOf(day)}.break_end_time`,
+                                    "00:00:00.000Z",
+                                  );
+                                  // Clear errors for this day when no_break is set
+                                  const newErrors = { ...apiErrors };
+                                  delete newErrors[day];
+                                  delete newErrors[day.toLowerCase()];
+                                  delete newErrors[day.toUpperCase()];
+                                  setApiErrors(newErrors);
+                                }
+                              }}
+                              className={`${field.value ? "bg-yellow-500 hover:bg-yellow-600" : "bg-gray-200 hover:bg-gray-300"} ${isClosed ? "cursor-not-allowed opacity-50" : ""}`}
+                            />
+                          );
+                        }}
+                      />
+                    </div>
                     <div className="col-span-1 flex justify-center">
                       <Controller
                         name={`opening_hours.${days.indexOf(day)}.is_closed`}
