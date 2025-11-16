@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useGetLoggedUserQuery } from "@/redux/reducers/auth-reducer";
 import {
   useGetSingleMenuItemQuery,
   useUpdateSingleMenuMutation,
@@ -22,6 +23,7 @@ import { FC, useRef, useState } from "react";
 import { toast } from "sonner";
 
 const MenuDetails: FC = () => {
+  const { data } = useGetLoggedUserQuery({});
   const t = useTranslations("restaurants.menu.details");
   const c = useTranslations("restaurants.menu.form");
   const locale = useLocale();
@@ -40,6 +42,26 @@ const MenuDetails: FC = () => {
   if (isLoading || !menuItem) {
     return <MenuDetailsSkeleton />;
   }
+
+  const getCurrencySymbol = (currency?: string) => {
+    if (!currency) return "$";
+    switch (currency.toUpperCase()) {
+      case "USD":
+        return "$";
+      case "EUR":
+        return "€";
+      case "YEN":
+        return "¥";
+      case "AED":
+        return "د.إ";
+      default:
+        return "$";
+    }
+  };
+
+  const currencySymbol = getCurrencySymbol(
+    data?.currency as string | undefined,
+  );
 
   const handleImageEdit = () => {
     fileInputRef.current?.click();
@@ -176,7 +198,7 @@ const MenuDetails: FC = () => {
           {/* Price and Category */}
           <div className="mb-4 flex items-center justify-between">
             <span className="text-2xl font-bold text-purple-600">
-              $
+              {currencySymbol}
               {Number(menuItem.price).toLocaleString("en-US", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -250,9 +272,7 @@ const MenuDetails: FC = () => {
           <div className="mb-4 rounded-lg bg-gray-50 p-4">
             <div className="mb-2 flex items-center gap-2">
               <h2 className="mb-2 text-lg font-semibold">{t("allergens")}</h2>
-              <Badge>
-                {t("badge")}
-              </Badge>
+              <Badge>{t("badge")}</Badge>
             </div>
 
             <div className="flex flex-wrap gap-2">

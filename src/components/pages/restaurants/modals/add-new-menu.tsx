@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useGetLoggedUserQuery } from "@/redux/reducers/auth-reducer";
 import {
   useAddNewMenuMutation,
   useGetSingleRestaurantMenuQuery,
@@ -93,6 +94,7 @@ interface CategoryOption {
 }
 
 export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
+  const { data } = useGetLoggedUserQuery({});
   const t = useTranslations("restaurants.menu.form");
   const [ingredients, setIngredients] = useState<Record<string, string>>({});
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -108,6 +110,26 @@ export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
   const { id } = useParams();
   const [addNewMenu, { isLoading: addLoading }] = useAddNewMenuMutation();
   const { data: menu, isLoading } = useGetSingleRestaurantMenuQuery(id);
+
+  const getCurrencySymbol = (currency?: string) => {
+    if (!currency) return "$";
+    switch (currency.toUpperCase()) {
+      case "USD":
+        return "$";
+      case "EUR":
+        return "€";
+      case "YEN":
+        return "¥";
+      case "AED":
+        return "د.إ";
+      default:
+        return "$";
+    }
+  };
+
+  const currencySymbol = getCurrencySymbol(
+    data?.currency as string | undefined,
+  );
 
   const categoryOptions: CategoryOption[] = [
     { value: "STARTERS", label: t("category.options.starters") },
@@ -459,7 +481,7 @@ export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
                 name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("price.label")}</FormLabel>
+                    <FormLabel>{t("price.label")}({currencySymbol})</FormLabel>
                     <FormControl>
                       <Input
                         type="number"

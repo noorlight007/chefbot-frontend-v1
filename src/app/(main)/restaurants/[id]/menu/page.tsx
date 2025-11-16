@@ -67,7 +67,7 @@ const PDFManagement: FC<PDFManagementProps> = ({
     setIsDragging(false);
   }, []);
 
-  const validateFile = (file: File): boolean => {
+  const validateFile = useCallback((file: File): boolean => {
     if (file.type !== "application/pdf") {
       setUploadError(t("pdf.upload.error.fileType"));
       return false;
@@ -80,7 +80,7 @@ const PDFManagement: FC<PDFManagementProps> = ({
 
     setUploadError("");
     return true;
-  };
+  }, [t]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -93,7 +93,7 @@ const PDFManagement: FC<PDFManagementProps> = ({
         setSelectedFile(file);
       }
     }
-  }, []);
+  }, [validateFile]);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +105,7 @@ const PDFManagement: FC<PDFManagementProps> = ({
         }
       }
     },
-    [],
+    [validateFile],
   );
 
   const handleBrowseClick = () => {
