@@ -46,7 +46,7 @@ export function NavUser() {
     if (data?.currency) {
       setSelectedCurrency(data.currency);
     }
-  }, [data?.language]);
+  }, [data?.language, data?.currency]);
 
   const handleLanguageChange = async (language: string) => {
     setSelectedLanguage(language);
