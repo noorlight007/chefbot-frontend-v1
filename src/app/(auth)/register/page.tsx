@@ -38,6 +38,7 @@ const registerSchema = z.object({
     .string()
     .min(10, "Phone number must be at least 10 digits")
     .max(15, "Phone number must not exceed 15 digits"),
+  currency: z.string().min(1, "Preferred currency is required"),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]),
   date_of_birth: z.string().min(1, "Date of birth is required"),
   avatar: z.string().nullable().optional(),
@@ -52,6 +53,14 @@ type RegisterError = {
 export default function RegisterPage() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarFileName, setAvatarFileName] = useState<string>("");
+
+
+  const currencyValues =[
+    { label: "USD - US Dollar", value: "USD" },
+    { label: "EUR - Euro", value: "EUR" },
+    { label: "YEN - Japanese Yen", value: "YEN" },
+    { label: "AED - United Arab Emirates Dirham", value: "AED" },
+  ]
 
   const {
     register,
@@ -76,6 +85,7 @@ export default function RegisterPage() {
       formData.append("last_name", data.last_name);
       formData.append("email", data.email);
       formData.append("phone", data.phone);
+      formData.append("currency", data.currency);
       formData.append("gender", data.gender);
       formData.append("date_of_birth", data.date_of_birth);
       if (avatarFile) {
@@ -245,6 +255,39 @@ export default function RegisterPage() {
                 {errors.phone && (
                   <p className="mt-1 text-xs text-red-500">
                     {errors.phone.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="currency" className="text-sm font-medium">
+                  Preferred Currency*
+                </Label>
+                <Controller
+                  name="currency"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value || ""}
+                    >
+                      <SelectTrigger
+                        className={errors.currency ? "border-red-500" : ""}
+                      >
+                        <SelectValue placeholder="Select currency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {currencyValues.map((currency) => (
+                          <SelectItem key={currency.value} value={currency.value}>
+                            {currency.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.currency && (
+                  <p className="mt-1 text-xs text-red-500">
+                    {errors.currency.message}
                   </p>
                 )}
               </div>
