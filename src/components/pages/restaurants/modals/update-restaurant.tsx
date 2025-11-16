@@ -375,6 +375,27 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                 countryCodeEditable={false}
                 searchPlaceholder={t("form.fields.country.search")}
                 inputClass="w-full p-2 rounded-md border border-gray-200"
+                inputStyle={{
+                  width: "100%",
+                  height: "40px",
+                  fontSize: "16px",
+                  padding: "8px 45px",
+                  borderRadius: "6px",
+                  border: errors.whatsapp_number
+                    ? "1px solid #ef4444"
+                    : "1px solid #e2e8f0",
+                }}
+                buttonStyle={{
+                  borderRadius: "6px 0 0 6px",
+                  border: errors.whatsapp_number
+                    ? "1px solid #ef4444"
+                    : "1px solid #e2e8f0",
+                }}
+                searchStyle={{
+                  width: "100%",
+                  padding: "8px",
+                  margin: "0",
+                }}
               />
             )}
           />
@@ -641,7 +662,7 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
             </div>
           )}
           <div className="space-y-4 overflow-x-auto rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="grid min-w-[900px] grid-cols-7 gap-6 border-b border-gray-100 pb-4">
+            <div className="hidden grid-cols-7 gap-6 border-b border-gray-100 pb-4 md:grid">
               <Label className="col-span-1 text-sm font-medium text-gray-700">
                 {t("form.openingHours.day")}
               </Label>
@@ -671,7 +692,7 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
               return (
                 <div key={day} className="space-y-2">
                   <div
-                    className={`grid min-w-[900px] grid-cols-7 items-center gap-6 rounded-lg py-2 transition-colors ${
+                    className={`grid grid-cols-1 items-start gap-4 rounded-lg py-3 transition-colors md:grid-cols-7 md:gap-6 ${
                       hasError ? "bg-red-50" : "hover:bg-gray-50"
                     }`}
                   >
@@ -684,72 +705,78 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                       name={`opening_hours.${days.indexOf(day)}.opening_start_time`}
                       control={control}
                       render={({ field }) => (
-                        <div className="flex gap-2">
-                          <select
-                            onChange={(e) => {
-                              const minutes =
-                                field.value?.split(":")[1] || "00";
-                              field.onChange(
-                                formatTimeForSubmit(
-                                  `${e.target.value}:${minutes}`,
-                                ),
-                              );
-                            }}
-                            value={
-                              formatTimeForInput(field.value || "").split(
-                                ":",
-                              )[0]
-                            }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
-                            className={`w-1/2 rounded-md ${
-                              hasError
-                                ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                            }`}
-                          >
-                            {Array.from({ length: 24 }, (_, i) => (
-                              <option
-                                key={i}
-                                value={i.toString().padStart(2, "0")}
-                              >
-                                {i.toString().padStart(2, "0")}
-                              </option>
-                            ))}
-                          </select>
-                          <select
-                            onChange={(e) => {
-                              const hours = field.value?.split(":")[0] || "00";
-                              field.onChange(
-                                formatTimeForSubmit(
-                                  `${hours}:${e.target.value}`,
-                                ),
-                              );
-                            }}
-                            value={
-                              formatTimeForInput(field.value || "").split(
-                                ":",
-                              )[1]
-                            }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
-                            className={`w-1/2 rounded-md ${
-                              hasError
-                                ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                            }`}
-                          >
-                            {Array.from({ length: 4 }, (_, i) => (
-                              <option
-                                key={i}
-                                value={(i * 15).toString().padStart(2, "0")}
-                              >
-                                {(i * 15).toString().padStart(2, "0")}
-                              </option>
-                            ))}
-                          </select>
+                        <div className="space-y-1">
+                          <span className="text-xs font-medium text-gray-700 md:hidden">
+                            {t("form.openingHours.openingTime")}
+                          </span>
+                          <div className="flex gap-2">
+                            <select
+                              onChange={(e) => {
+                                const minutes =
+                                  field.value?.split(":")[1] || "00";
+                                field.onChange(
+                                  formatTimeForSubmit(
+                                    `${e.target.value}:${minutes}`,
+                                  ),
+                                );
+                              }}
+                              value={
+                                formatTimeForInput(field.value || "").split(
+                                  ":",
+                                )[0]
+                              }
+                              disabled={watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              )}
+                              className={`w-1/2 rounded-md ${
+                                hasError
+                                  ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                                  : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                              }`}
+                            >
+                              {Array.from({ length: 24 }, (_, i) => (
+                                <option
+                                  key={i}
+                                  value={i.toString().padStart(2, "0")}
+                                >
+                                  {i.toString().padStart(2, "0")}
+                                </option>
+                              ))}
+                            </select>
+                            <select
+                              onChange={(e) => {
+                                const hours =
+                                  field.value?.split(":")[0] || "00";
+                                field.onChange(
+                                  formatTimeForSubmit(
+                                    `${hours}:${e.target.value}`,
+                                  ),
+                                );
+                              }}
+                              value={
+                                formatTimeForInput(field.value || "").split(
+                                  ":",
+                                )[1]
+                              }
+                              disabled={watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              )}
+                              className={`w-1/2 rounded-md ${
+                                hasError
+                                  ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                                  : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                              }`}
+                            >
+                              {Array.from({ length: 4 }, (_, i) => (
+                                <option
+                                  key={i}
+                                  value={(i * 15).toString().padStart(2, "0")}
+                                >
+                                  {(i * 15).toString().padStart(2, "0")}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
                       )}
                     />
@@ -757,72 +784,78 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                       name={`opening_hours.${days.indexOf(day)}.opening_end_time`}
                       control={control}
                       render={({ field }) => (
-                        <div className="flex gap-2">
-                          <select
-                            onChange={(e) => {
-                              const minutes =
-                                field.value?.split(":")[1] || "00";
-                              field.onChange(
-                                formatTimeForSubmit(
-                                  `${e.target.value}:${minutes}`,
-                                ),
-                              );
-                            }}
-                            value={
-                              formatTimeForInput(field.value || "").split(
-                                ":",
-                              )[0]
-                            }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
-                            className={`w-1/2 rounded-md ${
-                              hasError
-                                ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                            }`}
-                          >
-                            {Array.from({ length: 24 }, (_, i) => (
-                              <option
-                                key={i}
-                                value={i.toString().padStart(2, "0")}
-                              >
-                                {i.toString().padStart(2, "0")}
-                              </option>
-                            ))}
-                          </select>
-                          <select
-                            onChange={(e) => {
-                              const hours = field.value?.split(":")[0] || "00";
-                              field.onChange(
-                                formatTimeForSubmit(
-                                  `${hours}:${e.target.value}`,
-                                ),
-                              );
-                            }}
-                            value={
-                              formatTimeForInput(field.value || "").split(
-                                ":",
-                              )[1]
-                            }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
-                            className={`w-1/2 rounded-md ${
-                              hasError
-                                ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                            }`}
-                          >
-                            {Array.from({ length: 4 }, (_, i) => (
-                              <option
-                                key={i}
-                                value={(i * 15).toString().padStart(2, "0")}
-                              >
-                                {(i * 15).toString().padStart(2, "0")}
-                              </option>
-                            ))}
-                          </select>
+                        <div className="space-y-1">
+                          <span className="text-xs font-medium text-gray-700 md:hidden">
+                            {t("form.openingHours.closingTime")}
+                          </span>
+                          <div className="flex gap-2">
+                            <select
+                              onChange={(e) => {
+                                const minutes =
+                                  field.value?.split(":")[1] || "00";
+                                field.onChange(
+                                  formatTimeForSubmit(
+                                    `${e.target.value}:${minutes}`,
+                                  ),
+                                );
+                              }}
+                              value={
+                                formatTimeForInput(field.value || "").split(
+                                  ":",
+                                )[0]
+                              }
+                              disabled={watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              )}
+                              className={`w-1/2 rounded-md ${
+                                hasError
+                                  ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                                  : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                              }`}
+                            >
+                              {Array.from({ length: 24 }, (_, i) => (
+                                <option
+                                  key={i}
+                                  value={i.toString().padStart(2, "0")}
+                                >
+                                  {i.toString().padStart(2, "0")}
+                                </option>
+                              ))}
+                            </select>
+                            <select
+                              onChange={(e) => {
+                                const hours =
+                                  field.value?.split(":")[0] || "00";
+                                field.onChange(
+                                  formatTimeForSubmit(
+                                    `${hours}:${e.target.value}`,
+                                  ),
+                                );
+                              }}
+                              value={
+                                formatTimeForInput(field.value || "").split(
+                                  ":",
+                                )[1]
+                              }
+                              disabled={watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              )}
+                              className={`w-1/2 rounded-md ${
+                                hasError
+                                  ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                                  : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                              }`}
+                            >
+                              {Array.from({ length: 4 }, (_, i) => (
+                                <option
+                                  key={i}
+                                  value={(i * 15).toString().padStart(2, "0")}
+                                >
+                                  {(i * 15).toString().padStart(2, "0")}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
                       )}
                     />
@@ -830,82 +863,88 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                       name={`opening_hours.${days.indexOf(day)}.break_start_time`}
                       control={control}
                       render={({ field }) => (
-                        <div className="flex gap-2">
-                          <select
-                            onChange={(e) => {
-                              const minutes =
-                                field.value?.split(":")[1] || "00";
-                              field.onChange(
-                                formatTimeForSubmit(
-                                  `${e.target.value}:${minutes}`,
-                                ),
-                              );
-                            }}
-                            value={
-                              formatTimeForInput(field.value || "").split(
-                                ":",
-                              )[0]
-                            }
-                            disabled={
-                              watch(
-                                `opening_hours.${days.indexOf(day)}.is_closed`,
-                              ) ||
-                              watch(
-                                `opening_hours.${days.indexOf(day)}.no_break`,
-                              )
-                            }
-                            className={`w-1/2 rounded-md ${
-                              hasError
-                                ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                            }`}
-                          >
-                            {Array.from({ length: 24 }, (_, i) => (
-                              <option
-                                key={i}
-                                value={i.toString().padStart(2, "0")}
-                              >
-                                {i.toString().padStart(2, "0")}
-                              </option>
-                            ))}
-                          </select>
-                          <select
-                            onChange={(e) => {
-                              const hours = field.value?.split(":")[0] || "00";
-                              field.onChange(
-                                formatTimeForSubmit(
-                                  `${hours}:${e.target.value}`,
-                                ),
-                              );
-                            }}
-                            value={
-                              formatTimeForInput(field.value || "").split(
-                                ":",
-                              )[1]
-                            }
-                            disabled={
-                              watch(
-                                `opening_hours.${days.indexOf(day)}.is_closed`,
-                              ) ||
-                              watch(
-                                `opening_hours.${days.indexOf(day)}.no_break`,
-                              )
-                            }
-                            className={`w-1/2 rounded-md ${
-                              hasError
-                                ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                            }`}
-                          >
-                            {Array.from({ length: 4 }, (_, i) => (
-                              <option
-                                key={i}
-                                value={(i * 15).toString().padStart(2, "0")}
-                              >
-                                {(i * 15).toString().padStart(2, "0")}
-                              </option>
-                            ))}
-                          </select>
+                        <div className="space-y-1">
+                          <span className="text-xs font-medium text-gray-700 md:hidden">
+                            {t("form.openingHours.breakStart")}
+                          </span>
+                          <div className="flex gap-2">
+                            <select
+                              onChange={(e) => {
+                                const minutes =
+                                  field.value?.split(":")[1] || "00";
+                                field.onChange(
+                                  formatTimeForSubmit(
+                                    `${e.target.value}:${minutes}`,
+                                  ),
+                                );
+                              }}
+                              value={
+                                formatTimeForInput(field.value || "").split(
+                                  ":",
+                                )[0]
+                              }
+                              disabled={
+                                watch(
+                                  `opening_hours.${days.indexOf(day)}.is_closed`,
+                                ) ||
+                                watch(
+                                  `opening_hours.${days.indexOf(day)}.no_break`,
+                                )
+                              }
+                              className={`w-1/2 rounded-md ${
+                                hasError
+                                  ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                                  : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                              }`}
+                            >
+                              {Array.from({ length: 24 }, (_, i) => (
+                                <option
+                                  key={i}
+                                  value={i.toString().padStart(2, "0")}
+                                >
+                                  {i.toString().padStart(2, "0")}
+                                </option>
+                              ))}
+                            </select>
+                            <select
+                              onChange={(e) => {
+                                const hours =
+                                  field.value?.split(":")[0] || "00";
+                                field.onChange(
+                                  formatTimeForSubmit(
+                                    `${hours}:${e.target.value}`,
+                                  ),
+                                );
+                              }}
+                              value={
+                                formatTimeForInput(field.value || "").split(
+                                  ":",
+                                )[1]
+                              }
+                              disabled={
+                                watch(
+                                  `opening_hours.${days.indexOf(day)}.is_closed`,
+                                ) ||
+                                watch(
+                                  `opening_hours.${days.indexOf(day)}.no_break`,
+                                )
+                              }
+                              className={`w-1/2 rounded-md ${
+                                hasError
+                                  ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                                  : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                              }`}
+                            >
+                              {Array.from({ length: 4 }, (_, i) => (
+                                <option
+                                  key={i}
+                                  value={(i * 15).toString().padStart(2, "0")}
+                                >
+                                  {(i * 15).toString().padStart(2, "0")}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
                       )}
                     />
@@ -913,86 +952,92 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                       name={`opening_hours.${days.indexOf(day)}.break_end_time`}
                       control={control}
                       render={({ field }) => (
-                        <div className="flex gap-2">
-                          <select
-                            onChange={(e) => {
-                              const minutes =
-                                field.value?.split(":")[1] || "00";
-                              field.onChange(
-                                formatTimeForSubmit(
-                                  `${e.target.value}:${minutes}`,
-                                ),
-                              );
-                            }}
-                            value={
-                              formatTimeForInput(field.value || "").split(
-                                ":",
-                              )[0]
-                            }
-                            disabled={
-                              watch(
-                                `opening_hours.${days.indexOf(day)}.is_closed`,
-                              ) ||
-                              watch(
-                                `opening_hours.${days.indexOf(day)}.no_break`,
-                              )
-                            }
-                            className={`w-1/2 rounded-md ${
-                              hasError
-                                ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                            }`}
-                          >
-                            {Array.from({ length: 24 }, (_, i) => (
-                              <option
-                                key={i}
-                                value={i.toString().padStart(2, "0")}
-                              >
-                                {i.toString().padStart(2, "0")}
-                              </option>
-                            ))}
-                          </select>
-                          <select
-                            onChange={(e) => {
-                              const hours = field.value?.split(":")[0] || "00";
-                              field.onChange(
-                                formatTimeForSubmit(
-                                  `${hours}:${e.target.value}`,
-                                ),
-                              );
-                            }}
-                            value={
-                              formatTimeForInput(field.value || "").split(
-                                ":",
-                              )[1]
-                            }
-                            disabled={
-                              watch(
-                                `opening_hours.${days.indexOf(day)}.is_closed`,
-                              ) ||
-                              watch(
-                                `opening_hours.${days.indexOf(day)}.no_break`,
-                              )
-                            }
-                            className={`w-1/2 rounded-md ${
-                              hasError
-                                ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                            }`}
-                          >
-                            {Array.from({ length: 4 }, (_, i) => (
-                              <option
-                                key={i}
-                                value={(i * 15).toString().padStart(2, "0")}
-                              >
-                                {(i * 15).toString().padStart(2, "0")}
-                              </option>
-                            ))}
-                          </select>
+                        <div className="space-y-1">
+                          <span className="text-xs font-medium text-gray-700 md:hidden">
+                            {t("form.openingHours.breakEnd")}
+                          </span>
+                          <div className="flex gap-2">
+                            <select
+                              onChange={(e) => {
+                                const minutes =
+                                  field.value?.split(":")[1] || "00";
+                                field.onChange(
+                                  formatTimeForSubmit(
+                                    `${e.target.value}:${minutes}`,
+                                  ),
+                                );
+                              }}
+                              value={
+                                formatTimeForInput(field.value || "").split(
+                                  ":",
+                                )[0]
+                              }
+                              disabled={
+                                watch(
+                                  `opening_hours.${days.indexOf(day)}.is_closed`,
+                                ) ||
+                                watch(
+                                  `opening_hours.${days.indexOf(day)}.no_break`,
+                                )
+                              }
+                              className={`w-1/2 rounded-md ${
+                                hasError
+                                  ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                                  : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                              }`}
+                            >
+                              {Array.from({ length: 24 }, (_, i) => (
+                                <option
+                                  key={i}
+                                  value={i.toString().padStart(2, "0")}
+                                >
+                                  {i.toString().padStart(2, "0")}
+                                </option>
+                              ))}
+                            </select>
+                            <select
+                              onChange={(e) => {
+                                const hours =
+                                  field.value?.split(":")[0] || "00";
+                                field.onChange(
+                                  formatTimeForSubmit(
+                                    `${hours}:${e.target.value}`,
+                                  ),
+                                );
+                              }}
+                              value={
+                                formatTimeForInput(field.value || "").split(
+                                  ":",
+                                )[1]
+                              }
+                              disabled={
+                                watch(
+                                  `opening_hours.${days.indexOf(day)}.is_closed`,
+                                ) ||
+                                watch(
+                                  `opening_hours.${days.indexOf(day)}.no_break`,
+                                )
+                              }
+                              className={`w-1/2 rounded-md ${
+                                hasError
+                                  ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                                  : "border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                              }`}
+                            >
+                              {Array.from({ length: 4 }, (_, i) => (
+                                <option
+                                  key={i}
+                                  value={(i * 15).toString().padStart(2, "0")}
+                                >
+                                  {(i * 15).toString().padStart(2, "0")}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
                       )}
                     />
-                    <div className="col-span-1 flex justify-center">
+                    <div className="col-span-1 flex md:justify-center">
                       <Controller
                         name={`opening_hours.${days.indexOf(day)}.no_break`}
                         control={control}
@@ -1002,14 +1047,63 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                           );
 
                           return (
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-medium text-gray-700 md:hidden">
+                                {t("form.openingHours.noBreak")}
+                              </span>
+                              <Switch
+                                checked={field.value}
+                                disabled={isClosed}
+                                onCheckedChange={(checked) => {
+                                  // prevent toggling when the day is marked closed
+                                  if (isClosed) return;
+                                  field.onChange(checked);
+                                  if (checked) {
+                                    setValue(
+                                      `opening_hours.${days.indexOf(day)}.break_start_time`,
+                                      "00:00:00.000Z",
+                                    );
+                                    setValue(
+                                      `opening_hours.${days.indexOf(day)}.break_end_time`,
+                                      "00:00:00.000Z",
+                                    );
+                                    // Clear errors for this day when no_break is set
+                                    const newErrors = { ...apiErrors };
+                                    delete newErrors[day];
+                                    delete newErrors[day.toLowerCase()];
+                                    delete newErrors[day.toUpperCase()];
+                                    setApiErrors(newErrors);
+                                  }
+                                }}
+                                className={`${field.value ? "bg-yellow-500 hover:bg-yellow-600" : "bg-gray-200 hover:bg-gray-300"} ${isClosed ? "cursor-not-allowed opacity-50" : ""}`}
+                              />
+                            </div>
+                          );
+                        }}
+                      />
+                    </div>
+                    <div className="col-span-1 flex md:justify-center">
+                      <Controller
+                        name={`opening_hours.${days.indexOf(day)}.is_closed`}
+                        control={control}
+                        render={({ field }) => (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-medium text-gray-700 md:hidden">
+                              {t("form.openingHours.closed")}
+                            </span>
                             <Switch
                               checked={field.value}
-                              disabled={isClosed}
                               onCheckedChange={(checked) => {
-                                // prevent toggling when the day is marked closed
-                                if (isClosed) return;
                                 field.onChange(checked);
                                 if (checked) {
+                                  setValue(
+                                    `opening_hours.${days.indexOf(day)}.opening_start_time`,
+                                    "00:00:00.000Z",
+                                  );
+                                  setValue(
+                                    `opening_hours.${days.indexOf(day)}.opening_end_time`,
+                                    "00:00:00.000Z",
+                                  );
                                   setValue(
                                     `opening_hours.${days.indexOf(day)}.break_start_time`,
                                     "00:00:00.000Z",
@@ -1018,7 +1112,7 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                                     `opening_hours.${days.indexOf(day)}.break_end_time`,
                                     "00:00:00.000Z",
                                   );
-                                  // Clear errors for this day when no_break is set
+                                  // Clear errors for this day when closed
                                   const newErrors = { ...apiErrors };
                                   delete newErrors[day];
                                   delete newErrors[day.toLowerCase()];
@@ -1026,48 +1120,9 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                                   setApiErrors(newErrors);
                                 }
                               }}
-                              className={`${field.value ? "bg-yellow-500 hover:bg-yellow-600" : "bg-gray-200 hover:bg-gray-300"} ${isClosed ? "cursor-not-allowed opacity-50" : ""}`}
+                              className={`${field.value ? "bg-red-500 hover:bg-red-600" : "bg-gray-200 hover:bg-gray-300"}`}
                             />
-                          );
-                        }}
-                      />
-                    </div>
-                    <div className="col-span-1 flex justify-center">
-                      <Controller
-                        name={`opening_hours.${days.indexOf(day)}.is_closed`}
-                        control={control}
-                        render={({ field }) => (
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={(checked) => {
-                              field.onChange(checked);
-                              if (checked) {
-                                setValue(
-                                  `opening_hours.${days.indexOf(day)}.opening_start_time`,
-                                  "00:00:00.000Z",
-                                );
-                                setValue(
-                                  `opening_hours.${days.indexOf(day)}.opening_end_time`,
-                                  "00:00:00.000Z",
-                                );
-                                setValue(
-                                  `opening_hours.${days.indexOf(day)}.break_start_time`,
-                                  "00:00:00.000Z",
-                                );
-                                setValue(
-                                  `opening_hours.${days.indexOf(day)}.break_end_time`,
-                                  "00:00:00.000Z",
-                                );
-                                // Clear errors for this day when closed
-                                const newErrors = { ...apiErrors };
-                                delete newErrors[day];
-                                delete newErrors[day.toLowerCase()];
-                                delete newErrors[day.toUpperCase()];
-                                setApiErrors(newErrors);
-                              }
-                            }}
-                            className={`${field.value ? "bg-red-500 hover:bg-red-600" : "bg-gray-200 hover:bg-gray-300"}`}
-                          />
+                          </div>
                         )}
                       />
                     </div>
