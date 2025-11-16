@@ -85,7 +85,7 @@ export function NavUser() {
 
   return (
     <div className="flex items-center gap-3">
-      <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
+      {/* <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
         <SelectTrigger className="w-[105px] border-primary bg-sidebar text-sidebar-foreground">
           <SelectValue placeholder="Currency" />
         </SelectTrigger>
@@ -95,7 +95,7 @@ export function NavUser() {
           <SelectItem value="YEN">YEN (¥)</SelectItem>
           <SelectItem value="AED">AED (د.إ)</SelectItem>
         </SelectContent>
-      </Select>
+      </Select> */}
 
       <Select value={selectedLanguage} onValueChange={handleLanguageChange}>
         <SelectTrigger className="w-[105px] border-primary bg-sidebar text-sidebar-foreground">
