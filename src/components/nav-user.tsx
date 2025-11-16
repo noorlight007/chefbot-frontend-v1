@@ -70,7 +70,7 @@ export function NavUser() {
   return (
     <div className="flex items-center gap-3">
       <Select value={selectedLanguage} onValueChange={handleLanguageChange}>
-        <SelectTrigger className="w-[105px] border-sidebar-border bg-sidebar text-sidebar-foreground">
+        <SelectTrigger className="w-[105px] border-primary bg-sidebar text-sidebar-foreground">
           <SelectValue placeholder="Select language" />
         </SelectTrigger>
         <SelectContent>
