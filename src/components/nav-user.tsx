@@ -36,16 +36,16 @@ export function NavUser() {
   const t = useTranslations("profile.navUser");
   const [updateUserInfo] = useUpdateUserInfoMutation();
   const [selectedLanguage, setSelectedLanguage] = useState<string>("ENGLISH");
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  // const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
 
   // Sync selected language with user data
   useEffect(() => {
     if (data?.language) {
       setSelectedLanguage(data.language);
     }
-    if (data?.currency) {
-      setSelectedCurrency(data.currency);
-    }
+    // if (data?.currency) {
+    //   setSelectedCurrency(data.currency);
+    // }
   }, [data?.language, data?.currency]);
 
   const handleLanguageChange = async (language: string) => {
@@ -67,17 +67,17 @@ export function NavUser() {
     }
   };
 
-  const handleCurrencyChange = async (currency: string) => {
-    setSelectedCurrency(currency);
-    try {
-      await updateUserInfo({
-        currency: currency,
-      }).unwrap();
-    } catch (error) {
-      console.error("Failed to update currency:", error);
-      setSelectedCurrency(data?.currency || "USD");
-    }
-  };
+  // const handleCurrencyChange = async (currency: string) => {
+  //   setSelectedCurrency(currency);
+  //   try {
+  //     await updateUserInfo({
+  //       currency: currency,
+  //     }).unwrap();
+  //   } catch (error) {
+  //     console.error("Failed to update currency:", error);
+  //     setSelectedCurrency(data?.currency || "USD");
+  //   }
+  // };
 
   const handleLogout = () => {
     dispatch(logout());
