@@ -1,27 +1,49 @@
-import { FC } from "react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { MoreVertical, Trash2 } from "lucide-react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { MoreVertical, Trash2 } from "lucide-react";
+import Image from "next/image";
+import { FC } from "react";
 
 import { Badge } from "@/components/ui/badge";
+import { useGetLoggedUserQuery } from "@/redux/reducers/auth-reducer";
+import { useDeleteSingleMenuMutation } from "@/redux/reducers/restaurants-reducer";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useDeleteSingleMenuMutation } from "@/redux/reducers/restaurants-reducer";
 import { toast } from "sonner";
-import { useTranslations } from "next-intl";
 
 const MenuCard: FC<{ menuItem: MenuItemData }> = ({ menuItem }) => {
   const t = useTranslations("restaurants.menu.cards");
   const c = useTranslations("restaurants.menu.form.category.options");
   const { id } = useParams();
   const [deleteSingleMenu] = useDeleteSingleMenuMutation();
+  const { data } = useGetLoggedUserQuery({});
+
+  const getCurrencySymbol = (currency?: string) => {
+    if (!currency) return "$";
+    switch (currency.toUpperCase()) {
+      case "USD":
+        return "$";
+      case "EUR":
+        return "€";
+      case "YEN":
+        return "¥";
+      case "AED":
+        return "د.إ";
+      default:
+        return "$";
+    }
+  };
+
+  const currencySymbol = getCurrencySymbol(
+    data?.currency as string | undefined,
+  );
 
   const handleDeleteMenu = async ({
     restaurant_id,
@@ -42,7 +64,6 @@ const MenuCard: FC<{ menuItem: MenuItemData }> = ({ menuItem }) => {
       console.error("Delete menu error:", error);
     }
   };
-
 
   return (
     <Card className="group relative flex h-full flex-col transition-all duration-300 hover:shadow-lg">
@@ -74,7 +95,9 @@ const MenuCard: FC<{ menuItem: MenuItemData }> = ({ menuItem }) => {
                   {c(
                     menuItem?.category
                       ?.toLowerCase()
-                      .replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
+                      .replace(/_([a-z])/g, (_, letter) =>
+                        letter.toUpperCase(),
+                      ),
                   )}
                 </p>
               </div>
@@ -109,7 +132,8 @@ const MenuCard: FC<{ menuItem: MenuItemData }> = ({ menuItem }) => {
             </p>
             <div className="flex items-center gap-1.5">
               <p className="text-base font-bold text-primary">
-                ${menuItem?.price}
+                {currencySymbol}
+                {menuItem?.price}
               </p>
               {menuItem.allergens?.length > 0 && (
                 <Badge variant="outline" className="text-[10px]">

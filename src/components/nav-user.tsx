@@ -36,11 +36,15 @@ export function NavUser() {
   const t = useTranslations("profile.navUser");
   const [updateUserInfo] = useUpdateUserInfoMutation();
   const [selectedLanguage, setSelectedLanguage] = useState<string>("ENGLISH");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
 
   // Sync selected language with user data
   useEffect(() => {
     if (data?.language) {
       setSelectedLanguage(data.language);
+    }
+    if (data?.currency) {
+      setSelectedCurrency(data.currency);
     }
   }, [data?.language]);
 
@@ -63,12 +67,36 @@ export function NavUser() {
     }
   };
 
+  const handleCurrencyChange = async (currency: string) => {
+    setSelectedCurrency(currency);
+    try {
+      await updateUserInfo({
+        currency: currency,
+      }).unwrap();
+    } catch (error) {
+      console.error("Failed to update currency:", error);
+      setSelectedCurrency(data?.currency || "USD");
+    }
+  };
+
   const handleLogout = () => {
     dispatch(logout());
   };
 
   return (
     <div className="flex items-center gap-3">
+      <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
+        <SelectTrigger className="w-[105px] border-primary bg-sidebar text-sidebar-foreground">
+          <SelectValue placeholder="Currency" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="USD">USD ($)</SelectItem>
+          <SelectItem value="EUR">EUR (€)</SelectItem>
+          <SelectItem value="YEN">YEN (¥)</SelectItem>
+          <SelectItem value="AED">AED (د.إ)</SelectItem>
+        </SelectContent>
+      </Select>
+
       <Select value={selectedLanguage} onValueChange={handleLanguageChange}>
         <SelectTrigger className="w-[105px] border-primary bg-sidebar text-sidebar-foreground">
           <SelectValue placeholder="Select language" />
