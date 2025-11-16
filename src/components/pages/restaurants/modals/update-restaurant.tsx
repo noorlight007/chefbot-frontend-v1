@@ -780,6 +780,7 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                         </div>
                       )}
                     />
+
                     <Controller
                       name={`opening_hours.${days.indexOf(day)}.opening_end_time`}
                       control={control}
@@ -1139,10 +1140,12 @@ const UpdateRestaurant: FC<UpdateRestaurantProps> = ({
                       </div>
                     </div>
                   )}
+                  <hr className="!mt-8 border-primary/20 sm:hidden" />
                 </div>
               );
             })}
           </div>
+
           {errors.opening_hours && (
             <p className="text-sm font-medium text-red-500">
               {errors.opening_hours.message}
