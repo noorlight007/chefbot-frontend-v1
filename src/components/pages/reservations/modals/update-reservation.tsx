@@ -1,18 +1,18 @@
 "use client";
 
-import * as React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { ReservationType } from "@/app/(main)/reservations/page";
 import { useGetLoggedUserQuery } from "@/redux/reducers/auth-reducer";
+import { useUpdateReservationMutation } from "@/redux/reducers/reservation-reducer";
 import {
   useGetRestaurantPromotionsQuery,
   useGetSingleRestaurantMenuQuery,
   useGetTablesQuery,
 } from "@/redux/reducers/restaurants-reducer";
-import { useUpdateReservationMutation } from "@/redux/reducers/reservation-reducer";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 // Custom Dropdown Component
 interface DropdownProps {
@@ -343,6 +343,21 @@ const UpdateReservation: React.FC<UpdateReservationModalProps> = ({
   React.useEffect(() => {
     setPromoDisplay(initialPromoLabel);
   }, [initialPromoLabel]);
+
+  // Compute initial table label (used when table options haven't loaded yet)
+  const initialTableLabel = React.useMemo(() => {
+    if (!reservation.table) return "";
+    if (typeof reservation.table === "object" && reservation.table !== null) {
+      const tbl = reservation.table as {
+        name?: string;
+        label?: string;
+        uid?: string;
+      };
+      return tbl.name || tbl.label || tbl.uid || "";
+    }
+    // reservation.table might already be a string label
+    return reservation.table as string;
+  }, [reservation.table]);
 
   const getInitialTableUid = () => {
     return reservation.table?.uid || "";
@@ -747,16 +762,17 @@ const UpdateReservation: React.FC<UpdateReservationModalProps> = ({
 
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
-              {t("details.tableAssignment")}
+              {t("details.tableSelection")}
             </label>
             {isTableLoading ? (
               <div className="text-sm text-gray-600">{t("loading")}</div>
             ) : (
               <Dropdown
                 options={tableOptions}
-                placeholder={t("details.tableAssignment")}
+                placeholder={t("details.tableSelection")}
                 onChange={(value) => form.setValue("table", value as string)}
                 value={form.watch("table") || ""}
+                displayValue={initialTableLabel}
               />
             )}
             {form.formState.errors.table && (

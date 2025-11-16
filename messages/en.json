@@ -151,6 +151,7 @@
         "closingTime": "Closing Time",
         "breakStart": "Break Start",
         "breakEnd": "Break End",
+        "noBreak": "No Break",
         "closed": "Closed",
         "errors": "Please fix the opening hours errors highlighted below",
         "required": "At least one day is required"
@@ -188,6 +189,10 @@
         "menuDescription": {
           "label": "Description",
           "placeholder": "Menu item description"
+        },
+        "image": {
+          "label": "Image",
+          "remove": "Remove"
         },
         "price": {
           "label": "Price",
@@ -307,7 +312,7 @@
         "allergens": "Allergens",
         "noAllergens": "No allergens listed",
         "nutrition": "Nutritional Information",
-        "badge":"AI Generated",
+        "badge": "AI Generated",
         "noNutrition": "No nutritional information available",
         "combinations": "Recommended Combinations",
         "noCombinations": "No recommended combinations available",
@@ -412,7 +417,7 @@
         "date": "Date",
         "time": "Time",
         "partySize": "Party Size",
-        "tableAssignment": "Table Assignment",
+        "tableSelection": "Table Selection",
         "menuSelection": "Menu Selection",
         "additionalInformation": "Additional Information",
         "reasonForVisit": "Reason for Visit",
@@ -530,10 +535,7 @@
       "category": {
         "label": "Category",
         "placeholder": "Select category",
-        "family": "Family",
-        "couple": "Couple",
-        "group": "Group",
-        "single": "Single",
+        "public": "Public",
         "private": "Private",
         "suffix": "Table"
       },
@@ -541,8 +543,7 @@
         "label": "Status",
         "placeholder": "Select status",
         "available": "Available",
-        "unavailable": "Unavailable",
-        "reserved": "Reserved"
+        "unavailable": "Unavailable"
       },
       "position": {
         "label": "Position",
@@ -610,7 +611,7 @@
       "date": "Date",
       "time": "Time",
       "partySize": "Party Size",
-      "tableAssignment": "Table Assignment",
+      "tableSelection": "Table Selection",
       "menuSelection": "Menu Selection",
       "additionalInformation": "Additional Information",
       "reasonForVisit": "Reason for Visit",
@@ -932,29 +933,29 @@
       "cancel": "Cancel",
       "saving": "Saving..."
     },
-  "chatbots": {
-    "chatHistory": {
-      "title": "Message History",
-      "back": "Back",
-      "loadingMessages": "Loading messages...",
-      "selectConversation": "Select a chat from the sidebar to view the conversation",
-      "viewFile": "View file",
-      "sentAt": "Sent at {time}",
-      "messageCount": "({count} messages)",
-      "noMessages": "No messages yet",
-      "justNow": "just now",
-      "minuteAgo": "1 minute ago",
-      "minutesAgo": "{count} minutes ago",
-      "hourAgo": "1 hour ago",
-      "hoursAgo": "{count} hours ago",
-      "yesterday": "yesterday",
-      "daysAgo": "{count} days ago",
-      "messagePreview": "{preview}...",
-      "clientCard": {
-        "alt": "Client avatar"
+    "chatbots": {
+      "chatHistory": {
+        "title": "Message History",
+        "back": "Back",
+        "loadingMessages": "Loading messages...",
+        "selectConversation": "Select a chat from the sidebar to view the conversation",
+        "viewFile": "View file",
+        "sentAt": "Sent at {time}",
+        "messageCount": "({count} messages)",
+        "noMessages": "No messages yet",
+        "justNow": "just now",
+        "minuteAgo": "1 minute ago",
+        "minutesAgo": "{count} minutes ago",
+        "hourAgo": "1 hour ago",
+        "hoursAgo": "{count} hours ago",
+        "yesterday": "yesterday",
+        "daysAgo": "{count} days ago",
+        "messagePreview": "{preview}...",
+        "clientCard": {
+          "alt": "Client avatar"
+        }
       }
     }
-  }
   },
   "analytics": {
     "title": "Analytics",
@@ -1269,7 +1270,6 @@
       "logout": "Logout",
       "subscriptions": "Subscriptions",
       "profile": "Profile"
-
     }
   }
 }

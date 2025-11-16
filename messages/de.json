@@ -151,6 +151,7 @@
         "closingTime": "Schließzeit",
         "breakStart": "Pause Beginn",
         "breakEnd": "Pause Ende",
+        "noBreak": "Keine Pause",
         "closed": "Geschlossen",
         "errors": "Bitte korrigieren Sie die markierten Fehler in den Öffnungszeiten",
         "required": "Mindestens ein Tag ist erforderlich"
@@ -188,6 +189,10 @@
         "menuDescription": {
           "label": "Beschreibung",
           "placeholder": "Beschreibung des Menüpunkts"
+        },
+        "image": {
+          "label": "Bild",
+          "remove": "Entfernen"
         },
         "price": {
           "label": "Preis",
@@ -412,7 +417,7 @@
         "date": "Datum",
         "time": "Uhrzeit",
         "partySize": "Gruppengröße",
-        "tableAssignment": "Tischauswahl",
+        "tableSelection": "Tischauswahl",
         "menuSelection": "Menüauswahl",
         "additionalInformation": "Zusätzliche Informationen",
         "reasonForVisit": "Grund für den Besuch",
@@ -530,10 +535,7 @@
       "category": {
         "label": "Kategorie",
         "placeholder": "Kategorie auswählen",
-        "family": "Familie",
-        "couple": "Paar",
-        "group": "Gruppe",
-        "single": "Einzel",
+        "public": "Öffentlich",
         "private": "Privat",
         "suffix": "Tisch"
       },
@@ -541,8 +543,7 @@
         "label": "Status",
         "placeholder": "Status auswählen",
         "available": "Verfügbar",
-        "unavailable": "Nicht verfügbar",
-        "reserved": "Reserviert"
+        "unavailable": "Nicht verfügbar"
       },
       "position": {
         "label": "Position",
@@ -610,7 +611,7 @@
       "date": "Datum",
       "time": "Uhrzeit",
       "partySize": "Gruppengröße",
-      "tableAssignment": "Tischauswahl",
+      "tableSelection": "Tischauswahl",
       "menuSelection": "Menüauswahl",
       "additionalInformation": "Zusätzliche Informationen",
       "reasonForVisit": "Grund für den Besuch",

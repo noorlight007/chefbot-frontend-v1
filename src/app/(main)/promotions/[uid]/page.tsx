@@ -1,18 +1,8 @@
 "use client";
-import { useParams } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
+import UpdatePromotionModal from "@/components/pages/promotions/modals/update-promotion";
+import PromotionDetailsSkeleton from "@/components/pages/promotions/skeletons/promotion-details-skeleton";
 import { Badge } from "@/components/ui/badge";
-import {
-  CalendarIcon,
-  GiftIcon,
-  TagIcon,
-  ArrowLeft,
-  MoreVertical,
-  BellIcon,
-  InfoIcon,
-  ChevronDown,
-  BuildingIcon,
-} from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -20,13 +10,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useGetSinglePromotionsQuery } from "@/redux/reducers/promotions-reducer";
-import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import PromotionDetailsSkeleton from "@/components/pages/promotions/skeletons/promotion-details-skeleton";
-import UpdatePromotionModal from "@/components/pages/promotions/modals/update-promotion";
-import { useLocale, useTranslations } from "next-intl";
 import { formatDeDate } from "@/lib/utils";
+import { useGetSinglePromotionsQuery } from "@/redux/reducers/promotions-reducer";
+import {
+  ArrowLeft,
+  BellIcon,
+  BuildingIcon,
+  CalendarIcon,
+  ChevronDown,
+  GiftIcon,
+  InfoIcon,
+  MoreVertical,
+  TagIcon,
+} from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function PromotionDetails() {
   const { uid } = useParams();
@@ -96,25 +96,40 @@ export default function PromotionDetails() {
         {trigger.type === "MENU_SELECTED" && trigger.menus && (
           <div className="mt-3 space-y-3">
             <p className="font-medium">{t("details.selectedMenus")}:</p>
-            {trigger.menus.map((menu: { uid: string; name: string; description: string; category: string; classification: string; price: number; ingredients: Record<string, string> }) => (
-              <div key={menu.uid} className="rounded border bg-white p-3 shadow-sm">
-                <p className="font-semibold">{menu.name}</p>
-                <p className="text-xs text-gray-500">{menu.description}</p>
-                <div className="mt-2 flex items-center gap-4 text-xs">
-                  <span>Category: {menu.category}</span>
-                  <span>Classification: {menu.classification}</span>
-                  <span>Price: ${menu.price}</span>
+            {trigger.menus.map(
+              (menu: {
+                uid: string;
+                name: string;
+                description: string;
+                category: string;
+                classification: string;
+                price: number;
+                ingredients: Record<string, string>;
+              }) => (
+                <div
+                  key={menu.uid}
+                  className="rounded border bg-white p-3 shadow-sm"
+                >
+                  <p className="font-semibold">{menu.name}</p>
+                  <p className="text-xs text-gray-500">{menu.description}</p>
+                  <div className="mt-2 flex items-center gap-4 text-xs">
+                    <span>Category: {menu.category}</span>
+                    <span>Classification: {menu.classification}</span>
+                    <span>Price: ${menu.price}</span>
+                  </div>
+                  <details className="mt-2 text-xs">
+                    <summary className="cursor-pointer text-gray-600">
+                      Ingredients
+                    </summary>
+                    <ul className="ml-4 mt-1 list-disc space-y-1">
+                      {Object.entries(menu.ingredients).map(([ing, qty]) => (
+                        <li key={ing}>{`${ing}: ${qty}`}</li>
+                      ))}
+                    </ul>
+                  </details>
                 </div>
-                <details className="mt-2 text-xs">
-                  <summary className="cursor-pointer text-gray-600">Ingredients</summary>
-                  <ul className="mt-1 ml-4 list-disc space-y-1">
-                    {Object.entries(menu.ingredients).map(([ing, qty]) => (
-                      <li key={ing}>{`${ing}: ${qty}`}</li>
-                    ))}
-                  </ul>
-                </details>
-              </div>
-            ))}
+              ),
+            )}
           </div>
         )}
       </div>
@@ -234,9 +249,10 @@ export default function PromotionDetails() {
                   </p>
                   <p className="font-medium">
                     <p className="font-medium">
-                      {locale === "de"
-                        ? formatDeDate(promotion.valid_from)
-                        : new Date(promotion.valid_from).toLocaleDateString()}
+                      {formatDeDate(
+                        promotion.valid_from,
+                        typeof locale === "string" ? locale : undefined,
+                      )}
                     </p>
                   </p>
                 </div>
@@ -248,9 +264,10 @@ export default function PromotionDetails() {
                     {t("details.validTo")}
                   </p>
                   <p className="font-medium">
-                    {locale === "de"
-                      ? formatDeDate(promotion.valid_to)
-                      : new Date(promotion.valid_to).toLocaleDateString()}
+                    {formatDeDate(
+                      promotion.valid_to,
+                      typeof locale === "string" ? locale : undefined,
+                    )}
                   </p>
                 </div>
               </div>

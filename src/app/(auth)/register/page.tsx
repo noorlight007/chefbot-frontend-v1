@@ -211,7 +211,7 @@ export default function RegisterPage() {
                   defaultValue=""
                   render={({ field: { onChange, value } }) => (
                     <PhoneInput
-                      country={"ae"}
+                      country={"de"}
                       value={value}
                       onChange={(phone) => onChange("+" + phone)}
                       enableSearch={true}

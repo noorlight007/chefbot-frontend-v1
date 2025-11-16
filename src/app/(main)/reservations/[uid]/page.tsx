@@ -1,19 +1,8 @@
 "use client";
-import { useParams } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
+import UpdateReservation from "@/components/pages/reservations/modals/update-reservation";
+import ReservationDetailsSkeleton from "@/components/pages/reservations/skeletons/reservation-details-skeleton";
 import { Badge } from "@/components/ui/badge";
-import {
-  CalendarIcon,
-  ClockIcon,
-  UsersIcon,
-  PhoneIcon,
-  MenuIcon,
-  TableIcon,
-  ArrowLeft,
-  MoreVertical,
-  InfoIcon,
-  ChevronDown,
-} from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -21,14 +10,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useGetSingleReservationQuery } from "@/redux/reducers/reservation-reducer";
-import ReservationDetailsSkeleton from "@/components/pages/reservations/skeletons/reservation-details-skeleton";
-import { useState } from "react";
-import UpdateReservation from "@/components/pages/reservations/modals/update-reservation";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
 import { formatDeDate } from "@/lib/utils";
+import { useGetSingleReservationQuery } from "@/redux/reducers/reservation-reducer";
+import {
+  ArrowLeft,
+  CalendarIcon,
+  ChevronDown,
+  ClockIcon,
+  InfoIcon,
+  MenuIcon,
+  MoreVertical,
+  PhoneIcon,
+  TableIcon,
+  UsersIcon,
+} from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function ReservationDetails() {
   const { uid } = useParams();
@@ -234,11 +234,10 @@ export default function ReservationDetails() {
                   <p className="text-sm text-gray-500">{t("date")}</p>
                   <p className="font-medium">
                     {reservation.reservation_date
-                      ? locale === "de"
-                        ? formatDeDate(reservation.reservation_date)
-                        : new Date(
-                            reservation.reservation_date,
-                          ).toLocaleDateString()
+                      ? formatDeDate(
+                          reservation.reservation_date,
+                          typeof locale === "string" ? locale : undefined,
+                        )
                       : t("notSpecified")}
                   </p>
                 </div>
@@ -267,9 +266,7 @@ export default function ReservationDetails() {
               <div className="flex items-center gap-3 rounded-lg border bg-white p-4 shadow-sm">
                 <TableIcon className="h-5 w-5 text-purple-500" />
                 <div>
-                  <p className="text-sm text-gray-500">
-                    {t("tableAssignment")}
-                  </p>
+                  <p className="text-sm text-gray-500">{t("tableSelection")}</p>
                   <p className="font-medium">{tableDisplay}</p>
                 </div>
               </div>
@@ -516,11 +513,10 @@ export default function ReservationDetails() {
                           <span className="font-medium">{t("lastVisit")}:</span>{" "}
                           {typeof reservation.client === "object" &&
                           reservation.client?.last_visit
-                            ? locale === "de"
-                              ? formatDeDate(reservation.client.last_visit)
-                              : new Date(
-                                  reservation.client.last_visit,
-                                ).toLocaleDateString()
+                            ? formatDeDate(
+                                reservation.client.last_visit,
+                                typeof locale === "string" ? locale : undefined,
+                              )
                             : t("notRecorded")}
                         </p>
                         <p>
@@ -529,11 +525,10 @@ export default function ReservationDetails() {
                           </span>{" "}
                           {typeof reservation.client === "object" &&
                           reservation.client?.date_of_birth
-                            ? locale === "de"
-                              ? formatDeDate(reservation.client.date_of_birth)
-                              : new Date(
-                                  reservation.client.date_of_birth,
-                                ).toLocaleDateString()
+                            ? formatDeDate(
+                                reservation.client.date_of_birth,
+                                typeof locale === "string" ? locale : undefined,
+                              )
                             : t("notProvided")}
                         </p>
                       </div>

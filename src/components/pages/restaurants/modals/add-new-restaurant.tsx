@@ -1,16 +1,6 @@
-import { FC, useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-import { useAddRestaurantMutation } from "@/redux/reducers/restaurants-reducer";
-import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -18,8 +8,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { useAddRestaurantMutation } from "@/redux/reducers/restaurants-reducer";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { FC, useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const formSchema = z.object({
   name: z.string().min(1, "Restaurant name is required"),
@@ -42,6 +42,7 @@ const formSchema = z.object({
         break_start_time: z.string().optional(),
         break_end_time: z.string().optional(),
         is_closed: z.boolean(),
+        no_break: z.boolean(),
       }),
     )
     .min(1, "At least one day is required"),
@@ -88,6 +89,7 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
           break_start_time: "14:00:00.000Z",
           break_end_time: "16:00:00.000Z",
           is_closed: false,
+          no_break: false,
         },
         {
           day: "TUESDAY",
@@ -96,6 +98,7 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
           break_start_time: "14:00:00.000Z",
           break_end_time: "16:00:00.000Z",
           is_closed: false,
+          no_break: false,
         },
         {
           day: "WEDNESDAY",
@@ -104,6 +107,7 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
           break_start_time: "14:00:00.000Z",
           break_end_time: "16:00:00.000Z",
           is_closed: false,
+          no_break: false,
         },
         {
           day: "THURSDAY",
@@ -112,6 +116,7 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
           break_start_time: "14:00:00.000Z",
           break_end_time: "16:00:00.000Z",
           is_closed: false,
+          no_break: false,
         },
         {
           day: "FRIDAY",
@@ -120,6 +125,7 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
           break_start_time: "14:00:00.000Z",
           break_end_time: "16:00:00.000Z",
           is_closed: false,
+          no_break: false,
         },
         {
           day: "SATURDAY",
@@ -128,6 +134,7 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
           break_start_time: "00:00:00.000Z",
           break_end_time: "00:00:00.000Z",
           is_closed: true,
+          no_break: true,
         },
         {
           day: "SUNDAY",
@@ -136,6 +143,7 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
           break_start_time: "00:00:00.000Z",
           break_end_time: "00:00:00.000Z",
           is_closed: true,
+          no_break: true,
         },
       ],
     },
@@ -209,10 +217,26 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
     formData.append("whatsapp_enabled", data.whatsapp_enabled.toString());
     formData.append("opening_hours", JSON.stringify(data.opening_hours));
 
+    // Prepare opening_hours payload for API: remove frontend-only `no_break` and
+    // ensure break times are zeroed when no_break is true.
+    const opening_hours_payload = data.opening_hours.map(
+      (h: FormData["opening_hours"][number]) => {
+        const { no_break, ...rest } = h || {};
+        if (no_break) {
+          rest.break_start_time = "00:00:00.000Z";
+          rest.break_end_time = "00:00:00.000Z";
+        }
+        return rest;
+      },
+    );
+
+    // Replace opening_hours in formData with cleaned payload
+    formData.set("opening_hours", JSON.stringify(opening_hours_payload));
+
     const restaurantData = {
       ...Object.fromEntries(formData.entries()),
       service_list: ["db0cc19d-6b4d-4a33-ba28-62595aa2547e"],
-      opening_hours: data.opening_hours,
+      opening_hours: opening_hours_payload,
     };
 
     try {
@@ -307,9 +331,18 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
     "SUNDAY",
   ];
   const reservation_booking_reminderS = [
-    { value: "30", label: t("form.fields.reservation_booking_reminder.options.30") },
-    { value: "45", label: t("form.fields.reservation_booking_reminder.options.45") },
-    { value: "60", label: t("form.fields.reservation_booking_reminder.options.60") },
+    {
+      value: "30",
+      label: t("form.fields.reservation_booking_reminder.options.30"),
+    },
+    {
+      value: "45",
+      label: t("form.fields.reservation_booking_reminder.options.45"),
+    },
+    {
+      value: "60",
+      label: t("form.fields.reservation_booking_reminder.options.60"),
+    },
   ];
 
   const formatTimeForInput = (isoTime: string) => {
@@ -586,7 +619,11 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
                   onValueChange={field.onChange}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder={t("form.fields.reservation_booking_reminder.placeholder")} />
+                    <SelectValue
+                      placeholder={t(
+                        "form.fields.reservation_booking_reminder.placeholder",
+                      )}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {reservation_booking_reminderS.map((reminder) => (
@@ -632,7 +669,9 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
               <div className="mt-3 space-y-2">
                 {Object.entries(apiErrors).map(([day, messages]) => (
                   <div key={day} className="text-sm text-red-700">
-                    <span className="font-semibold capitalize">{t(`form.openingHours.${day.toLowerCase()}`)}:</span>
+                    <span className="font-semibold capitalize">
+                      {t(`form.openingHours.${day.toLowerCase()}`)}:
+                    </span>
                     <ul className="ml-4 list-disc">
                       {messages.map((msg, idx) => (
                         <li key={idx}>{msg}</li>
@@ -645,7 +684,7 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
           )}
 
           <div className="space-y-4 overflow-x-auto rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="grid min-w-[800px] grid-cols-6 gap-6 border-b border-gray-100 pb-4">
+            <div className="grid min-w-[900px] grid-cols-7 gap-6 border-b border-gray-100 pb-4">
               <Label className="col-span-1 text-sm font-medium text-gray-700">
                 {t("form.openingHours.day")}
               </Label>
@@ -662,6 +701,9 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
                 {t("form.openingHours.breakEnd")}
               </Label>
               <Label className="col-span-1 text-center text-sm font-medium text-gray-700">
+                {t("form.openingHours.noBreak")}
+              </Label>
+              <Label className="col-span-1 text-center text-sm font-medium text-gray-700">
                 {t("form.openingHours.closed")}
               </Label>
             </div>
@@ -672,7 +714,7 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
               return (
                 <div key={day} className="space-y-2">
                   <div
-                    className={`grid min-w-[800px] grid-cols-6 items-center gap-6 rounded-lg py-2 transition-colors ${
+                    className={`grid min-w-[900px] grid-cols-7 items-center gap-6 rounded-lg py-2 transition-colors ${
                       hasError ? "bg-red-50" : "hover:bg-gray-50"
                     }`}
                   >
@@ -847,9 +889,14 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
                                 ":",
                               )[0]
                             }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
+                            disabled={
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              ) ||
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.no_break`,
+                              )
+                            }
                             className={`w-1/2 rounded-md ${
                               hasError
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
@@ -879,9 +926,14 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
                                 ":",
                               )[1]
                             }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
+                            disabled={
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              ) ||
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.no_break`,
+                              )
+                            }
                             className={`w-1/2 rounded-md ${
                               hasError
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
@@ -920,9 +972,14 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
                                 ":",
                               )[0]
                             }
-                            disabled={watch(
-                              `opening_hours.${days.indexOf(day)}.is_closed`,
-                            )}
+                            disabled={
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.is_closed`,
+                              ) ||
+                              watch(
+                                `opening_hours.${days.indexOf(day)}.no_break`,
+                              )
+                            }
                             className={`w-1/2 rounded-md ${
                               hasError
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
@@ -973,6 +1030,47 @@ const AddNewRestaurantModal: FC<AddNewRestaurantModalProps> = ({ onClose }) => {
                         </div>
                       )}
                     />
+                    <div className="col-span-1 flex justify-center">
+                      <Controller
+                        name={`opening_hours.${days.indexOf(day)}.no_break`}
+                        control={control}
+                        render={({ field }) => {
+                          const isClosed = watch(
+                            `opening_hours.${days.indexOf(day)}.is_closed`,
+                          );
+
+                          return (
+                            <Switch
+                              checked={field.value}
+                              disabled={isClosed}
+                              onCheckedChange={(checked) => {
+                                // prevent toggling when the day is marked closed
+                                if (isClosed) return;
+                                field.onChange(checked);
+                                if (checked) {
+                                  setValue(
+                                    `opening_hours.${days.indexOf(day)}.break_start_time`,
+                                    "00:00:00.000Z",
+                                  );
+                                  setValue(
+                                    `opening_hours.${days.indexOf(day)}.break_end_time`,
+                                    "00:00:00.000Z",
+                                  );
+                                  // Clear errors for this day when no_break is set
+                                  const newErrors = { ...apiErrors };
+                                  delete newErrors[day];
+                                  delete newErrors[day.toLowerCase()];
+                                  delete newErrors[day.toUpperCase()];
+                                  setApiErrors(newErrors);
+                                }
+                              }}
+                              className={`${field.value ? "bg-yellow-500 hover:bg-yellow-600" : "bg-gray-200 hover:bg-gray-300"} ${isClosed ? "cursor-not-allowed opacity-50" : ""}`}
+                            />
+                          );
+                        }}
+                      />
+                    </div>
+
                     <div className="col-span-1 flex justify-center">
                       <Controller
                         name={`opening_hours.${days.indexOf(day)}.is_closed`}

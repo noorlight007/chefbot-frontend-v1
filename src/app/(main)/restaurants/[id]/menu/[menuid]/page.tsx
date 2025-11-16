@@ -1,14 +1,7 @@
 "use client";
-import Image from "next/image";
-import { ArrowLeft, Camera, MoreVertical } from "lucide-react";
-import { FC, useState, useRef } from "react";
-import { useParams } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
-import {
-  useGetSingleMenuItemQuery,
-  useUpdateSingleMenuMutation,
-} from "@/redux/reducers/restaurants-reducer";
+import { UpdateMenu } from "@/components/pages/restaurants/modals/update-menu";
 import MenuDetailsSkeleton from "@/components/pages/restaurants/skeletons/menu-details-skeleton";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -17,9 +10,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { UpdateMenu } from "@/components/pages/restaurants/modals/update-menu";
+import {
+  useGetSingleMenuItemQuery,
+  useUpdateSingleMenuMutation,
+} from "@/redux/reducers/restaurants-reducer";
+import { ArrowLeft, Camera, MoreVertical } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import { FC, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
 
 const MenuDetails: FC = () => {
   const t = useTranslations("restaurants.menu.details");
@@ -213,19 +213,31 @@ const MenuDetails: FC = () => {
           </div>
 
           {/* Ingredients */}
-          <div className="mb-4 rounded-lg bg-gray-50 p-4">
-            <h2 className="mb-2 text-lg font-semibold">{t("ingredients")}</h2>
+          <div className="mb-6 rounded-lg bg-gradient-to-b from-white to-gray-50 p-4 shadow-sm">
+            <h2 className="mb-3 text-lg font-semibold text-gray-800">
+              {t("ingredients")}
+            </h2>
             {menuItem.ingredients &&
             Object.keys(menuItem.ingredients).length > 0 ? (
-              <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+              <div className="grid gap-3 text-sm text-gray-700 sm:grid-cols-2">
                 {Object.entries(
                   menuItem.ingredients as Record<string, string>,
                 ).map(([ingredient, amount]) => (
-                  <div key={ingredient} className="flex justify-between">
-                    <span className="capitalize">
-                      {ingredient.replace("_", " ")}:
+                  <div
+                    key={ingredient}
+                    className="flex items-center justify-between rounded-md border border-gray-100 bg-white/60 p-3 shadow-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="grid h-8 w-8 flex-none place-items-center rounded-full bg-purple-50 text-xs font-medium text-purple-600">
+                        {ingredient.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="capitalize text-gray-800">
+                        {ingredient.replace(/_/g, " ")}
+                      </span>
+                    </div>
+                    <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">
+                      {amount || "—"}
                     </span>
-                    <span>{amount}</span>
                   </div>
                 ))}
               </div>
@@ -236,7 +248,13 @@ const MenuDetails: FC = () => {
 
           {/* Allergens */}
           <div className="mb-4 rounded-lg bg-gray-50 p-4">
-            <h2 className="mb-2 text-lg font-semibold">{t("allergens")}</h2>
+            <div className="mb-2 flex items-center gap-2">
+              <h2 className="mb-2 text-lg font-semibold">{t("allergens")}</h2>
+              <Badge>
+                {t("badge")}
+              </Badge>
+            </div>
+
             <div className="flex flex-wrap gap-2">
               {menuItem.allergens && menuItem.allergens.length > 0 ? (
                 menuItem.allergens.map((allergen: string, index: number) => (
@@ -254,45 +272,62 @@ const MenuDetails: FC = () => {
           </div>
 
           {/* Macronutrients */}
-          <div className="mb-4 rounded-lg bg-gray-50 p-4">
-            <div className="mb-2 flex items-center gap-4">
-              <h2 className="text-lg font-semibold">{t("nutrition")}</h2>
-              <Badge>{t("badge")}</Badge>
+          <div className="mb-4 rounded-lg bg-gradient-to-b from-white to-gray-50 p-4 shadow-sm">
+            <div className="mb-3 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-gray-800">
+                {t("nutrition")}
+              </h2>
+              <Badge className="text-[10px]">{t("badge")}</Badge>
             </div>
             {menuItem.macronutrients &&
             Object.keys(menuItem.macronutrients).length > 0 ? (
-              <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+              <div className="grid gap-3 text-sm text-gray-700 sm:grid-cols-2">
                 {Object.entries(menuItem.macronutrients as Macronutrients).map(
-                  ([key, value]) => (
-                    <div key={key} className="flex justify-between">
-                      <span className="capitalize">
-                        {locale === "de"
-                          ? key === "fat"
-                            ? "Fett:"
-                            : key === "iron"
-                              ? "Eisen:"
-                              : key === "fiber"
-                                ? "Ballaststoffe:"
-                                : key === "sugar"
-                                  ? "Zucker:"
-                                  : key === "sodium"
-                                    ? "Natrium:"
-                                    : key === "calcium"
-                                      ? "Kalzium:"
-                                      : key === "protein"
-                                        ? "Protein:"
-                                        : key === "calories"
-                                          ? "Kalorien:"
-                                          : key === "vitamin_c"
-                                            ? "Vitamin C:"
-                                            : key === "carbohydrates"
-                                              ? "Kohlenhydrate:"
-                                              : key.replace("_", " ") + ":"
-                          : key.replace("_", " ") + ":"}
-                      </span>
-                      <span>{value}</span>
-                    </div>
-                  ),
+                  ([key, value]) => {
+                    const label =
+                      locale === "de"
+                        ? key === "fat"
+                          ? "Fett"
+                          : key === "iron"
+                            ? "Eisen"
+                            : key === "fiber"
+                              ? "Ballaststoffe"
+                              : key === "sugar"
+                                ? "Zucker"
+                                : key === "sodium"
+                                  ? "Natrium"
+                                  : key === "calcium"
+                                    ? "Kalzium"
+                                    : key === "protein"
+                                      ? "Protein"
+                                      : key === "calories"
+                                        ? "Kalorien"
+                                        : key === "vitamin_c"
+                                          ? "Vitamin C"
+                                          : key === "carbohydrates"
+                                            ? "Kohlenhydrate"
+                                            : key.replace("_", " ")
+                        : key.replace("_", " ");
+
+                    return (
+                      <div
+                        key={key}
+                        className="flex items-center justify-between rounded-md border border-gray-100 bg-white/60 p-3 shadow-sm"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="grid h-8 w-8 flex-none place-items-center rounded-full bg-green-50 text-xs font-medium text-green-600">
+                            {key.charAt(0).toUpperCase()}
+                          </div>
+                          <span className="capitalize text-gray-800">
+                            {label}:
+                          </span>
+                        </div>
+                        <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                          {value}
+                        </span>
+                      </div>
+                    );
+                  },
                 )}
               </div>
             ) : (
