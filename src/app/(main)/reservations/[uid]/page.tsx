@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDeDate } from "@/lib/utils";
+import { useGetLoggedUserQuery } from "@/redux/reducers/auth-reducer";
 import { useGetSingleReservationQuery } from "@/redux/reducers/reservation-reducer";
 import {
   ArrowLeft,
@@ -31,6 +32,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 export default function ReservationDetails() {
+  const { data } = useGetLoggedUserQuery({});
   const { uid } = useParams();
   const { data: reservation, isLoading } = useGetSingleReservationQuery(uid);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -47,6 +49,26 @@ export default function ReservationDetails() {
   if (!reservation) {
     return <div>{t("noReservationFound")}</div>;
   }
+
+  const getCurrencySymbol = (currency?: string) => {
+    if (!currency) return "$";
+    switch (currency.toUpperCase()) {
+      case "USD":
+        return "$";
+      case "EUR":
+        return "€";
+      case "YEN":
+        return "¥";
+      case "AED":
+        return "د.إ";
+      default:
+        return "$";
+    }
+  };
+
+  const currencySymbol = getCurrencySymbol(
+    data?.currency as string | undefined,
+  );
 
   // Fixed: More robust client display logic
   const getClientDisplay = (
@@ -95,7 +117,7 @@ export default function ReservationDetails() {
       .map((menu: { name?: string; price?: string | number }) => {
         const name = menu?.name ? String(menu.name) : t("unknownClient");
         const price = menu?.price ? String(menu.price) : "0";
-        return `${name} ($${price})`;
+        return `${name} (${currencySymbol}${price})`;
       })
       .join(", ");
   };
@@ -417,7 +439,8 @@ export default function ReservationDetails() {
                                   <span className="font-medium">
                                     {t("price")}:
                                   </span>{" "}
-                                  ${String(menu.price || t("notSpecified"))}
+                                  {currencySymbol}
+                                  {String(menu.price || t("notSpecified"))}
                                 </p>
                                 <p>
                                   <span className="font-medium">
