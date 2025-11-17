@@ -21,3 +21,28 @@ export const formatDeDate = (dateStr: string, locale?: string): string => {
   const year = date.getFullYear();
   return `${day}, ${month} ${year}`;
 };
+
+// Format stored ISO timestamp to localized date (using formatDeDate) + HH:mm
+// Example: "2025-11-20T12:45:00+06:00" -> "20, November 2025 12:45" (or German month)
+export const formatStoredDateTimeLocalized = (
+  iso?: string | null,
+  localeArg?: string,
+) => {
+  if (!iso) return "";
+  const m = iso.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/);
+  if (m) {
+    const datePart = m[1];
+    const timePart = m[2];
+    return `${formatDeDate(datePart, localeArg)} ${timePart}`;
+  }
+  // Fallback: strip timezone then attempt to extract
+  const fallback = iso.replace(/Z|([+-]\d{2}:?\d{2})$/, "");
+  const parts = fallback.split("T");
+  if (parts.length >= 2) {
+    const datePart = parts[0];
+    const timeParts = parts[1].split(":");
+    const time = timeParts.length >= 2 ? `${timeParts[0]}:${timeParts[1]}` : "";
+    return `${formatDeDate(datePart, localeArg)}${time ? ` ${time}` : ""}`;
+  }
+  return iso;
+};
