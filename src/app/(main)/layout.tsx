@@ -43,7 +43,7 @@ export default async function RootLayout({
           <LocaleProvider>
             <ClientProvider>
               <ProtectedRoute>
-                <div className="[--header-height:calc(theme(spacing.14))]">
+                <div className="[--header-height:calc(theme(spacing.16))]">
                   <SidebarProvider className="flex flex-col">
                     <SiteHeader />
                     <div className="flex flex-1">
