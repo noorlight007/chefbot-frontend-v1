@@ -46,3 +46,31 @@ export const formatStoredDateTimeLocalized = (
   }
   return iso;
 };
+
+
+export const safe = (v: unknown): string => {
+  if (v === undefined || v === null || v === "") return "-";
+  if (typeof v === "string") return v;
+  if (typeof v === "number" || typeof v === "boolean") return String(v);
+  try {
+    return JSON.stringify(v);
+  } catch {
+    return String(v);
+  }
+};
+
+
+export const formatChoiceFieldValue = (v: unknown): string => {
+  if (typeof v !== "string") return safe(v);
+  return v
+    .split("_")
+    .map((part) =>
+      part
+        .split("")
+        .map((char: string, idx: number) =>
+          idx === 0 ? char.toUpperCase() : char.toLowerCase(),
+        )
+        .join(""),
+    )
+    .join(" ");
+};

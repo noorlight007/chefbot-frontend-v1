@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { formatDeDate, formatStoredDateTimeLocalized } from "@/lib/utils";
+import { formatChoiceFieldValue, formatDeDate, formatStoredDateTimeLocalized } from "@/lib/utils";
 import { useGetLoggedUserQuery } from "@/redux/reducers/auth-reducer";
 import { useGetSingleReservationQuery } from "@/redux/reducers/reservation-reducer";
 import {
@@ -412,14 +412,14 @@ export default function ReservationDetails() {
                                   <span className="font-medium">
                                     {t("category")}:
                                   </span>{" "}
-                                  {String(menu.category || t("notSpecified"))}
+                                  {String(formatChoiceFieldValue(menu.category) || t("notSpecified"))}
                                 </p>
                                 <p>
                                   <span className="font-medium">
                                     {t("classification")}:
                                   </span>{" "}
                                   {String(
-                                    menu.classification || t("notSpecified"),
+                                    formatChoiceFieldValue(menu.classification) || t("notSpecified"),
                                   )}
                                 </p>
                                 <p>
@@ -483,7 +483,7 @@ export default function ReservationDetails() {
                           <span className="font-medium">{t("source")}:</span>{" "}
                           {typeof reservation.client === "object" &&
                           reservation.client?.source
-                            ? String(reservation.client.source)
+                            ? formatChoiceFieldValue(reservation.client.source)
                             : t("unknownClient")}
                         </p>
                         <p>
