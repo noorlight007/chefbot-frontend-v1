@@ -12,7 +12,8 @@
   "sidebar": {
     "logo": {
       "alt": "ChefBot Logo"
-    }
+    },
+    "title": "ChefBot"
   },
   "settings": {
     "title": "Settings",

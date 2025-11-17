@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   BookOpen,
   Bot,
@@ -11,6 +10,7 @@ import {
   User,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
 import {
@@ -20,7 +20,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import Image from "next/image";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const t = useTranslations();
@@ -71,21 +70,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <div>
-              <a href="/" className="flex items-center gap-4">
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <div className="rounded-xl bg-sidebar px-5 py-3">
-                    <Image
-                      src="/logo.png"
-                      alt={t("sidebar.logo.alt")}
-                      width={70}
-                      height={70}
-                      className="h-16 w-auto"
-                    />
-                  </div>
+            <a href="/" className="flex items-center gap-3">
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <div className="px-2 py-2">
+                  <span className="text-sm font-semibold">
+                    {t("sidebar.title")}
+                  </span>
                 </div>
-              </a>
-            </div>
+              </div>
+            </a>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
