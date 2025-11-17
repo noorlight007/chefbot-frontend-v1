@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { formatDeDate } from "@/lib/utils";
+import { formatChoiceFieldValue, formatDeDate, formatStoredDateTimeLocalized } from "@/lib/utils";
 import { useGetLoggedUserQuery } from "@/redux/reducers/auth-reducer";
 import { useGetSingleReservationQuery } from "@/redux/reducers/reservation-reducer";
 import {
@@ -352,25 +352,12 @@ export default function ReservationDetails() {
                       </p>
                     </div>
                     <p className="mt-2 text-sm text-gray-600">
-                      {reservation.booking_reminder_sent
+                      {reservation.booking_reminder_sent_at
                         ? t("bookingReminderSent", {
-                            date:
-                              locale === "de"
-                                ? new Date(
-                                    reservation.booking_reminder_sent_at,
-                                  ).toLocaleString("de-DE", {
-                                    day: "numeric",
-                                    month: "long",
-                                    year: "numeric",
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    timeZone: "UTC",
-                                  })
-                                : new Date(
-                                    reservation.booking_reminder_sent_at,
-                                  ).toLocaleString("en-GB", {
-                                    timeZone: "UTC",
-                                  }),
+                            date: formatStoredDateTimeLocalized(
+                              reservation.booking_reminder_sent_at,
+                              typeof locale === "string" ? locale : undefined,
+                            ),
                           })
                         : t("bookingReminderNotSent")}
                     </p>
@@ -425,14 +412,14 @@ export default function ReservationDetails() {
                                   <span className="font-medium">
                                     {t("category")}:
                                   </span>{" "}
-                                  {String(menu.category || t("notSpecified"))}
+                                  {String(formatChoiceFieldValue(menu.category) || t("notSpecified"))}
                                 </p>
                                 <p>
                                   <span className="font-medium">
                                     {t("classification")}:
                                   </span>{" "}
                                   {String(
-                                    menu.classification || t("notSpecified"),
+                                    formatChoiceFieldValue(menu.classification) || t("notSpecified"),
                                   )}
                                 </p>
                                 <p>
@@ -496,7 +483,7 @@ export default function ReservationDetails() {
                           <span className="font-medium">{t("source")}:</span>{" "}
                           {typeof reservation.client === "object" &&
                           reservation.client?.source
-                            ? String(reservation.client.source)
+                            ? formatChoiceFieldValue(reservation.client.source)
                             : t("unknownClient")}
                         </p>
                         <p>
