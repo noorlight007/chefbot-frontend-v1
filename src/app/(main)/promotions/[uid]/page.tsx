@@ -46,6 +46,7 @@ export default function PromotionDetails() {
         t(`form.dropdownValues.triggerTypeOptions.${String(type)}`) || type
       );
     } catch (e) {
+      console.error(e);
       return type;
     }
   };
@@ -57,6 +58,7 @@ export default function PromotionDetails() {
         category
       );
     } catch (e) {
+      console.error(e);
       return category;
     }
   };
