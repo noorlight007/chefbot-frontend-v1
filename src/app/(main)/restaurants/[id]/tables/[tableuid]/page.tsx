@@ -1,14 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import {
-  ArrowLeft,
-  MoreVertical,
-  Users,
-  Tag,
-  MapPin,
-  Circle,
-} from "lucide-react";
+import UpdateTable from "@/components/pages/restaurants/modals/update-table";
+import TableDetailSkeleton from "@/components/pages/restaurants/skeletons/table-details-skeleton";
 import {
   Dialog,
   DialogContent,
@@ -16,13 +9,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FC, useState } from "react";
-import { useParams } from "next/navigation";
-import { useGetSingleTableQuery } from "@/redux/reducers/restaurants-reducer";
-import TableDetailSkeleton from "@/components/pages/restaurants/skeletons/table-details-skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import UpdateTable from "@/components/pages/restaurants/modals/update-table";
+import { useGetSingleTableQuery } from "@/redux/reducers/restaurants-reducer";
+import {
+  ArrowLeft,
+  Circle,
+  MapPin,
+  MoreVertical,
+  Tag,
+  Users,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import { FC, useState } from "react";
 
 const TableDetails: FC = () => {
   const t = useTranslations("tables.details");
@@ -88,7 +88,10 @@ const TableDetails: FC = () => {
               <div className="text-black">
                 <h1 className="text-xl font-bold md:text-2xl">{data?.name}</h1>
                 <p className="mt-1 text-xs opacity-90 md:text-sm">
-                  {data?.category} {t("category.suffix")}
+                  {t(
+                    `category.${data?.category?.toLowerCase() || "notAvailable"}`,
+                  )}{" "}
+                  {t("category.suffix")}
                 </p>
               </div>
             </div>
