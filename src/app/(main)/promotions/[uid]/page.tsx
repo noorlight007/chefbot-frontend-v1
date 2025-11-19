@@ -41,16 +41,26 @@ export default function PromotionDetails() {
   }
 
   const getTriggerTypeLabel = (type: string) => {
-    return (
-      triggerTypeOptions.find((option) => option.value === type)?.label || type
-    );
+    try {
+      return (
+        t(`form.dropdownValues.triggerTypeOptions.${String(type)}`) || type
+      );
+    } catch (e) {
+      console.error(e);
+      return type;
+    }
   };
 
   const getYearlyCategoryLabel = (category: string) => {
-    return (
-      yearlyCategoryOptions.find((option) => option.value === category)
-        ?.label || category
-    );
+    try {
+      return (
+        t(`form.dropdownValues.yearlyCategoryOptions.${String(category)}`) ||
+        category
+      );
+    } catch (e) {
+      console.error(e);
+      return category;
+    }
   };
 
   const renderTriggerDetails = () => {
@@ -322,14 +332,4 @@ export default function PromotionDetails() {
   );
 }
 
-const triggerTypeOptions = [
-  { value: "YEARLY", label: "Yearly" },
-  { value: "MENU_SELECTED", label: "Menu Selected" },
-  { value: "INACTIVITY", label: "Inactivity" },
-  { value: "RESERVATION_COUNT", label: "Reservation Count" },
-];
-
-const yearlyCategoryOptions = [
-  { value: "ANNIVERSARY", label: "Anniversary" },
-  { value: "BIRTHDAY", label: "Birthday" },
-];
+// Trigger and yearly category labels are provided via i18n keys in messages
