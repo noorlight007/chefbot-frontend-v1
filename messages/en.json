@@ -465,6 +465,14 @@
         "timeRange": "{start} - {end}",
         "unnamedReservation": "Unnamed Reservation"
       },
+      "client": {
+        "source": {
+          "whatsapp": "WhatsApp",
+          "manual": "Manual",
+          "WHATSAPP": "WhatsApp",
+          "MANUAL": "Manual"
+        }
+      },
       "form": {
         "title": "Create Reservation",
         "reservationName": "Reservation Name",

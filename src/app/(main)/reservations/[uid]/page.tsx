@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { formatChoiceFieldValue, formatDeDate, formatStoredDateTimeLocalized } from "@/lib/utils";
+import { formatDeDate, formatStoredDateTimeLocalized } from "@/lib/utils";
 import { useGetLoggedUserQuery } from "@/redux/reducers/auth-reducer";
 import { useGetSingleReservationQuery } from "@/redux/reducers/reservation-reducer";
 import {
@@ -40,6 +40,8 @@ export default function ReservationDetails() {
   const [isMenuDetailsOpen, setIsMenuDetailsOpen] = useState(false);
   const t = useTranslations("reservations.details");
   const s = useTranslations("reservations.filters.status");
+  const c = useTranslations("restaurants.menu.form");
+  const cs = useTranslations("restaurants.reservations.client");
   const locale = useLocale();
 
   if (isLoading) {
@@ -412,15 +414,29 @@ export default function ReservationDetails() {
                                   <span className="font-medium">
                                     {t("category")}:
                                   </span>{" "}
-                                  {String(formatChoiceFieldValue(menu.category) || t("notSpecified"))}
+                                  {menu.category
+                                    ? c(
+                                        `category.options.${menu.category
+                                          .toLowerCase()
+                                          .replace(
+                                            /_([a-z])/g,
+                                            (_: string, letter: string) =>
+                                              letter.toUpperCase(),
+                                          )}`,
+                                      )
+                                    : t("notSpecified")}
                                 </p>
                                 <p>
                                   <span className="font-medium">
                                     {t("classification")}:
                                   </span>{" "}
-                                  {String(
-                                    formatChoiceFieldValue(menu.classification) || t("notSpecified"),
-                                  )}
+                                  {menu.classification
+                                    ? c(
+                                        `classification.options.${String(
+                                          menu.classification,
+                                        ).toLowerCase()}`,
+                                      )
+                                    : t("notSpecified")}
                                 </p>
                                 <p>
                                   <span className="font-medium">
@@ -483,7 +499,8 @@ export default function ReservationDetails() {
                           <span className="font-medium">{t("source")}:</span>{" "}
                           {typeof reservation.client === "object" &&
                           reservation.client?.source
-                            ? formatChoiceFieldValue(reservation.client.source)
+                            ? cs(`source.${reservation.client.source}`) ||
+                              String(reservation.client.source)
                             : t("unknownClient")}
                         </p>
                         <p>
