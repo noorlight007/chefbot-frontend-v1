@@ -126,38 +126,19 @@ export default function RegisterPage() {
     }
   };
 
-  const handleLocaleToggle = () => {
-    const next = locale === "en" ? "de" : "en";
-    setLocale(next);
-    try {
-      localStorage.setItem("locale", next);
-      // also set cookie so server-side i18n picks this up
-      document.cookie = `locale=${next}; path=/`;
-    } catch (e) {
-      // ignore
-    }
-    toast.success(`Language set to ${next.toUpperCase()}`);
-    // refresh the page so Next.js picks up new locale if using server-driven i18n
-    try {
-      router.refresh();
-    } catch (e) {
-      // ignore in case router.refresh is unavailable
-    }
-  };
-
   const handleLocaleChange = (next: string) => {
     setLocale(next);
     try {
       localStorage.setItem("locale", next);
       document.cookie = `locale=${next}; path=/`;
     } catch (e) {
-      // ignore
+      console.error("Failed to set locale in storage or cookie", e);
     }
     toast.success(`Language set to ${next.toUpperCase()}`);
     try {
       router.refresh();
     } catch (e) {
-      // ignore
+      console.error("Failed to refresh the router", e);
     }
   };
 

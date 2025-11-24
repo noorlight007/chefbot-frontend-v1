@@ -87,13 +87,13 @@ export default function LoginPage() {
       // also set cookie so server-side i18n picks this up
       document.cookie = `locale=${next}; path=/`;
     } catch (e) {
-      // ignore
+      console.error("Failed to set locale in localStorage or cookie", e);
     }
     toast.success(`Language set to ${next.toUpperCase()}`);
     try {
       router.refresh();
     } catch (e) {
-      // ignore if unavailable
+      console.error("Failed to refresh router", e);
     }
   };
 
