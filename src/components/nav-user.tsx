@@ -48,6 +48,34 @@ export function NavUser() {
     // }
   }, [data?.language, data?.currency]);
 
+  // Ensure client/local cookie reflect the user's language so server-side i18n
+  // (middleware / `src/i18n/request.ts`) can pick the correct locale on first load.
+  useEffect(() => {
+    if (!data?.language || typeof window === "undefined") return;
+
+    const localeCode = data.language === "GERMAN" ? "de" : "en";
+
+    try {
+      const currentCookie = document.cookie
+        .split(";")
+        .map((c) => c.trim())
+        .find((c) => c.startsWith("locale="))
+        ?.split("=")[1];
+      const currentLocal = localStorage.getItem("locale");
+
+      if (currentLocal !== localeCode) {
+        localStorage.setItem("locale", localeCode);
+      }
+
+      if (currentCookie !== localeCode) {
+        document.cookie = `locale=${localeCode}; path=/; max-age=31536000`;
+        window.location.reload();
+      }
+    } catch (e) {
+      console.error("Failed to sync locale cookie/localStorage:", e);
+    }
+  }, [data?.language]);
+
   const handleLanguageChange = async (language: string) => {
     setSelectedLanguage(language);
     try {
