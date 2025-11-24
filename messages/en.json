@@ -15,6 +15,43 @@
     },
     "title": "ChefBot"
   },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "description": "Enter your email and password to login",
+      "email": "Email",
+      "emailPlaceholder": "name@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "signIn": "Sign In",
+      "dontHaveAccount": "Don't have an account?",
+      "signUpHere": "Sign up here"
+    },
+    "register": {
+      "title": "Register",
+      "description": "Create your account to get started",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "John",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Doe",
+      "email": "Email",
+      "emailPlaceholder": "name@example.com",
+      "phone": "Phone",
+      "countrySearch": "Search country...",
+      "preferredCurrency": "Preferred Currency",
+      "selectCurrency": "Select currency",
+      "gender": "Gender",
+      "selectGender": "Select gender",
+      "genderOptions": { "male": "Male", "female": "Female", "other": "Other" },
+      "dateOfBirth": "Date of Birth",
+      "profilePicture": "Profile Picture",
+      "selectedFile": "Selected file: {file}",
+      "createAccount": "Create Account",
+      "loading": "Loading...",
+      "alreadyHaveAccount": "Already have an account?",
+      "signInHere": "Sign in here"
+    }
+  },
   "settings": {
     "title": "Settings",
     "back": "Back",

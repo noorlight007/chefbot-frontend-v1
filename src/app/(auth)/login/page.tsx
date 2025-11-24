@@ -11,21 +11,28 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { useAppDispatch } from "@/redux/hooks";
 import { useLoginUserMutation } from "@/redux/reducers/auth-reducer";
+import { loginSuccess } from "@/redux/reducers/auth-slice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Globe, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import Image from "next/image";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useAppDispatch } from "@/redux/hooks";
-import { loginSuccess } from "@/redux/reducers/auth-slice";
+import * as z from "zod";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [locale, setLocale] = useState<string>(
+    typeof window !== "undefined"
+      ? localStorage.getItem("locale") || "en"
+      : "en",
+  );
+  const t = useTranslations("auth.login");
   const {
     register,
     handleSubmit,
@@ -45,7 +52,7 @@ export default function LoginPage() {
       if ("data" in res) {
         const accessToken = res.data.access;
         const refreshToken = res.data.refresh;
-        dispatch(loginSuccess({accessToken, refreshToken}));
+        dispatch(loginSuccess({ accessToken, refreshToken }));
         router.push("/");
         toast.success("Successfully logged in!");
       } else if ("error" in res) {
@@ -65,8 +72,26 @@ export default function LoginPage() {
     setShowPassword(!showPassword);
   };
 
+  const handleLocaleToggle = () => {
+    const next = locale === "en" ? "de" : "en";
+    setLocale(next);
+    try {
+      localStorage.setItem("locale", next);
+      // also set cookie so server-side i18n picks this up
+      document.cookie = `locale=${next}; path=/`;
+    } catch (e) {
+      // ignore
+    }
+    toast.success(`Language set to ${next.toUpperCase()}`);
+    try {
+      router.refresh();
+    } catch (e) {
+      // ignore if unavailable
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#242020] px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="flex flex-col items-center justify-center">
           <div className="rounded-xl bg-sidebar px-5 py-3">
@@ -78,27 +103,35 @@ export default function LoginPage() {
               className="h-16 w-auto"
             />
           </div>
-          <p className="mt-1 text-sm font-medium">
-            Better Service, Better Life
-          </p>
         </div>
 
         <Card className="w-full">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-center text-2xl">Login</CardTitle>
+          <CardHeader className="relative space-y-1">
+            <CardTitle className="text-center text-2xl">{t("title")}</CardTitle>
             <CardDescription className="text-center">
-              Enter your email and password to login
+              {t("description")}
             </CardDescription>
+            <div className="absolute right-3 top-3">
+              <button
+                type="button"
+                onClick={handleLocaleToggle}
+                className="inline-flex items-center gap-2 rounded-md bg-sidebar px-3 py-1 text-xs text-white"
+                aria-label="Toggle language"
+              >
+                <Globe size={14} />
+                <span className="uppercase">{locale}</span>
+              </button>
+            </div>
           </CardHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardContent className="space-y-4">
               <div className="space-y-1">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("email")}</Label>
                 <Input
                   id="email"
                   type="email"
                   className="p-5"
-                  placeholder="name@example.com"
+                  placeholder={t("emailPlaceholder")}
                   {...register("email")}
                 />
                 {errors.email && (
@@ -106,13 +139,13 @@ export default function LoginPage() {
                 )}
               </div>
               <div className="space-y-1">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("password")}</Label>
                 <div className="relative">
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     className="p-5"
-                    placeholder="Enter your password"
+                    placeholder={t("passwordPlaceholder")}
                     {...register("password")}
                   />
                   <button
@@ -139,12 +172,12 @@ export default function LoginPage() {
                 {isLoading ? <Loader2 className="animate-spin" /> : "Sign In"}
               </Button>
               <p className="text-center text-sm text-gray-600">
-                Don&apos;t have an account?{" "}
+                {t("dontHaveAccount")}{" "}
                 <Link
                   href="/register"
                   className="font-medium text-sidebar-accent hover:text-sidebar-accent/90"
                 >
-                  Sign up here
+                  {t("signUpHere")}
                 </Link>
               </p>
             </CardFooter>

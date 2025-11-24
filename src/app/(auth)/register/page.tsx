@@ -18,17 +18,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Link from "next/link";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useState } from "react";
 import { useRegisterUserMutation } from "@/redux/reducers/auth-reducer";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Globe } from "lucide-react";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { toast } from "sonner";
-import Image from "next/image";
+import * as z from "zod";
 
 const registerSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
@@ -51,16 +53,21 @@ type RegisterError = {
 };
 
 export default function RegisterPage() {
+  const [locale, setLocale] = useState<string>(
+    typeof window !== "undefined"
+      ? localStorage.getItem("locale") || "en"
+      : "en",
+  );
+  const t = useTranslations("auth.register");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarFileName, setAvatarFileName] = useState<string>("");
 
-
-  const currencyValues =[
+  const currencyValues = [
     { label: "USD - US Dollar", value: "USD" },
     { label: "EUR - Euro", value: "EUR" },
     { label: "YEN - Japanese Yen", value: "YEN" },
     { label: "AED - United Arab Emirates Dirham", value: "AED" },
-  ]
+  ];
 
   const {
     register,
@@ -120,6 +127,25 @@ export default function RegisterPage() {
     }
   };
 
+  const handleLocaleToggle = () => {
+    const next = locale === "en" ? "de" : "en";
+    setLocale(next);
+    try {
+      localStorage.setItem("locale", next);
+      // also set cookie so server-side i18n picks this up
+      document.cookie = `locale=${next}; path=/`;
+    } catch (e) {
+      // ignore
+    }
+    toast.success(`Language set to ${next.toUpperCase()}`);
+    // refresh the page so Next.js picks up new locale if using server-driven i18n
+    try {
+      router.refresh();
+    } catch (e) {
+      // ignore in case router.refresh is unavailable
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -131,7 +157,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-[#242020] py-8">
       <div className="mb-8 flex flex-col items-center justify-center">
         <div className="rounded-xl bg-sidebar px-5 py-3">
           <Image
@@ -142,30 +168,38 @@ export default function RegisterPage() {
             className="h-16 w-auto"
           />
         </div>
-        <p className="mt-1 text-sm font-medium text-gray-600">
-          Better Service, Better Life
-        </p>
       </div>
-      <div className="mx-auto max-w-md">
-        <Card className="shadow-lg">
+      <div className="mx-auto max-w-md px-3">
+        <Card className="relative shadow-lg">
           <CardHeader className="space-y-1 pb-8">
             <CardTitle className="text-center text-2xl font-semibold">
-              Register
+              {t("title")}
             </CardTitle>
             <CardDescription className="text-center text-gray-500">
-              Create your account to get started
+              {t("description")}
             </CardDescription>
+            <div className="absolute right-6 top-6">
+              <button
+                type="button"
+                onClick={handleLocaleToggle}
+                className="inline-flex items-center gap-2 rounded-md bg-sidebar px-3 py-1 text-xs text-white"
+                aria-label="Toggle language"
+              >
+                <Globe size={14} />
+                <span className="uppercase">{locale}</span>
+              </button>
+            </div>
           </CardHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="first_name" className="text-sm font-medium">
-                    First Name*
+                    {t("firstName")}*
                   </Label>
                   <Input
                     id="first_name"
-                    placeholder="John"
+                    placeholder={t("firstNamePlaceholder")}
                     className={`${errors.first_name ? "border-red-500 focus:border-red-500" : ""}`}
                     {...register("first_name")}
                   />
@@ -177,11 +211,11 @@ export default function RegisterPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="last_name" className="text-sm font-medium">
-                    Last Name*
+                    {t("lastName")}*
                   </Label>
                   <Input
                     id="last_name"
-                    placeholder="Doe"
+                    placeholder={t("lastNamePlaceholder")}
                     className={`${errors.last_name ? "border-red-500 focus:border-red-500" : ""}`}
                     {...register("last_name")}
                   />
@@ -195,12 +229,12 @@ export default function RegisterPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">
-                  Email*
+                  {t("email")}*
                 </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="name@example.com"
+                  placeholder={t("emailPlaceholder")}
                   className={`${errors.email ? "border-red-500 focus:border-red-500" : ""}`}
                   {...register("email")}
                 />
@@ -213,7 +247,7 @@ export default function RegisterPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="phone" className="text-sm font-medium">
-                  Phone*
+                  {t("phone")}*
                 </Label>
                 <Controller
                   name="phone"
@@ -226,7 +260,7 @@ export default function RegisterPage() {
                       onChange={(phone) => onChange("+" + phone)}
                       enableSearch={true}
                       countryCodeEditable={false}
-                      searchPlaceholder="Search country..."
+                      searchPlaceholder={t("countrySearch")}
                       containerClass={errors.phone ? "phone-input-error" : ""}
                       inputStyle={{
                         width: "100%",
@@ -260,7 +294,7 @@ export default function RegisterPage() {
               </div>
               <div>
                 <Label htmlFor="currency" className="text-sm font-medium">
-                  Preferred Currency*
+                  {t("preferredCurrency")}*
                 </Label>
                 <Controller
                   name="currency"
@@ -273,11 +307,14 @@ export default function RegisterPage() {
                       <SelectTrigger
                         className={errors.currency ? "border-red-500" : ""}
                       >
-                        <SelectValue placeholder="Select currency" />
+                        <SelectValue placeholder={t("selectCurrency")} />
                       </SelectTrigger>
                       <SelectContent>
                         {currencyValues.map((currency) => (
-                          <SelectItem key={currency.value} value={currency.value}>
+                          <SelectItem
+                            key={currency.value}
+                            value={currency.value}
+                          >
                             {currency.label}
                           </SelectItem>
                         ))}
@@ -295,7 +332,7 @@ export default function RegisterPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="gender" className="text-sm font-medium">
-                    Gender
+                    {t("gender")}
                   </Label>
                   <Controller
                     name="gender"
@@ -308,12 +345,18 @@ export default function RegisterPage() {
                         <SelectTrigger
                           className={errors.gender ? "border-red-500" : ""}
                         >
-                          <SelectValue placeholder="Select gender" />
+                          <SelectValue placeholder={t("selectGender")} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="MALE">Male</SelectItem>
-                          <SelectItem value="FEMALE">Female</SelectItem>
-                          <SelectItem value="OTHER">Other</SelectItem>
+                          <SelectItem value="MALE">
+                            {t("genderOptions.male")}
+                          </SelectItem>
+                          <SelectItem value="FEMALE">
+                            {t("genderOptions.female")}
+                          </SelectItem>
+                          <SelectItem value="OTHER">
+                            {t("genderOptions.other")}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     )}
@@ -329,7 +372,7 @@ export default function RegisterPage() {
                     htmlFor="date_of_birth"
                     className="text-sm font-medium"
                   >
-                    Date of Birth
+                    {t("dateOfBirth")}
                   </Label>
                   <Input
                     id="date_of_birth"
@@ -347,7 +390,7 @@ export default function RegisterPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="avatar" className="text-sm font-medium">
-                  Profile Picture
+                  {t("profilePicture")}
                 </Label>
                 <Input
                   id="avatar"
@@ -358,7 +401,7 @@ export default function RegisterPage() {
                 />
                 {avatarFileName && (
                   <p className="mt-1 text-xs text-gray-500">
-                    Selected file: {avatarFileName}
+                    {t("selectedFile", { file: avatarFileName })}
                   </p>
                 )}
                 {errors.avatar && (
@@ -392,19 +435,19 @@ export default function RegisterPage() {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       />
                     </svg>
-                    Loading...
+                    {t("loading")}
                   </span>
                 ) : (
-                  "Create Account"
+                  t("createAccount")
                 )}
               </Button>
               <p className="text-center text-sm text-gray-600">
-                Already have an account?{" "}
+                {t("alreadyHaveAccount")}{" "}
                 <Link
                   href="/login"
                   className="font-medium text-sidebar-accent hover:underline"
                 >
-                  Sign in here
+                  {t("signInHere")}
                 </Link>
               </p>
             </CardFooter>
