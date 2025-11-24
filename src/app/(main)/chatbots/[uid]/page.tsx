@@ -1,7 +1,7 @@
 "use client";
-import { useForm } from "react-hook-form";
+import ChatbotDetailsSkeleton from "@/components/pages/chatbots/skeletons/chatbot-details-skeleton";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -10,16 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { CardContent } from "@/components/ui/card";
-import { useEffect, useState } from "react";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Loader2, Copy, Check } from "lucide-react";
-import {
-  useGetSingleWhatsappBotQuery,
-  useUpdateWhatsappBotMutation,
-} from "@/redux/reducers/whatsapp-reducer";
-import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -28,10 +19,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import {
+  useGetSingleWhatsappBotQuery,
+  useUpdateWhatsappBotMutation,
+} from "@/redux/reducers/whatsapp-reducer";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, Check, Copy, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import ChatbotDetailsSkeleton from "@/components/pages/chatbots/skeletons/chatbot-details-skeleton";
-import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 type SubmitData = {
   chatbot_name: string;
@@ -91,7 +91,9 @@ const ChatbotConfigurePage = () => {
 
   const formSchema = z
     .object({
-      chatbot_name: z.string().min(1, { message: t("errors.chatbotNameRequired") }),
+      chatbot_name: z
+        .string()
+        .min(1, { message: t("errors.chatbotNameRequired") }),
       sales_level: z.object({
         level: z.number().int().min(1).max(5),
         reward_enabled: z.boolean().optional(),
@@ -111,8 +113,12 @@ const ChatbotConfigurePage = () => {
       twilio_number: z
         .string()
         .min(1, { message: t("errors.whatsappSenderRequired") }),
-      openai_key: z.string().min(1, { message: t("errors.openaiApiKeyRequired") }),
-      assistant_id: z.string().min(1, { message: t("errors.assistantIdRequired") }),
+      openai_key: z
+        .string()
+        .min(1, { message: t("errors.openaiApiKeyRequired") }),
+      assistant_id: z
+        .string()
+        .min(1, { message: t("errors.assistantIdRequired") }),
       organization: z.string(),
     })
     .superRefine((data, ctx) => {
@@ -436,7 +442,7 @@ const ChatbotConfigurePage = () => {
   return (
     <div>
       {/* Header */}
-      <div className="relative h-48 w-full rounded-t-lg bg-gradient-to-b from-sidebar-accent to-sidebar">
+      <div className="relative h-52 w-full rounded-t-lg bg-gradient-to-b from-sidebar-accent to-sidebar">
         <div className="absolute left-4 top-4 z-10">
           <button
             onClick={handleGoBack}
@@ -495,12 +501,8 @@ const ChatbotConfigurePage = () => {
       {/* Form */}
       <CardContent className="space-y-6 pt-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">
-            {t("title")}
-          </h2>
-          <p className="mb-4 text-sm text-gray-600">
-            {t("description")}
-          </p>
+          <h2 className="text-2xl font-bold text-gray-800">{t("title")}</h2>
+          <p className="mb-4 text-sm text-gray-600">{t("description")}</p>
         </div>
 
         <Form {...form}>
@@ -512,7 +514,9 @@ const ChatbotConfigurePage = () => {
               </h3>
               <div className="grid gap-6 md:grid-cols-2">
                 <div>
-                  <FormLabel className="text-gray-600">{t("authDetails.restaurant")}</FormLabel>
+                  <FormLabel className="text-gray-600">
+                    {t("authDetails.restaurant")}
+                  </FormLabel>
                   <Input
                     disabled
                     value={chatbot.organization || ""}
@@ -532,7 +536,9 @@ const ChatbotConfigurePage = () => {
                   />
                 </div>
                 <div>
-                  <FormLabel className="text-gray-600">{t("authDetails.twilioSid")}</FormLabel>
+                  <FormLabel className="text-gray-600">
+                    {t("authDetails.twilioSid")}
+                  </FormLabel>
                   <Input
                     disabled
                     value={maskSensitiveData(chatbot.twilio_sid || "")}
@@ -560,7 +566,9 @@ const ChatbotConfigurePage = () => {
                   />
                 </div>
                 <div>
-                  <FormLabel className="text-gray-600">{t("authDetails.assistantId")}</FormLabel>
+                  <FormLabel className="text-gray-600">
+                    {t("authDetails.assistantId")}
+                  </FormLabel>
                   <Input
                     disabled
                     value={maskSensitiveData(chatbot.assistant_id || "")}
@@ -585,7 +593,9 @@ const ChatbotConfigurePage = () => {
                       <FormControl>
                         <Input
                           autoComplete="off"
-                          placeholder={t("chatbotSettings.chatbotNamePlaceholder")}
+                          placeholder={t(
+                            "chatbotSettings.chatbotNamePlaceholder",
+                          )}
                           {...field}
                         />
                       </FormControl>
@@ -599,7 +609,9 @@ const ChatbotConfigurePage = () => {
                   name="sales_level.level"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("chatbotSettings.salesLevel.label")}</FormLabel>
+                      <FormLabel>
+                        {t("chatbotSettings.salesLevel.label")}
+                      </FormLabel>
                       <Select
                         value={field.value ? String(field.value) : ""}
                         onValueChange={(val) => {
@@ -610,7 +622,11 @@ const ChatbotConfigurePage = () => {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={t("chatbotSettings.salesLevel.placeholder")} />
+                            <SelectValue
+                              placeholder={t(
+                                "chatbotSettings.salesLevel.placeholder",
+                              )}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -674,7 +690,9 @@ const ChatbotConfigurePage = () => {
                             {t("chatbotSettings.enablePriorityDishes.label")}
                           </FormLabel>
                           <p className="text-sm text-gray-500">
-                            {t("chatbotSettings.enablePriorityDishes.description")}
+                            {t(
+                              "chatbotSettings.enablePriorityDishes.description",
+                            )}
                           </p>
                         </div>
                         <FormControl>
@@ -700,7 +718,9 @@ const ChatbotConfigurePage = () => {
                             {t("chatbotSettings.enablePersonalization.label")}
                           </FormLabel>
                           <p className="text-sm text-gray-500">
-                            {t("chatbotSettings.enablePersonalization.description")}
+                            {t(
+                              "chatbotSettings.enablePersonalization.description",
+                            )}
                           </p>
                         </div>
                         <FormControl>
@@ -719,7 +739,10 @@ const ChatbotConfigurePage = () => {
                   <div className="space-y-4 rounded-lg border border-blue-200 bg-blue-50/50 p-4">
                     <h4 className="text-sm font-medium text-blue-800">
                       {t("chatbotSettings.rewardConfiguration.title")}{" "}
-                      {salesLevel === 2 && t("chatbotSettings.rewardConfiguration.requiredForLevel2")}
+                      {salesLevel === 2 &&
+                        t(
+                          "chatbotSettings.rewardConfiguration.requiredForLevel2",
+                        )}
                     </h4>
 
                     <FormField
@@ -727,28 +750,44 @@ const ChatbotConfigurePage = () => {
                       name="sales_level.reward.type"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t("chatbotSettings.rewardConfiguration.rewardType.label")}</FormLabel>
+                          <FormLabel>
+                            {t(
+                              "chatbotSettings.rewardConfiguration.rewardType.label",
+                            )}
+                          </FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             value={field.value || ""}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder={t("chatbotSettings.rewardConfiguration.rewardType.placeholder")} />
+                                <SelectValue
+                                  placeholder={t(
+                                    "chatbotSettings.rewardConfiguration.rewardType.placeholder",
+                                  )}
+                                />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="DRINK">
-                                {t("chatbotSettings.rewardConfiguration.rewardType.drink")}
+                                {t(
+                                  "chatbotSettings.rewardConfiguration.rewardType.drink",
+                                )}
                               </SelectItem>
                               <SelectItem value="DESSERT">
-                                {t("chatbotSettings.rewardConfiguration.rewardType.dessert")}
+                                {t(
+                                  "chatbotSettings.rewardConfiguration.rewardType.dessert",
+                                )}
                               </SelectItem>
                               <SelectItem value="DISCOUNT">
-                                {t("chatbotSettings.rewardConfiguration.rewardType.discount")}
+                                {t(
+                                  "chatbotSettings.rewardConfiguration.rewardType.discount",
+                                )}
                               </SelectItem>
                               <SelectItem value="CUSTOM">
-                                {t("chatbotSettings.rewardConfiguration.rewardType.custom")}
+                                {t(
+                                  "chatbotSettings.rewardConfiguration.rewardType.custom",
+                                )}
                               </SelectItem>
                             </SelectContent>
                           </Select>
@@ -762,20 +801,29 @@ const ChatbotConfigurePage = () => {
                       name="sales_level.reward.label"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t("chatbotSettings.rewardConfiguration.rewardLabel.label")}</FormLabel>
+                          <FormLabel>
+                            {t(
+                              "chatbotSettings.rewardConfiguration.rewardLabel.label",
+                            )}
+                          </FormLabel>
                           <FormControl>
                             <Input
                               autoComplete="off"
-                              placeholder={t("chatbotSettings.rewardConfiguration.rewardLabel.placeholder")}
+                              placeholder={t(
+                                "chatbotSettings.rewardConfiguration.rewardLabel.placeholder",
+                              )}
                               maxLength={100}
                               {...field}
                             />
                           </FormControl>
                           <FormMessage />
                           <p className="text-xs text-gray-500">
-                            {t("chatbotSettings.rewardConfiguration.rewardLabel.characterCount", {
-                              count: field.value?.length || 0,
-                            })}
+                            {t(
+                              "chatbotSettings.rewardConfiguration.rewardLabel.characterCount",
+                              {
+                                count: field.value?.length || 0,
+                              },
+                            )}
                           </p>
                         </FormItem>
                       )}

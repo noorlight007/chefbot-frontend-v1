@@ -111,40 +111,16 @@ const MenuDetails: FC = () => {
     <div>
       <div>
         {/* Hero Section */}
-        <div className="relative h-40 w-full">
-          <div className="absolute left-4 top-4 z-10">
-            <button
-              onClick={() => window.history.back()}
-              className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent"
-            >
-              <ArrowLeft size={20} className="text-white" />
-            </button>
-          </div>
-          <div className="absolute right-4 top-4 z-10">
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <button className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent">
-                  <MoreVertical size={20} className="text-white" />
-                </button>
-              </DialogTrigger>
-              <DialogContent className="h-[90dvh] max-w-screen-md">
-                <DialogTitle className="sr-only">
-                  {t("editMenuItem")}
-                </DialogTitle>
-                <DialogDescription className="sr-only">
-                  {t("editMenuDescription")}
-                </DialogDescription>
-                <ScrollArea className="h-full w-full p-2">
-                  <UpdateMenu
-                    initialData={menuItem}
-                    onClose={handleCloseDialog}
-                  />
-                </ScrollArea>
-              </DialogContent>
-            </Dialog>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 flex items-end gap-4 p-4">
+        <div className="w-full bg-transparent">
+          <div className="flex items-center justify-between gap-4 p-4">
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => window.history.back()}
+                className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent"
+              >
+                <ArrowLeft size={20} className="text-white" />
+              </button>
+
               <div
                 className="relative"
                 onMouseEnter={() => setShowImageEdit(true)}
@@ -153,11 +129,11 @@ const MenuDetails: FC = () => {
                 <Image
                   src={previewImage || menuItem.image || "/restaurant-demo.jpg"}
                   alt={menuItem.name || "Menu item image"}
-                  width={100}
-                  height={100}
+                  width={80}
+                  height={80}
                   priority={true}
                   loading="eager"
-                  className={`h-[50px] w-[50px] rounded-lg border-2 border-white object-cover shadow-lg md:h-[80px] md:w-[80px] ${isUploading ? "opacity-50" : ""}`}
+                  className={`h-12 w-12 rounded-lg border-2 border-white object-cover shadow-lg md:h-20 md:w-20 ${isUploading ? "opacity-50" : ""}`}
                 />
                 {showImageEdit && !isUploading && (
                   <button
@@ -182,14 +158,39 @@ const MenuDetails: FC = () => {
                   disabled={isUploading}
                 />
               </div>
+
               <div className="text-black">
                 <h1 className="text-2xl font-bold">{menuItem.name}</h1>
-                <p className="mt-1 text-sm opacity-90">
+                <p className="mt-1 max-w-lg text-sm opacity-90">
                   {(menuItem.description && menuItem.description.length > 200
                     ? menuItem.description.slice(0, 200) + "..."
                     : menuItem.description) || t("description")}
                 </p>
               </div>
+            </div>
+
+            <div>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <button className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent">
+                    <MoreVertical size={20} className="text-white" />
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="h-[90dvh] max-w-screen-md">
+                  <DialogTitle className="sr-only">
+                    {t("editMenuItem")}
+                  </DialogTitle>
+                  <DialogDescription className="sr-only">
+                    {t("editMenuDescription")}
+                  </DialogDescription>
+                  <ScrollArea className="h-full w-full p-2">
+                    <UpdateMenu
+                      initialData={menuItem}
+                      onClose={handleCloseDialog}
+                    />
+                  </ScrollArea>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
