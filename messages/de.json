@@ -15,6 +15,58 @@
     },
     "title": "ChefBot"
   },
+  "auth": {
+    "login": {
+      "title": "Anmelden",
+      "description": "Geben Sie Ihre E-Mail und Ihr Passwort ein, um sich anzumelden",
+      "email": "E-Mail",
+      "emailPlaceholder": "name@beispiel.de",
+      "password": "Passwort",
+      "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+      "signIn": "Anmelden",
+      "dontHaveAccount": "Noch kein Konto?",
+      "signUpHere": "Hier registrieren"
+    },
+    "register": {
+      "title": "Registrieren",
+      "description": "Erstellen Sie Ihr Konto, um zu beginnen",
+      "firstName": "Vorname",
+      "firstNamePlaceholder": "Max",
+      "lastName": "Nachname",
+      "lastNamePlaceholder": "Mustermann",
+      "email": "E-Mail",
+      "emailPlaceholder": "name@beispiel.de",
+      "phone": "Telefon",
+      "countrySearch": "Land suchen...",
+      "preferredCurrency": "Bevorzugte Währung",
+      "selectCurrency": "Währung auswählen",
+      "gender": "Geschlecht",
+      "selectGender": "Geschlecht auswählen",
+      "genderOptions": {
+        "male": "Männlich",
+        "female": "Weiblich",
+        "other": "Andere"
+      },
+      "dateOfBirth": "Geburtsdatum",
+      "profilePicture": "Profilbild",
+      "selectedFile": "Ausgewählte Datei: {file}",
+      "createAccount": "Konto erstellen",
+      "loading": "Wird geladen...",
+      "alreadyHaveAccount": "Bereits ein Konto?",
+      "signInHere": "Hier anmelden"
+    },
+    "setPassword": {
+      "title": "Passwort setzen",
+      "description": "Erstellen Sie ein neues Passwort für Ihr Konto",
+      "password": "Passwort",
+      "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+      "confirmPassword": "Passwort bestätigen",
+      "confirmPasswordPlaceholder": "Bestätigen Sie Ihr Passwort",
+      "setPasswordButton": "Passwort setzen",
+      "loading": "Wird geladen...",
+      "success": "Passwort erfolgreich gesetzt"
+    }
+  },
   "settings": {
     "title": "Einstellungen",
     "back": "Zurück",
@@ -313,7 +365,7 @@
         "allergens": "Allergene",
         "noAllergens": "Keine Allergene aufgeführt",
         "nutrition": "Nährwertinformationen",
-        "badge": "Vom KI generiert",
+        "badge": "KI generiert",
         "noNutrition": "Keine Nährwertinformationen verfügbar",
         "combinations": "Empfohlene Kombinationen",
         "noCombinations": "Keine empfohlenen Kombinationen verfügbar",

@@ -42,49 +42,29 @@ const TableDetails: FC = () => {
     <div>
       <div>
         {/* Hero Section */}
-        <div className="relative h-40 w-full bg-gray-50">
-          <div className="absolute left-4 top-4 z-10">
-            <button
-              onClick={() => window.history.back()}
-              className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent"
-              aria-label={t("actions.back")}
-            >
-              <ArrowLeft size={20} className="text-white" />
-            </button>
-          </div>
-          <div className="absolute right-4 top-4 z-10">
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <div className="cursor-pointer rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent">
-                  <MoreVertical size={20} className="text-white" />
-                </div>
-              </DialogTrigger>
-              <DialogContent className="h-[60dvh] max-w-screen-md">
-                <DialogTitle className="sr-only">
-                  {t("actions.edit")}
-                </DialogTitle>
-                <DialogDescription className="sr-only">
-                  {t("actions.edit")}
-                </DialogDescription>
-                <ScrollArea className="h-full w-full p-2">
-                  <UpdateTable table={data} onClose={handleCloseDialog} />
-                </ScrollArea>
-              </DialogContent>
-            </Dialog>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 flex items-end gap-4 p-4">
+        <div className="w-full bg-gray-50">
+          <div className="flex items-center justify-between gap-4 p-4">
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => window.history.back()}
+                className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent"
+                aria-label={t("actions.back")}
+              >
+                <ArrowLeft size={20} className="text-white" />
+              </button>
+
               <div className="relative">
                 <Image
                   src="/restaurant-demo.jpg"
                   alt={t("image.alt")}
-                  width={100}
-                  height={100}
+                  width={80}
+                  height={80}
                   priority={true}
                   loading="eager"
-                  className="max-h-[50px] min-h-[50px] min-w-[50px] max-w-[50px] rounded-lg border-2 border-white object-cover shadow-lg md:min-h-[80px] md:min-w-[80px]"
+                  className="h-12 w-12 rounded-lg border-2 border-white object-cover shadow-lg md:h-20 md:w-20"
                 />
               </div>
+
               <div className="text-black">
                 <h1 className="text-xl font-bold md:text-2xl">{data?.name}</h1>
                 <p className="mt-1 text-xs opacity-90 md:text-sm">
@@ -94,6 +74,27 @@ const TableDetails: FC = () => {
                   {t("category.suffix")}
                 </p>
               </div>
+            </div>
+
+            <div>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <div className="cursor-pointer rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent">
+                    <MoreVertical size={20} className="text-white" />
+                  </div>
+                </DialogTrigger>
+                <DialogContent className="h-[60dvh] max-w-screen-md">
+                  <DialogTitle className="sr-only">
+                    {t("actions.edit")}
+                  </DialogTitle>
+                  <DialogDescription className="sr-only">
+                    {t("actions.edit")}
+                  </DialogDescription>
+                  <ScrollArea className="h-full w-full p-2">
+                    <UpdateTable table={data} onClose={handleCloseDialog} />
+                  </ScrollArea>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>

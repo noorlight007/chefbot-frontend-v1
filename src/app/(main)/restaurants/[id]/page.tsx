@@ -1,16 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import {
-  Mail,
-  Globe,
-  MessageSquare,
-  MapPin,
-  Clock,
-  MoreVertical,
-  Camera,
-  ArrowLeft,
-} from "lucide-react";
+import UpdateRestaurant from "@/components/pages/restaurants/modals/update-restaurant";
+import RestaurantDetailsSkeleton from "@/components/pages/restaurants/skeletons/restaurant-details-skeleton";
 import {
   Dialog,
   DialogContent,
@@ -18,17 +9,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FC, useState, useRef } from "react";
-import { useParams } from "next/navigation";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   useGetSingleRestaurantQuery,
   useUpdateRestaurantInfoMutation,
 } from "@/redux/reducers/restaurants-reducer";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import UpdateRestaurant from "@/components/pages/restaurants/modals/update-restaurant";
-import RestaurantDetailsSkeleton from "@/components/pages/restaurants/skeletons/restaurant-details-skeleton";
+import {
+  ArrowLeft,
+  Camera,
+  Clock,
+  Globe,
+  Mail,
+  MapPin,
+  MessageSquare,
+  MoreVertical,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { FC, useRef, useState } from "react";
 
 const RestaurantDetails: FC = () => {
   const t = useTranslations("restaurants.details");
@@ -86,80 +86,80 @@ const RestaurantDetails: FC = () => {
     <div>
       <div>
         {/* Hero Section */}
-        <div className="relative h-40 w-full bg-gray-50">
-          <div className="absolute left-4 top-4 z-10">
-            <button
-              onClick={() => window.history.back()}
-              className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent"
-              aria-label={t("back")}
-            >
-              <ArrowLeft size={18} className="text-white" />
-            </button>
-          </div>
+        <div className="w-full bg-gray-50">
+          <div className="flex items-center justify-between gap-4 p-4">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => window.history.back()}
+                className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent"
+                aria-label={t("back")}
+              >
+                <ArrowLeft size={18} className="text-white" />
+              </button>
 
-          <div className="absolute right-4 top-4 z-10">
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <button className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent">
-                  <MoreVertical size={18} className="text-white" />
-                </button>
-              </DialogTrigger>
-              <DialogContent className="h-[90dvh] max-w-5xl">
-                <DialogTitle>{t("editRestaurant")}</DialogTitle>
-                <DialogDescription>{t("editDescription")}</DialogDescription>
-                <ScrollArea className="h-full w-full p-2">
-                  <UpdateRestaurant
-                    restaurant={restaurant}
-                    id={id}
-                    onClose={handleCloseDialog}
-                  />
-                </ScrollArea>
-              </DialogContent>
-            </Dialog>
-          </div>
+              <div
+                className="relative"
+                onMouseEnter={() => setShowImageEdit(true)}
+                onMouseLeave={() => setShowImageEdit(false)}
+              >
+                <Image
+                  src={
+                    previewImage || restaurant?.logo || "/restaurant-demo.jpg"
+                  }
+                  alt={`${restaurant.name} logo`}
+                  width={80}
+                  height={80}
+                  priority
+                  className="h-12 w-12 rounded-lg border border-gray-200 object-cover md:h-20 md:w-20"
+                />
+                {showImageEdit && (
+                  <button
+                    onClick={handleImageEdit}
+                    className="absolute -bottom-2 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-white px-2 py-1 text-xs shadow"
+                  >
+                    <Camera size={12} />
+                    <span>{t("edit")}</span>
+                  </button>
+                )}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  accept="image/*"
+                  className="hidden"
+                />
+              </div>
 
-          <div className="absolute inset-x-0 bottom-0 flex items-end gap-4 p-4">
-            <div
-              className="relative"
-              onMouseEnter={() => setShowImageEdit(true)}
-              onMouseLeave={() => setShowImageEdit(false)}
-            >
-              <Image
-                src={
-                  previewImage || restaurant?.logo || "/restaurant-demo.jpg"
-                }
-                alt={`${restaurant.name} logo`}
-                width={80}
-                height={80}
-                priority
-                className="h-20 w-20 rounded-lg border border-gray-200 object-cover"
-              />
-              {showImageEdit && (
-                <button
-                  onClick={handleImageEdit}
-                  className="absolute -bottom-2 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-white px-2 py-1 text-xs shadow"
-                >
-                  <Camera size={12} />
-                  <span>{t("edit")}</span>
-                </button>
-              )}
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept="image/*"
-                className="hidden"
-              />
+              <div className="pb-1">
+                <h1 className="text-xl font-semibold text-gray-900">
+                  {restaurant.name}
+                </h1>
+                <p className="mt-0.5 max-w-lg text-sm text-gray-600">
+                  {restaurant.description?.slice(0, 120)}
+                  {restaurant.description?.length > 120 && "…"}
+                </p>
+              </div>
             </div>
 
-            <div className="pb-1">
-              <h1 className="text-xl font-semibold text-gray-900">
-                {restaurant.name}
-              </h1>
-              <p className="mt-0.5 text-sm text-gray-600">
-                {restaurant.description?.slice(0, 120)}
-                {restaurant.description?.length > 120 && "…"}
-              </p>
+            <div>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <button className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent">
+                    <MoreVertical size={18} className="text-white" />
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="h-[90dvh] max-w-5xl">
+                  <DialogTitle>{t("editRestaurant")}</DialogTitle>
+                  <DialogDescription>{t("editDescription")}</DialogDescription>
+                  <ScrollArea className="h-full w-full p-2">
+                    <UpdateRestaurant
+                      restaurant={restaurant}
+                      id={id}
+                      onClose={handleCloseDialog}
+                    />
+                  </ScrollArea>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>

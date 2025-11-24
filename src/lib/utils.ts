@@ -19,7 +19,7 @@ export const formatDeDate = (dateStr: string, locale?: string): string => {
 
   const month = date.toLocaleString(monthLocale, { month: "long" });
   const year = date.getFullYear();
-  return `${day}, ${month} ${year}`;
+  return `${day}. ${month} ${year}`;
 };
 
 // Format stored ISO timestamp to localized date (using formatDeDate) + HH:mm

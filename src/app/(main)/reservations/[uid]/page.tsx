@@ -144,64 +144,42 @@ export default function ReservationDetails() {
   return (
     <div>
       {/* Header */}
-      <div className="relative h-36 w-full bg-gray-50">
-        <div className="absolute inset-x-0 top-0 flex items-center justify-between p-3 sm:p-4">
-          <button
-            onClick={() => window.history.back()}
-            className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent"
-          >
-            <ArrowLeft size={18} className="text-white sm:size-5" />
-          </button>
+      <div className="w-full bg-gray-50">
+        <div className="flex items-center justify-between gap-4 p-4">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => window.history.back()}
+              className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent"
+            >
+              <ArrowLeft size={18} className="text-white" />
+            </button>
 
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <button className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent">
-                <MoreVertical size={18} className="text-white sm:size-5" />
-              </button>
-            </DialogTrigger>
-            <DialogContent className="h-[90dvh] max-w-screen-lg">
-              <DialogTitle className="sr-only">{t("edit")}</DialogTitle>
-              <DialogDescription className="sr-only">
-                {t("edit")}
-              </DialogDescription>
-              <ScrollArea className="h-full w-full p-2">
-                <UpdateReservation
-                  reservation={reservation}
-                  onClose={() => setIsDialogOpen(false)}
-                />
-              </ScrollArea>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        <div className="absolute inset-x-0 bottom-0 flex items-end gap-4 p-4">
-          <div className="flex w-full items-center justify-between gap-2">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="text-black">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-lg font-bold tracking-tight sm:text-2xl">
-                    {String(
-                      reservation.reservation_name || t("unnamedReservation"),
-                    )}
-                  </h3>
-                  <Badge
-                    variant={
-                      reservation.reservation_status === "PLACED"
-                        ? "default"
-                        : "destructive"
-                    }
-                  >
-                    {String(
-                      s(
-                        reservation.reservation_status?.toLowerCase() ||
-                          t("status.unknown"),
-                      ),
-                    )}
-                  </Badge>
-                </div>
+            <div className="text-black">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-lg font-bold tracking-tight sm:text-2xl">
+                  {String(
+                    reservation.reservation_name || t("unnamedReservation"),
+                  )}
+                </h3>
+                <Badge
+                  variant={
+                    reservation.reservation_status === "PLACED"
+                      ? "default"
+                      : "destructive"
+                  }
+                >
+                  {String(
+                    s(
+                      reservation.reservation_status?.toLowerCase() ||
+                        t("status.unknown"),
+                    ),
+                  )}
+                </Badge>
               </div>
             </div>
+          </div>
 
+          <div className="flex items-center gap-3">
             <Link
               href={`/customers/${clientUid}/message-history`}
               className="inline-flex items-center rounded-md bg-sidebar-accent px-3 py-2 text-sm font-medium text-white hover:bg-sidebar-accent sm:px-4"
@@ -222,6 +200,26 @@ export default function ReservationDetails() {
               </svg>
               {t("messageHistory")}
             </Link>
+
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <button className="rounded-full bg-sidebar-accent/50 p-2 shadow-sm hover:bg-sidebar-accent">
+                  <MoreVertical size={18} className="text-white" />
+                </button>
+              </DialogTrigger>
+              <DialogContent className="h-[90dvh] max-w-screen-lg">
+                <DialogTitle className="sr-only">{t("edit")}</DialogTitle>
+                <DialogDescription className="sr-only">
+                  {t("edit")}
+                </DialogDescription>
+                <ScrollArea className="h-full w-full p-2">
+                  <UpdateReservation
+                    reservation={reservation}
+                    onClose={() => setIsDialogOpen(false)}
+                  />
+                </ScrollArea>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
