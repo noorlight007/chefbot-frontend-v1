@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/select";
 import { useRegisterUserMutation } from "@/redux/reducers/auth-reducer";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Globe } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -146,6 +145,22 @@ export default function RegisterPage() {
     }
   };
 
+  const handleLocaleChange = (next: string) => {
+    setLocale(next);
+    try {
+      localStorage.setItem("locale", next);
+      document.cookie = `locale=${next}; path=/`;
+    } catch (e) {
+      // ignore
+    }
+    toast.success(`Language set to ${next.toUpperCase()}`);
+    try {
+      router.refresh();
+    } catch (e) {
+      // ignore
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -178,16 +193,16 @@ export default function RegisterPage() {
             <CardDescription className="text-center text-gray-500">
               {t("description")}
             </CardDescription>
-            <div className="absolute right-6 top-6">
-              <button
-                type="button"
-                onClick={handleLocaleToggle}
-                className="inline-flex items-center gap-2 rounded-md bg-sidebar px-3 py-1 text-xs text-white"
-                aria-label="Toggle language"
-              >
-                <Globe size={14} />
-                <span className="uppercase">{locale}</span>
-              </button>
+            <div className="absolute right-2 top-2">
+              <Select value={locale} onValueChange={handleLocaleChange}>
+                <SelectTrigger className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1 text-xs text-white focus:ring-0">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="de">Deutsch</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardHeader>
           <form onSubmit={handleSubmit(onSubmit)}>

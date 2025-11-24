@@ -11,11 +11,18 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useAppDispatch } from "@/redux/hooks";
 import { useLoginUserMutation } from "@/redux/reducers/auth-reducer";
 import { loginSuccess } from "@/redux/reducers/auth-slice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Globe, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -111,16 +118,16 @@ export default function LoginPage() {
             <CardDescription className="text-center">
               {t("description")}
             </CardDescription>
-            <div className="absolute right-3 top-3">
-              <button
-                type="button"
-                onClick={handleLocaleToggle}
-                className="inline-flex items-center gap-2 rounded-md bg-sidebar px-3 py-1 text-xs text-white"
-                aria-label="Toggle language"
-              >
-                <Globe size={14} />
-                <span className="uppercase">{locale}</span>
-              </button>
+            <div className="absolute right-2 top-2">
+              <Select value={locale} onValueChange={handleLocaleToggle}>
+                <SelectTrigger className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1 text-xs text-white focus:ring-0">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="de">Deutsch</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardHeader>
           <form onSubmit={handleSubmit(onSubmit)}>

@@ -50,6 +50,17 @@
       "loading": "Loading...",
       "alreadyHaveAccount": "Already have an account?",
       "signInHere": "Sign in here"
+    },
+    "setPassword": {
+      "title": "Set Password",
+      "description": "Create a new password for your account",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "setPasswordButton": "Set Password",
+      "loading": "Loading...",
+      "success": "Password set successfully"
     }
   },
   "settings": {
