@@ -183,7 +183,7 @@ export default function LoginPage() {
                 className="w-full bg-sidebar-accent p-5 hover:bg-sidebar-accent/90"
                 disabled={isLoading}
               >
-                {isLoading ? <Loader2 className="animate-spin" /> : "Sign In"}
+                {isLoading ? <Loader2 className="animate-spin" /> : t("signIn")}
               </Button>
               <p className="text-center text-sm text-gray-600">
                 {t("dontHaveAccount")}{" "}
