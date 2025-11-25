@@ -433,8 +433,8 @@ const ChatbotConfigurePage = () => {
     );
   }
 
-  const showRewardEnabled = salesLevel === 3 || salesLevel === 4;
-  const showPriorityDish = salesLevel === 4 || salesLevel === 5;
+  // const showRewardEnabled = salesLevel === 3 || salesLevel === 4;
+  // const showPriorityDish = salesLevel === 4 || salesLevel === 5;
   const showPersonalization = salesLevel === 5;
   const showRewardFields =
     salesLevel === 2 || (salesLevel >= 3 && salesLevel < 5 && rewardEnabled);
