@@ -5,14 +5,13 @@ import { FC } from "react";
 const RestaurantDetailsSkeleton: FC = () => {
   return (
     <div className="animate-pulse">
-      <div className="relative h-48 w-full rounded-t-lg bg-gray-200">
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <div className="flex items-center gap-4">
-            <div className="min-h-[50px] min-w-[50px] rounded-lg bg-gray-300 md:min-h-[80px] md:min-w-[80px]"></div>
-            <div>
-              <div className="h-7 w-48 rounded bg-gray-300"></div>
-              <div className="mt-2 h-4 w-64 rounded bg-gray-300"></div>
-            </div>
+      {/* Compact single-row header skeleton */}
+      <div className="h-20 w-full animate-pulse bg-gray-200">
+        <div className="mx-auto flex h-full max-w-6xl items-center gap-4 px-4">
+          <div className="min-h-[48px] min-w-[48px] rounded-lg bg-gray-300 md:min-h-[64px] md:min-w-[64px]"></div>
+          <div className="flex-1 space-y-2">
+            <div className="h-6 w-48 rounded bg-gray-300"></div>
+            <div className="h-4 w-64 rounded bg-gray-300"></div>
           </div>
         </div>
       </div>

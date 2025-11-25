@@ -2,23 +2,19 @@ import { FC } from "react";
 const TableDetailSkeleton: FC = () => {
   return (
     <div>
-      {/* Hero Section Skeleton */}
-      <div className="relative h-48 w-full animate-pulse rounded-t-lg bg-gray-200">
-        <div className="absolute left-4 top-4">
-          <div className="h-10 w-10 animate-pulse rounded-full bg-gray-300 p-2"></div>
-        </div>
-        <div className="absolute right-4 top-4">
-          <div className="h-10 w-10 animate-pulse rounded-full bg-gray-300 p-2"></div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-gray-200/50 p-4">
+      {/* Compact single-row header skeleton */}
+      <div className="h-20 w-full animate-pulse bg-gray-200">
+        <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-4">
           <div className="flex items-center gap-4">
-            <div className="relative">
-              <div className="min-h-[50px] min-w-[50px] animate-pulse rounded-lg bg-gray-300 md:min-h-[80px] md:min-w-[80px]"></div>
-            </div>
+            <div className="min-h-[48px] min-w-[48px] animate-pulse rounded-lg bg-gray-300 md:min-h-[64px] md:min-w-[64px]"></div>
             <div className="space-y-2">
               <div className="h-6 w-40 animate-pulse rounded bg-gray-300"></div>
               <div className="h-4 w-24 animate-pulse rounded bg-gray-300"></div>
             </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 animate-pulse rounded-full bg-gray-300 p-2"></div>
+            <div className="h-10 w-10 animate-pulse rounded-full bg-gray-300 p-2"></div>
           </div>
         </div>
       </div>

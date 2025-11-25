@@ -40,6 +40,36 @@ function SetPasswordForm() {
   );
   const t = useTranslations("auth.setPassword");
 
+  const setPasswordSchema = z
+    .object({
+      password: z
+        .string()
+        .min(8, t("passwordShort"))
+        .regex(/^(?!^\d+$).*$/, t("passwordNumeric"))
+        .regex(/[!@#$%^&*(),.?":{}|<>]/, t("passwordSpecial"))
+        .refine(
+          (password) => {
+            const commonPasswords = [
+              "password",
+              "12345678",
+              "qwerty",
+              "admin123",
+            ];
+            return !commonPasswords.includes(password.toLowerCase());
+          },
+          {
+            message: t("passwordCommon"),
+          },
+        ),
+      confirm_password: z.string().min(8, t("passwordShort")),
+    })
+    .refine((data) => data.password === data.confirm_password, {
+      message: t("passwordsDontMatch"),
+      path: ["confirm_password"],
+    });
+
+  type SetPasswordFormValues = z.infer<typeof setPasswordSchema>;
+
   const {
     register,
     handleSubmit,
@@ -73,7 +103,7 @@ function SetPasswordForm() {
     } catch (e) {
       console.error("Failed to set locale in localStorage or cookie", e);
     }
-    toast.success(`Language set to ${next.toUpperCase()}`);
+    toast.success(t("languageSet", { lang: next.toUpperCase() }));
     try {
       router.refresh();
     } catch (e) {
@@ -82,7 +112,7 @@ function SetPasswordForm() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#242020]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#292929]">
       <div className="mb-8 flex flex-col items-center justify-center">
         <div className="rounded-xl bg-sidebar px-5 py-3">
           <Image
@@ -95,7 +125,7 @@ function SetPasswordForm() {
         </div>
       </div>
       <div className="flex items-center justify-center px-3">
-        <Card className="w-[350px]">
+        <Card className="w-[400px]">
           <CardHeader className="relative space-y-1">
             <CardTitle className="text-center text-2xl">{t("title")}</CardTitle>
             <CardDescription className="text-center">
@@ -228,44 +258,3 @@ export default function SetPasswordPage() {
     </Suspense>
   );
 }
-
-const setPasswordSchema = z
-  .object({
-    password: z
-      .string()
-      .min(
-        8,
-        "This password is too short. It must contain at least 8 characters.",
-      )
-      .regex(/^(?!^\d+$).*$/, "This password is entirely numeric.")
-      .regex(
-        /[!@#$%^&*(),.?":{}|<>]/,
-        "Password must contain at least one special character",
-      )
-      .refine(
-        (password) => {
-          const commonPasswords = [
-            "password",
-            "12345678",
-            "qwerty",
-            "admin123",
-          ];
-          return !commonPasswords.includes(password.toLowerCase());
-        },
-        {
-          message: "This password is too common. Please use a unique password.",
-        },
-      ),
-    confirm_password: z
-      .string()
-      .min(
-        8,
-        "This password is too short. It must contain at least 8 characters.",
-      ),
-  })
-  .refine((data) => data.password === data.confirm_password, {
-    message: "Passwords don't match",
-    path: ["confirm_password"],
-  });
-
-type SetPasswordFormValues = z.infer<typeof setPasswordSchema>;

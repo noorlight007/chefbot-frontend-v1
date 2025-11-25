@@ -433,8 +433,8 @@ const ChatbotConfigurePage = () => {
     );
   }
 
-  const showRewardEnabled = salesLevel === 3 || salesLevel === 4;
-  const showPriorityDish = salesLevel === 4 || salesLevel === 5;
+  // const showRewardEnabled = salesLevel === 3 || salesLevel === 4;
+  // const showPriorityDish = salesLevel === 4 || salesLevel === 5;
   const showPersonalization = salesLevel === 5;
   const showRewardFields =
     salesLevel === 2 || (salesLevel >= 3 && salesLevel < 5 && rewardEnabled);
@@ -442,59 +442,56 @@ const ChatbotConfigurePage = () => {
   return (
     <div>
       {/* Header */}
-      <div className="relative h-52 w-full rounded-t-lg bg-gradient-to-b from-sidebar-accent to-sidebar">
-        <div className="absolute left-4 top-4 z-10">
+      <div className="flex h-20 w-full items-center justify-between rounded-t-lg px-4">
+        <div className="flex items-center gap-4">
           <button
             onClick={handleGoBack}
-            className="rounded-full bg-white/20 p-2 transition-all hover:bg-white/30"
+            className="rounded-full bg-primary/50 p-2 transition-all hover:bg-primary/90"
             type="button"
           >
             <ArrowLeft size={20} className="text-white" />
           </button>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-black/30 p-4 backdrop-blur-sm">
+
           <div className="flex items-center gap-4">
             <div className="relative">
               <Image
                 src="/restaurant-demo.jpg"
                 alt="Restaurant image"
-                width={80}
-                height={80}
-                className="h-20 w-20 rounded-lg border-2 border-white object-cover shadow-lg"
+                width={56}
+                height={56}
+                className="h-12 w-12 rounded-lg border-2 border-gray-200 object-cover"
               />
             </div>
-            <div className="flex-1 text-white">
-              <h3 className="text-2xl font-bold tracking-tight">
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-gray-900">
                 {chatbot.chatbot_name}
               </h3>
-              <p className="text-sm opacity-90">{chatbot.organization}</p>
-              <p className="mt-1 text-sm opacity-90">
-                {t("header.salesLevel")}:{" "}
-                {typeof chatbot.sales_level === "object"
-                  ? chatbot.sales_level.level
-                  : chatbot.sales_level}
-              </p>
-              {chatbot.webhook_url && (
-                <div className="mt-2 flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={chatbot.webhook_url}
-                    readOnly
-                    className="flex-1 rounded border border-white/20 bg-white/10 px-3 py-1 text-xs text-white placeholder-white/50 backdrop-blur-sm"
-                  />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 text-white hover:bg-white/20"
-                    onClick={handleCopyClick}
-                    type="button"
-                  >
-                    {isCopied ? <Check size={16} /> : <Copy size={16} />}
-                  </Button>
-                </div>
-              )}
+              <p className="text-sm text-gray-500">{chatbot.organization}</p>
             </div>
           </div>
+        </div>
+
+        <div className="flex flex-1 items-center justify-end">
+          {chatbot.webhook_url && (
+            <div className="flex w-full max-w-md items-center gap-2">
+              <input
+                type="text"
+                value={chatbot.webhook_url}
+                readOnly
+                className="w-full flex-1 rounded border bg-gray-100 px-3 py-1 text-xs text-gray-700"
+                title={chatbot.webhook_url}
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 text-gray-700 hover:bg-gray-100"
+                onClick={handleCopyClick}
+                type="button"
+              >
+                {isCopied ? <Check size={16} /> : <Copy size={16} />}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -651,61 +648,6 @@ const ChatbotConfigurePage = () => {
                     </FormItem>
                   )}
                 />
-
-                {/* Level 3 & 4: Reward Enabled Toggle */}
-                {showRewardEnabled && (
-                  <FormField
-                    control={form.control}
-                    name="sales_level.reward_enabled"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                        <div className="space-y-0.5">
-                          <FormLabel className="text-base">
-                            {t("chatbotSettings.enableRewards.label")}
-                          </FormLabel>
-                          <p className="text-sm text-gray-500">
-                            {t("chatbotSettings.enableRewards.description")}
-                          </p>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                )}
-
-                {/* Level 4 & 5: Priority Dish Toggle */}
-                {showPriorityDish && (
-                  <FormField
-                    control={form.control}
-                    name="sales_level.priority_dish_enabled"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                        <div className="space-y-0.5">
-                          <FormLabel className="text-base">
-                            {t("chatbotSettings.enablePriorityDishes.label")}
-                          </FormLabel>
-                          <p className="text-sm text-gray-500">
-                            {t(
-                              "chatbotSettings.enablePriorityDishes.description",
-                            )}
-                          </p>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                )}
-
                 {/* Level 5: Personalization Toggle */}
                 {showPersonalization && (
                   <FormField

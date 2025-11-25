@@ -1,13 +1,7 @@
 "use client";
-import {
-  ArrowLeft,
-  Search,
-  ArrowUpDown,
-  ChevronLeft,
-  ChevronRight,
-  Download,
-} from "lucide-react";
-import { FC, useState, useMemo, useEffect } from "react";
+import PromotionReportsSkeleton from "@/components/pages/promotions/skeletons/promotion-reports-skeleton";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -16,12 +10,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useGetSentLogsQuery } from "@/redux/reducers/promotions-reducer";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import PromotionReportsSkeleton from "@/components/pages/promotions/skeletons/promotion-reports-skeleton";
+import {
+  ArrowLeft,
+  ArrowUpDown,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Search,
+} from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { FC, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 interface PromotionReport {
@@ -88,8 +88,6 @@ const PromotionReportPage: FC = () => {
     }
   };
 
-
-
   // Filter logs based on search term
   const filteredLogs = useMemo(() => {
     if (!data?.logs) return [];
@@ -116,17 +114,27 @@ const PromotionReportPage: FC = () => {
 
   return (
     <div className="p-4 lg:p-6">
-      <div className="relative h-32 w-full rounded-t-lg bg-gradient-to-b from-sidebar-accent to-sidebar">
-        <div className="absolute left-4 top-4 z-10">
+      <div className="flex h-20 w-full items-center justify-between rounded-t-lg px-4">
+        <div className="flex items-center gap-4">
           <button
             onClick={() => window.history.back()}
-            className="rounded-full bg-white/20 p-2 transition-all hover:bg-white/30"
+            className="rounded-full bg-primary/50 p-2 transition-all hover:bg-primary/90"
           >
             <ArrowLeft size={20} className="text-white" />
           </button>
+
+          <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-sidebar/30 p-4 backdrop-blur-sm">
-          <h1 className="text-2xl font-bold text-white">{t("title")}</h1>
+
+        <div>
+          <Button
+            onClick={handleDownloadExcel}
+            disabled={downloading}
+            className="flex items-center gap-2"
+          >
+            <Download size={16} />
+            <span>{t("downloadExcel") || "Excel"}</span>
+          </Button>
         </div>
       </div>
 
@@ -177,19 +185,11 @@ const PromotionReportPage: FC = () => {
               className="pl-10"
             />
           </div>
-          <Button
-            onClick={handleDownloadExcel}
-            disabled={downloading}
-            className="flex items-center gap-2"
-          >
-            <Download size={16} />
-            <span>{t("downloadExcel") || "Excel"}</span>
-          </Button>
         </div>
 
         <div className="overflow-x-auto rounded-md border">
           <Table>
-            <TableHeader className="bg-sidebar/80 hover:bg-sidebar/80">
+            <TableHeader className="bg-primary [&_tr]:hover:bg-transparent">
               <TableRow>
                 <TableHead className="text-white">
                   {t("table.clientName")}
@@ -204,7 +204,7 @@ const PromotionReportPage: FC = () => {
                   <Button
                     variant="ghost"
                     onClick={handleSort}
-                    className="text-white hover:text-white/80"
+                    className="text-white"
                   >
                     {t("table.sentAt")}
                     <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -227,12 +227,12 @@ const PromotionReportPage: FC = () => {
                         ? log.status === "SENT"
                           ? "GESENDET"
                           : log.status === "DELIVERED"
-                          ? "ZUGESTELLT"
-                          : log.status === "FAILED"
-                          ? "FEHLGESCHLAGEN"
-                          : log.status === "CONVERTED"
-                          ? "KONVERTIERT"
-                          : log.status
+                            ? "ZUGESTELLT"
+                            : log.status === "FAILED"
+                              ? "FEHLGESCHLAGEN"
+                              : log.status === "CONVERTED"
+                                ? "KONVERTIERT"
+                                : log.status
                         : log.status}
                     </span>
                   </TableCell>
@@ -244,7 +244,7 @@ const PromotionReportPage: FC = () => {
                           year: "numeric",
                           hour: "2-digit",
                           minute: "2-digit",
-                          second:"2-digit"
+                          second: "2-digit",
                         })
                       : new Date(log.sent_at).toLocaleString()}
                   </TableCell>

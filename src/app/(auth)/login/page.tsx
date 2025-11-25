@@ -40,6 +40,13 @@ export default function LoginPage() {
       : "en",
   );
   const t = useTranslations("auth.login");
+  const loginSchema = z.object({
+    email: z.string().email(t("invalidEmail")),
+    password: z.string().min(8, t("passwordMin")),
+  });
+
+  type LoginFormValues = z.infer<typeof loginSchema>;
+
   const {
     register,
     handleSubmit,
@@ -61,17 +68,17 @@ export default function LoginPage() {
         const refreshToken = res.data.refresh;
         dispatch(loginSuccess({ accessToken, refreshToken }));
         router.push("/");
-        toast.success("Successfully logged in!");
+        toast.success(t("loginSuccess"));
       } else if ("error" in res) {
         const error = res.error as { data: { detail: string }; status: number };
         if (error.status === 401) {
-          toast.error("Invalid credentials");
+          toast.error(t("invalidCredentials"));
         } else {
-          toast.error("Login failed. Please try again.");
+          toast.error(t("loginFailed"));
         }
       }
     } catch {
-      toast.error("An error occurred. Please try again later.");
+      toast.error(t("loginError"));
     }
   };
 
@@ -89,7 +96,7 @@ export default function LoginPage() {
     } catch (e) {
       console.error("Failed to set locale in localStorage or cookie", e);
     }
-    toast.success(`Language set to ${next.toUpperCase()}`);
+    toast.success(t("languageSet", { lang: next.toUpperCase() }));
     try {
       router.refresh();
     } catch (e) {
@@ -98,7 +105,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#242020] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#292929] px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="flex flex-col items-center justify-center">
           <div className="rounded-xl bg-sidebar px-5 py-3">
@@ -194,10 +201,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-const loginSchema = z.object({
-  email: z.email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 8 characters"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;

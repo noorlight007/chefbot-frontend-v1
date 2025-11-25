@@ -31,21 +31,7 @@ import "react-phone-input-2/lib/style.css";
 import { toast } from "sonner";
 import * as z from "zod";
 
-const registerSchema = z.object({
-  first_name: z.string().min(1, "First name is required"),
-  last_name: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z
-    .string()
-    .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number must not exceed 15 digits"),
-  currency: z.string().min(1, "Preferred currency is required"),
-  gender: z.enum(["MALE", "FEMALE", "OTHER"]),
-  date_of_birth: z.string().min(1, "Date of birth is required"),
-  avatar: z.string().nullable().optional(),
-});
-
-type RegisterFormData = z.infer<typeof registerSchema>;
+// register schema is defined inside the component so messages can use `t(...)`
 type RegisterError = {
   status: number;
   data?: { email?: string[]; phone?: string[] };
@@ -58,6 +44,18 @@ export default function RegisterPage() {
       : "en",
   );
   const t = useTranslations("auth.register");
+  const registerSchema = z.object({
+    first_name: z.string().min(1, t("firstNameRequired")),
+    last_name: z.string().min(1, t("lastNameRequired")),
+    email: z.string().email(t("invalidEmail")),
+    phone: z.string().min(10, t("phoneMin")).max(15, t("phoneMax")),
+    currency: z.string().min(1, t("currencyRequired")),
+    gender: z.enum(["MALE", "FEMALE", "OTHER"]),
+    date_of_birth: z.string().min(1, t("dateOfBirthRequired")),
+    avatar: z.string().nullable().optional(),
+  });
+
+  type RegisterFormData = z.infer<typeof registerSchema>;
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarFileName, setAvatarFileName] = useState<string>("");
 
@@ -101,9 +99,7 @@ export default function RegisterPage() {
       const res = await registerUser(formData);
 
       if ("data" in res) {
-        toast.success(
-          "Account has been created. Check your registered mail to set password and login",
-        );
+        toast.success(t("registerSuccess"));
         router.push(`/set-password?sessionId=${res.data.uid}`);
       } else if ("error" in res) {
         const error = res.error as RegisterError;
@@ -116,13 +112,13 @@ export default function RegisterPage() {
             duration: 4000,
           });
         } else {
-          toast.error("An unexpected error occurred. Please try again.", {
+          toast.error(t("registerUnexpectedError"), {
             duration: 4000,
           });
         }
       }
     } catch {
-      toast.error("An unexpected error occurred. Please try again.");
+      toast.error(t("registerUnexpectedError"));
     }
   };
 
@@ -134,7 +130,7 @@ export default function RegisterPage() {
     } catch (e) {
       console.error("Failed to set locale in storage or cookie", e);
     }
-    toast.success(`Language set to ${next.toUpperCase()}`);
+    toast.success(t("languageSet", { lang: next.toUpperCase() }));
     try {
       router.refresh();
     } catch (e) {
@@ -153,7 +149,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#242020] py-8">
+    <div className="min-h-screen bg-[#292929] py-8">
       <div className="mb-8 flex flex-col items-center justify-center">
         <div className="rounded-xl bg-sidebar px-5 py-3">
           <Image
