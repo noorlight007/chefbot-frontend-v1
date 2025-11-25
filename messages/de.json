@@ -38,15 +38,21 @@
       "title": "Registrieren",
       "description": "Erstellen Sie Ihr Konto, um zu beginnen",
       "firstName": "Vorname",
+      "firstNameRequired": "Vorname ist erforderlich",
       "firstNamePlaceholder": "Max",
       "lastName": "Nachname",
+      "lastNameRequired": "Nachname ist erforderlich",
       "lastNamePlaceholder": "Mustermann",
       "email": "E-Mail",
       "emailPlaceholder": "name@beispiel.de",
+      "invalidEmail": "Ungültige E-Mail-Adresse",
       "phone": "Telefon",
+      "phoneMin": "Die Telefonnummer muss mindestens 10 Ziffern enthalten",
+      "phoneMax": "Die Telefonnummer darf nicht mehr als 15 Ziffern enthalten",
       "countrySearch": "Land suchen...",
       "preferredCurrency": "Bevorzugte Währung",
       "selectCurrency": "Währung auswählen",
+      "currencyRequired": "Bevorzugte Währung ist erforderlich",
       "gender": "Geschlecht",
       "selectGender": "Geschlecht auswählen",
       "genderOptions": {
@@ -55,8 +61,10 @@
         "other": "Andere"
       },
       "dateOfBirth": "Geburtsdatum",
+      "dateOfBirthRequired": "Geburtsdatum ist erforderlich",
       "profilePicture": "Profilbild",
       "selectedFile": "Ausgewählte Datei: {file}",
+      "languageSet": "Sprache gesetzt auf {lang}",
       "createAccount": "Konto erstellen",
       "loading": "Wird geladen...",
       "alreadyHaveAccount": "Bereits ein Konto?",
@@ -71,7 +79,13 @@
       "confirmPasswordPlaceholder": "Bestätigen Sie Ihr Passwort",
       "setPasswordButton": "Passwort setzen",
       "loading": "Wird geladen...",
-      "success": "Passwort erfolgreich gesetzt"
+      "success": "Passwort erfolgreich gesetzt",
+      "passwordShort": "Dieses Passwort ist zu kurz. Es muss mindestens 8 Zeichen enthalten.",
+      "passwordNumeric": "Dieses Passwort besteht nur aus Zahlen.",
+      "passwordSpecial": "Das Passwort muss mindestens ein Sonderzeichen enthalten",
+      "passwordCommon": "Dieses Passwort ist zu häufig. Bitte verwenden Sie ein einzigartiges Passwort.",
+      "passwordsDontMatch": "Passwörter stimmen nicht überein",
+      "languageSet": "Sprache gesetzt auf {lang}"
     }
   },
   "settings": {

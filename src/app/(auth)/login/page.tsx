@@ -201,6 +201,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-// schema and type are defined inside the component so validation messages
-// are generated via `t(...)` and update when the locale changes.
