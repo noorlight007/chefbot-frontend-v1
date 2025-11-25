@@ -2,7 +2,7 @@ export default function PromotionReportsSkeleton() {
   return (
     <div className="p-4 lg:p-6">
       {/* Header skeleton */}
-      <div className="relative h-32 w-full animate-pulse rounded-t-lg bg-gradient-to-r from-purple-400 to-purple-500">
+      <div className="relative h-32 w-full animate-pulse rounded-t-lg bg-gradient-to-r">
         <div className="absolute left-4 top-4">
           <div className="h-8 w-8 rounded-full bg-white/20" />
         </div>
@@ -23,8 +23,8 @@ export default function PromotionReportsSkeleton() {
 
       {/* Search skeleton */}
       <div className="mt-8">
-        <div className="mb-4 flex items-center justify-between w-full">
-          <div className="flex items-center flex-1">
+        <div className="mb-4 flex w-full items-center justify-between">
+          <div className="flex flex-1 items-center">
             <div className="mr-2 h-5 w-5 animate-pulse rounded bg-gray-300" />
             <div className="h-10 w-full animate-pulse rounded-md bg-gray-200" />
           </div>
