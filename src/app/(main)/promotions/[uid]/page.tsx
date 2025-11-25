@@ -149,19 +149,31 @@ export default function PromotionDetails() {
   return (
     <div>
       {/* Header */}
-      <div className="relative h-40 w-full rounded-t-lg bg-gradient-to-b from-sidebar-accent to-sidebar">
-        <div className="absolute left-4 top-4 z-10">
+      <div className="flex h-20 w-full items-center justify-between rounded-t-lg px-4">
+        <div className="flex items-center gap-4">
           <button
             onClick={() => window.history.back()}
-            className="rounded-full bg-white/20 p-2 transition-all hover:bg-white/30"
+            className="rounded-full bg-primary/50 p-2 transition-all hover:bg-primary/90"
           >
             <ArrowLeft size={20} className="text-white" />
           </button>
+
+          <div className="flex items-center gap-3">
+            <h3 className="text-2xl font-bold tracking-tight text-gray-900">
+              {promotion.title}
+            </h3>
+            <Badge variant={promotion.is_enabled ? "default" : "destructive"}>
+              {promotion.is_enabled
+                ? t("details.status.active")
+                : t("details.status.inactive")}
+            </Badge>
+          </div>
         </div>
-        <div className="absolute right-4 top-4 z-10">
+
+        <div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <button className="rounded-full bg-white/20 p-2 transition-all hover:bg-white/30">
+              <button className="rounded-full bg-primary/50 p-2 transition-all hover:bg-primary/90">
                 <MoreVertical size={20} className="text-white" />
               </button>
             </DialogTrigger>
@@ -180,26 +192,6 @@ export default function PromotionDetails() {
               </ScrollArea>
             </DialogContent>
           </Dialog>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-sidebar/30 p-4 backdrop-blur-sm">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="text-white">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-2xl font-bold tracking-tight">
-                    {promotion.title}
-                  </h3>
-                  <Badge
-                    variant={promotion.is_enabled ? "default" : "destructive"}
-                  >
-                    {promotion.is_enabled
-                      ? t("details.status.active")
-                      : t("details.status.inactive")}
-                  </Badge>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
