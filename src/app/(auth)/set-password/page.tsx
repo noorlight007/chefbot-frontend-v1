@@ -82,7 +82,7 @@ function SetPasswordForm() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#242020]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#292929]">
       <div className="mb-8 flex flex-col items-center justify-center">
         <div className="rounded-xl bg-sidebar px-5 py-3">
           <Image

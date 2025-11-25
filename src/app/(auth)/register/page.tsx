@@ -153,7 +153,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#242020] py-8">
+    <div className="min-h-screen bg-[#292929] py-8">
       <div className="mb-8 flex flex-col items-center justify-center">
         <div className="rounded-xl bg-sidebar px-5 py-3">
           <Image
