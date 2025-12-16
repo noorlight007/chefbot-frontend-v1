@@ -56,7 +56,7 @@ const formSchema = z.object({
       "SPECIALS",
     ])
     .optional(),
-  classification: z.enum(["MEAT", "FISH", "VEGETARIAN", "VEGAN"]).optional(),
+  classification: z.enum(["MEAT", "FISH", "VEGETARIAN", "VEGAN", "NEUTRAL"]).optional(),
   upselling_priority: z.number().min(1).max(5).int(),
   enable_upselling: z.boolean().optional(),
   recommended_combinations: z
@@ -607,6 +607,9 @@ export const AddNewMenu = ({ onClose }: { onClose: () => void }) => {
                         </SelectItem>
                         <SelectItem value="VEGAN">
                           {t("classification.options.vegan")}
+                        </SelectItem>
+                        <SelectItem value="NEUTRAL">
+                          {t("classification.options.neutral")}
                         </SelectItem>
                       </SelectContent>
                     </Select>

@@ -1,16 +1,16 @@
 "use client";
-import * as React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useTranslations } from "next-intl";
 import { useGetLoggedUserQuery } from "@/redux/reducers/auth-reducer";
+import { useAddReservationMutation } from "@/redux/reducers/reservation-reducer";
 import {
   useGetRestaurantPromotionsQuery,
   useGetSingleRestaurantMenuQuery,
   useGetTablesQuery,
 } from "@/redux/reducers/restaurants-reducer";
-import { useAddReservationMutation } from "@/redux/reducers/reservation-reducer";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 // Custom Dropdown Component
 interface DropdownProps {
@@ -258,46 +258,21 @@ const AddReservationModal: React.FC<AddReservationModalProps> = ({
     );
   }, [loggedUser]);
 
-  const reservationSchema = z
-    .object({
-      reservation_name: z.string().optional(),
-      client_name: z.string().min(1, t("errors.guestNameRequired")),
-      client_phone: z.string().min(1, t("errors.phoneRequired")),
-      client_allergens: z.array(z.string()),
-      reservation_date: z.string().min(1, t("errors.dateRequired")),
-      reservation_time: z.string().min(1, t("errors.timeRequired")),
-      guests: z.number().min(1, t("errors.guestsRequired")),
-      reservation_reason: z.string().optional(),
-      notes: z.string().optional(),
-      reservation_status: z.enum([
-        "PLACED",
-        "INPROGRESS",
-        "CANCELLED",
-        "COMPLETED",
-        "RESCHEDULED",
-        "ABSENT",
-      ]),
-      cancellation_reason: z.string().optional(),
-      menus: z.array(z.string()).optional(),
-      table: z.string().min(1, t("errors.tableRequired")),
-      organization: z.string().min(1, t("errors.restaurantRequired")),
-      promo_code: z.string().optional(),
-    })
-    .refine(
-      (data) => {
-        if (data.reservation_status === "CANCELLED") {
-          return (
-            data.cancellation_reason &&
-            data.cancellation_reason.trim().length > 0
-          );
-        }
-        return true;
-      },
-      {
-        message: "Cancellation reason is required when status is CANCELLED",
-        path: ["cancellation_reason"],
-      },
-    );
+  const reservationSchema = z.object({
+    reservation_name: z.string().optional(),
+    client_name: z.string().min(1, t("errors.guestNameRequired")),
+    client_phone: z.string().min(1, t("errors.phoneRequired")),
+    client_allergens: z.array(z.string()),
+    reservation_date: z.string().min(1, t("errors.dateRequired")),
+    reservation_time: z.string().min(1, t("errors.timeRequired")),
+    guests: z.number().min(1, t("errors.guestsRequired")),
+    reservation_reason: z.string().optional(),
+    notes: z.string().optional(),
+    menus: z.array(z.string()).optional(),
+    table: z.string().min(1, t("errors.tableRequired")),
+    organization: z.string().min(1, t("errors.restaurantRequired")),
+    promo_code: z.string().optional(),
+  });
 
   const form = useForm<z.infer<typeof reservationSchema>>({
     resolver: zodResolver(reservationSchema),
@@ -311,8 +286,6 @@ const AddReservationModal: React.FC<AddReservationModalProps> = ({
       guests: 1,
       reservation_reason: "",
       notes: "",
-      reservation_status: "PLACED",
-      cancellation_reason: "",
       menus: [],
       table: "",
       organization: "",
@@ -321,7 +294,6 @@ const AddReservationModal: React.FC<AddReservationModalProps> = ({
   });
 
   const selectedRestaurant = form.watch("organization");
-  const reservationStatus = form.watch("reservation_status");
   const reservation_date = form.watch("reservation_date");
   const reservation_time = form.watch("reservation_time");
 
@@ -366,17 +338,6 @@ const AddReservationModal: React.FC<AddReservationModalProps> = ({
       label: item.name,
     }));
   }, [menu]);
-
-  const statusOptions = React.useMemo(() => {
-    return [
-      { value: "PLACED", label: t("status.placed") },
-      { value: "INPROGRESS", label: t("status.inProgress") },
-      { value: "CANCELLED", label: t("status.cancelled") },
-      { value: "COMPLETED", label: t("status.completed") },
-      { value: "RESCHEDULED", label: t("status.rescheduled") },
-      { value: "ABSENT", label: t("status.absent") },
-    ];
-  }, [t]);
 
   React.useEffect(() => {
     form.setValue("menus", []);
@@ -589,7 +550,7 @@ const AddReservationModal: React.FC<AddReservationModalProps> = ({
           </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
               {t("numberOfGuests")}
@@ -625,23 +586,6 @@ const AddReservationModal: React.FC<AddReservationModalProps> = ({
             {form.formState.errors.table && (
               <p className="text-sm text-red-600">
                 {form.formState.errors.table.message}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              {t("reservationStatus")}
-            </label>
-            <Dropdown
-              options={statusOptions}
-              placeholder={t("selectStatus")}
-              onChange={form.setValue.bind(null, "reservation_status")}
-              value={form.watch("reservation_status")}
-            />
-            {form.formState.errors.reservation_status && (
-              <p className="text-sm text-red-600">
-                {form.formState.errors.reservation_status.message}
               </p>
             )}
           </div>
@@ -709,24 +653,6 @@ const AddReservationModal: React.FC<AddReservationModalProps> = ({
             {...form.register("reservation_reason")}
           />
         </div>
-
-        {reservationStatus === "CANCELLED" && (
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Cancellation Reason *
-            </label>
-            <textarea
-              placeholder="Please provide a reason for cancellation"
-              className="min-h-[100px] w-full rounded-lg border border-gray-200 px-4 py-3 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-              {...form.register("cancellation_reason")}
-            />
-            {form.formState.errors.cancellation_reason && (
-              <p className="text-sm text-red-600">
-                {form.formState.errors.cancellation_reason.message}
-              </p>
-            )}
-          </div>
-        )}
 
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">

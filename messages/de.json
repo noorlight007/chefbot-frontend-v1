@@ -293,7 +293,8 @@
             "meat": "Fleisch",
             "fish": "Fisch",
             "vegetarian": "Vegetarisch",
-            "vegan": "Vegan"
+            "vegan": "Vegan",
+            "neutral": "Neutral"
           }
         },
         "ingredients": {

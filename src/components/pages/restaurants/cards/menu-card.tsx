@@ -173,7 +173,7 @@ interface MenuItemData {
     | "DRINKS_ALCOHOLIC"
     | "DRINKS_NON_ALCOHOLIC"
     | "SPECIALS";
-  classification: "MEAT" | "FISH" | "VEGETARIAN" | "VEGAN";
+  classification: "MEAT" | "FISH" | "VEGETARIAN" | "VEGAN" | "NEUTRAL";
   allergens: string[];
   macronutrients: string;
   upselling_priority: number;
