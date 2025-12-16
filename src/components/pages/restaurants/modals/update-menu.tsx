@@ -60,6 +60,7 @@ const Classification = {
   FISH: "FISH",
   VEGETARIAN: "VEGETARIAN",
   VEGAN: "VEGAN",
+  NEUTRAL: "NEUTRAL",
 } as const;
 
 const MAX_COMBINATIONS = 5;

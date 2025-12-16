@@ -213,7 +213,7 @@ type MenuType = {
   price: string;
   ingredients: string;
   category: "STARTERS" | "MAINS" | "DESSERTS" | "DRINKS";
-  classification: "MEAT" | "VEGETARIAN" | "VEGAN" | "FISH";
+  classification: "MEAT" | "VEGETARIAN" | "VEGAN" | "FISH" | "NEUTRAL";
 };
 
 type TableType = {
