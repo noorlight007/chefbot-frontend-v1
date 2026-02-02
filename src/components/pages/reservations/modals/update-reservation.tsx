@@ -281,7 +281,7 @@ const updateReservationSchema = z
       return true;
     },
     {
-      message: "Cancellation reason is required when status is CANCELLED",
+      message: "errors.cancellationRequiredWhenCancelled",
       path: ["cancellation_reason"],
     },
   );
@@ -1003,7 +1003,13 @@ const UpdateReservation: React.FC<UpdateReservationModalProps> = ({
             />
             {form.formState.errors.cancellation_reason && (
               <p className="text-sm text-red-600">
-                {form.formState.errors.cancellation_reason.message}
+                {translateForm(
+                  String(
+                    form.formState.errors.cancellation_reason?.message ||
+                      "errors.cancellationRequiredWhenCancelled",
+                  ),
+                  "Cancellation reason is required when status is CANCELLED",
+                )}
               </p>
             )}
           </div>

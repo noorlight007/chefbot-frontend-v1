@@ -585,7 +585,8 @@
           "timeRequired": "Time is required",
           "guestsRequired": "Number of guests is required",
           "tableRequired": "Table selection is required",
-          "restaurantRequired": "Restaurant selection is required"
+          "restaurantRequired": "Restaurant selection is required",
+          "cancellationRequiredWhenCancelled": "Cancellation reason is required when status is CANCELLED"
         },
         "success": {
           "reservationUpdated": "Reservation updated successfully"
@@ -802,7 +803,8 @@
         "timeRequired": "Time is required",
         "guestsRequired": "Number of guests is required",
         "tableRequired": "Table selection is required",
-        "restaurantRequired": "Restaurant selection is required"
+        "restaurantRequired": "Restaurant selection is required",
+        "cancellationRequiredWhenCancelled": "Cancellation reason is required when status is CANCELLED"
       },
       "success": {
         "reservationUpdated": "Reservation updated successfully"
