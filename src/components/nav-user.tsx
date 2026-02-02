@@ -169,7 +169,7 @@ export function NavUser() {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <Link href="/settings">
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer hover:bg-slate-100">
                 <User className="mr-2 h-4 w-4" />
                 {t("profile")}
               </DropdownMenuItem>
@@ -180,7 +180,7 @@ export function NavUser() {
 
           <DropdownMenuItem
             onClick={handleLogout}
-            className="cursor-pointer bg-sidebar-accent-foreground text-sidebar-foreground hover:bg-white hover:text-sidebar-accent-foreground"
+            className="cursor-pointer bg-sidebar-accent-foreground text-red-600 hover:bg-red-100 hover:text-red-600"
           >
             <LogOut className="mr-2 h-4 w-4" />
             {t("logout")}
