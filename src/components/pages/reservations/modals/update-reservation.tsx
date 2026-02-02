@@ -309,6 +309,7 @@ const UpdateReservation: React.FC<UpdateReservationModalProps> = ({
       }
       return res;
     } catch (e) {
+      console.error("Translation error:", e);
       return fallback;
     }
   };
