@@ -68,6 +68,27 @@ export default function ReservationDetails() {
     }
   };
 
+  // Map reservation status enum values to translation keys (handles INPROGRESS -> inProgress)
+  const mapStatusToKey = (status?: string | null) => {
+    if (!status) return null;
+    switch (String(status).toUpperCase()) {
+      case "PLACED":
+        return "placed";
+      case "INPROGRESS":
+        return "inProgress";
+      case "CANCELLED":
+        return "cancelled";
+      case "COMPLETED":
+        return "completed";
+      case "RESCHEDULED":
+        return "rescheduled";
+      case "ABSENT":
+        return "absent";
+      default:
+        return null;
+    }
+  };
+
   const currencySymbol = getCurrencySymbol(
     data?.currency as string | undefined,
   );
@@ -168,12 +189,10 @@ export default function ReservationDetails() {
                       : "destructive"
                   }
                 >
-                  {String(
-                    s(
-                      reservation.reservation_status?.toLowerCase() ||
-                        t("status.unknown"),
-                    ),
-                  )}
+                  {(() => {
+                    const key = mapStatusToKey(reservation.reservation_status);
+                    return String(key ? s(key) : t("status.unknown"));
+                  })()}
                 </Badge>
               </div>
             </div>

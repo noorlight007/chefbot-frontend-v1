@@ -586,7 +586,14 @@
           "guestsRequired": "Number of guests is required",
           "tableRequired": "Table selection is required",
           "restaurantRequired": "Restaurant selection is required"
-        }
+        },
+        "success": {
+          "reservationUpdated": "Reservation updated successfully"
+        },
+        "failure": {
+          "reservationUpdate": "Failed to update reservation. Please try again."
+        },
+        "noChanges": "No changes to update"
       }
     }
   },
@@ -796,6 +803,12 @@
         "guestsRequired": "Number of guests is required",
         "tableRequired": "Table selection is required",
         "restaurantRequired": "Restaurant selection is required"
+      },
+      "success": {
+        "reservationUpdated": "Reservation updated successfully"
+      },
+      "failure": {
+        "reservationUpdate": "Failed to update reservation. Please try again."
       }
     }
   },

@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
 // Custom Dropdown Component
@@ -297,6 +298,20 @@ const UpdateReservation: React.FC<UpdateReservationModalProps> = ({
   reservation,
 }) => {
   const t = useTranslations("reservations");
+  const tf = useTranslations("reservations.form");
+
+  const translateForm = (key: string, fallback: string) => {
+    try {
+      const res = tf(key);
+      // If translation not found, next-intl returns a dotted key like 'reservations.form.key'
+      if (typeof res === "string" && res.includes("reservations.form")) {
+        return fallback;
+      }
+      return res;
+    } catch (e) {
+      return fallback;
+    }
+  };
   const { data: loggedUser, isLoading: isUserLoading } = useGetLoggedUserQuery(
     {},
   );
@@ -417,6 +432,13 @@ const UpdateReservation: React.FC<UpdateReservationModalProps> = ({
       promo_code: initialPromoCode,
     },
   });
+
+  // Keep a snapshot of initial form values so we can detect actual value changes
+  const initialValuesRef = React.useRef<Record<string, unknown> | null>(null);
+  React.useEffect(() => {
+    initialValuesRef.current = form.getValues();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Fetch menu data based on selected organization
   const selectedRestaurant = form.watch("organization");
@@ -549,18 +571,98 @@ const UpdateReservation: React.FC<UpdateReservationModalProps> = ({
 
   const handleSubmit = async (values: UpdateReservationFormData) => {
     try {
-      if (values.reservation_time) {
-        values.reservation_time = `${values.reservation_time}:00`;
+      // Build payload by comparing current values to the initial snapshot
+      const initial = initialValuesRef.current || {};
+      const payload: Record<string, unknown> = {};
+
+      Object.keys(values).forEach((key) => {
+        const k = key as keyof UpdateReservationFormData;
+        const newVal = values[k];
+        const oldVal = (initial as Record<string, unknown>)[key];
+
+        const isEqual = (() => {
+          if (Array.isArray(newVal) || Array.isArray(oldVal)) {
+            return JSON.stringify(newVal) === JSON.stringify(oldVal);
+          }
+          if (
+            typeof newVal === "object" &&
+            newVal !== null &&
+            typeof oldVal === "object" &&
+            oldVal !== null
+          ) {
+            return JSON.stringify(newVal) === JSON.stringify(oldVal);
+          }
+          return newVal === oldVal;
+        })();
+
+        if (!isEqual) {
+          let val: unknown = newVal;
+
+          // If time was changed, append seconds
+          if (key === "reservation_time" && typeof val === "string" && val) {
+            val = `${val}:00`;
+          }
+
+          // If promo_code was explicitly cleared by user, don't send empty string
+          if (key === "promo_code" && val === "") {
+            return; // omit
+          }
+
+          payload[key] = val;
+        }
+      });
+
+      // If nothing changed, notify and skip request
+      if (Object.keys(payload).length === 0) {
+        toast.error(translateForm("noChanges", "No changes to update"));
+        return;
       }
 
       await updateReservation({
         uid: reservation.uid,
-        data: values,
+        data: payload,
       }).unwrap();
+
+      // toast success
+      toast.success(
+        translateForm(
+          "success.reservationUpdated",
+          "Reservation updated successfully",
+        ),
+      );
       onClose();
       form.reset();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Failed to update reservation:", error);
+
+      if (typeof error === "object" && error !== null) {
+        const errObj = error as {
+          status?: number;
+          data?: Record<string, unknown>;
+        };
+
+        if (errObj.status === 400 && errObj.data) {
+          const errors = errObj.data;
+
+          Object.keys(errors).forEach((key) => {
+            const v = errors[key];
+            const errorMessage = Array.isArray(v) ? (v as unknown[])[0] : v;
+            if (typeof errorMessage === "string") {
+              toast.error(errorMessage);
+            } else {
+              toast.error(String(errorMessage));
+            }
+          });
+          return;
+        }
+      }
+
+      toast.error(
+        translateForm(
+          "failure.reservationUpdate",
+          "Failed to update reservation. Please try again.",
+        ),
+      );
     }
   };
 

@@ -590,7 +590,14 @@
           "guestsRequired": "Anzahl der Gäste ist erforderlich",
           "tableRequired": "Tischauswahl ist erforderlich",
           "restaurantRequired": "Restaurantauswahl ist erforderlich"
-        }
+        },
+        "success": {
+          "reservationUpdated": "Reservierung erfolgreich aktualisiert"
+        },
+        "failure": {
+          "reservationUpdate": "Fehler beim Aktualisieren der Reservierung. Bitte versuchen Sie es erneut."
+        },
+        "noChanges": "Keine Änderungen zum Aktualisieren"
       }
     }
   },
@@ -800,7 +807,14 @@
         "guestsRequired": "Anzahl der Gäste ist erforderlich",
         "tableRequired": "Tischauswahl ist erforderlich",
         "restaurantRequired": "Restaurantauswahl ist erforderlich"
-      }
+      },
+      "success": {
+        "reservationUpdated": "Reservierung erfolgreich aktualisiert"
+      },
+      "failure": {
+        "reservationUpdate": "Fehler beim Aktualisieren der Reservierung. Bitte versuchen Sie es erneut."
+      },
+      "noChanges": "Keine Änderungen zum Aktualisieren"
     }
   },
   "promotions": {
